@@ -8,8 +8,6 @@ from collections import defaultdict
 
 # To run QUBO
 from dwave.system import DWaveSampler, FixedEmbeddingComposite
-from dwave.embedding.pegasus import find_clique_embedding
-from minorminer import find_embedding
 import dwave.inspector
 import dwave_networkx as dnx
 
@@ -23,9 +21,9 @@ f = open('data/outN20q1B10P100.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
-# q = data['q']               # Risk appetite
+q = data['q']               # Risk appetite
 B = data['B']               # Budget
-P = data['P']               # Penalization factor
+#P = data['P']               # Penalization factor
 tickers = data['tickers']   # Tickers
 mu = pd.Series(data['mu'])
 sigma = pd.DataFrame.from_dict(data['sigma'], orient='index')
@@ -36,57 +34,57 @@ print(mu)
 print('sigma matrix:')
 print(sigma)
 
-for q in np.linspace(0,1,21):
+P = 100
 
-    # Step 2: Formulate QUBO
-    Q = defaultdict(float)
+# Step 2: Formulate QUBO
+Q = defaultdict(float)
 
-    # There are three terms in the objective function: Covariance, Return, and Budget
+# There are three terms in the objective function: Covariance, Return, and Budget
 
-    # Covariance term
-    for i in range(N):
-        for j in range(i, N):
-            Q[(str(i), str(j))] = float(q * sigma[tickers[i]][tickers[j]])
+# Covariance term
+for i in range(N):
+    for j in range(i, N):
+        Q[(str(i), str(j))] = float(q * sigma[tickers[i]][tickers[j]])
 
-    # Return term
-    for i in range(N):
-        Q[(str(i), str(i))] += float(-mu[tickers[i]])
+# Return term
+for i in range(N):
+    Q[(str(i), str(i))] += float(-mu[tickers[i]])
 
-    # Budget term is decomposed into four terms, per the formula ((sum^{n-1}_{i=0} x_i) - B)^2
-    for i in range(N):
-        Q[(str(i), str(i))] += float(P)
+# Budget term is decomposed into four terms, per the formula ((sum^{n-1}_{i=0} x_i) - B)^2
+for i in range(N):
+    Q[(str(i), str(i))] += float(P)
 
-    for i in range(N):
-        for j in range(i + 1, N):
-            Q[(str(i), str(j))] += float(2*P)
+for i in range(N):
+    for j in range(i + 1, N):
+        Q[(str(i), str(j))] += float(2*P)
 
-    for i in range(N):
-        Q[(str(i), str(i))] += float(-2 * B * P)
+for i in range(N):
+    Q[(str(i), str(i))] += float(-2 * B * P)
 
-    print('QUBO Matrix')
-    print(Q)
+print('QUBO Matrix')
+print(Q)
 
-    # Step 3: Solve QUBO
+# Step 3: Solve QUBO
 
-    # Get sampler
-    sampler = DWaveSampler()
+# Get sampler
+sampler = DWaveSampler()
 
-    # Get embedding
-    f = open('data/embedding_normalN20.json')
-    embedding = json.load(f)
-    print(embedding)
+# Get embedding
+f = open('data/embedding_cliqueN20.json')
+embedding = json.load(f)
+print(embedding)
 
-    # Draw the embedding
-    dnx.draw_pegasus_embedding(
-        sampler.to_networkx_graph(), embedding, unused_color=None)
-    plt.savefig('images/embeddingN{}q{}B{}P{}.png'.format(N, q, B, P))
+# Draw the embedding
+dnx.draw_pegasus_embedding(
+    sampler.to_networkx_graph(), embedding, unused_color=None)
+plt.savefig('images/embedding_cliqueN{}q{:.2f}B{}P{}.png'.format(N, q, B, P))
 
-    # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as Q.
-    chain_strength = 512
+# Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as Q.
+chain_strength = 360
 
-    composite = FixedEmbeddingComposite(sampler, embedding=embedding)
-    sampleset = composite.sample_qubo(
-        Q, num_reads=1000, chain_strength=chain_strength)
-    dwave.inspector.show(sampleset)
-    sampleset.to_pandas_dataframe().sort_values(
-        by=['energy']).to_csv('results/outnormalN{}q{}B{}P{}chain{}.csv'.format(N, q, B, P, chain_strength), index=False)
+composite = FixedEmbeddingComposite(sampler, embedding=embedding)
+sampleset = composite.sample_qubo(
+    Q, num_reads=1000, chain_strength=chain_strength)
+dwave.inspector.show(sampleset)
+sampleset.to_pandas_dataframe().sort_values(
+        by=['energy']).to_csv('results/cliquewithchain360.csv', index=False)

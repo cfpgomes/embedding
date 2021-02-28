@@ -19,10 +19,10 @@ sigma = pd.DataFrame.from_dict(data['sigma'], orient='index')
 for q in np.linspace(0,1,21):
     # Step 2: Create ampl file from both linearized and IPL_linearized templates
     shutil.copy2('src/ampl/IPL_linearized_template.ampl',
-                'src/ampl/IPL_linearized_N{}q{}B{}P{}.ampl'.format(N, q, B, P))
+                'src/ampl/IPL_linearized_N{}q{:.2f}B{}P{}.ampl'.format(N, q, B, P))
 
-    with open('src/ampl/IPL_linearized_N{}q{}B{}P{}.ampl'.format(N, q, B, P), 'a') as f:
-        solution_file_name = 'results/IPL_linearized_N{}q{}B{}P{}_solution.json'.format(N, q, B, P)
+    with open('src/ampl/IPL_linearized_N{}q{:.2f}B{}P{}.ampl'.format(N, q, B, P), 'a') as f:
+        solution_file_name = 'results/IPL_linearized_N{}q{:.2f}B{}P{}_solution.json'.format(N, q, B, P)
 
         f.write('printf: "{{ ""solution"": [%d", x[1] > "{}";\n'.format(solution_file_name))
         f.write('printf{{i in 2..n}}: ",%d", x[i] >> "{}";\n'.format(solution_file_name))

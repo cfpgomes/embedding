@@ -9,7 +9,8 @@ f = open('data/outN20q1B10P100.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
-q = data['q']               # Risk appetite
+#q = data['q']               # Risk appetite
+q = 0.55
 B = data['B']               # Budget
 P = data['P']               # Penalization factor
 tickers = data['tickers']   # Tickers
@@ -25,7 +26,7 @@ labels = []
 file_num = 0
 
 for filename in os.listdir('results'):
-    if 'out_normalN20q1.00B10P0.900C4.000.csv' in filename:
+    if 'out_normalN20q0.55B10P0.900C4.000.csv' in filename:
         ff = open('results/' + filename)
 
         start = filename.rfind('q')
@@ -44,8 +45,8 @@ for filename in os.listdir('results'):
 
             num_occur = int(best_solution_line.split(',')[-1])
 
-            # if sum(best_solution) != B:
-            #     continue
+            if sum(best_solution) != B:
+                continue
 
             portfolio_return = 0
             portfolio_risk = 0
@@ -81,7 +82,7 @@ for filename in os.listdir('results'):
         print('Average Return: {}'.format(sum(rets) / len(rets)))
         print('Average Risk: {}'.format(sum(rsks) / len(rsks)))
         file_num += 1
-    elif 'q1.00B10P100_solution.json' in filename:
+    elif 'q0.55B10P100_solution.json' in filename:
         ff = open('results/' + filename)
         best_solution = json.load(ff)["solution"]
 
@@ -109,7 +110,7 @@ for filename in os.listdir('results'):
         returns.append(portfolio_return)
         risks.append(portfolio_risk)
         labels.append(filename[start:end])
-        if 'q1.00' in filename:
+        if 'q0.55' in filename:
             objectives.append(-1)
         else:
             objectives.append(-1)

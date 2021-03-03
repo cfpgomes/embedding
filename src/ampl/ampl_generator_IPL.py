@@ -4,7 +4,7 @@ import numpy as np
 import shutil
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/outN20q1B10P100.json')
+f = open('data/outN100q1B50P100.json')
 data = json.load(f)
 
 N = data['N']               # Universe size

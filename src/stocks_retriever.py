@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 import json
 
-N = 20
+N = 100
 q = 1
-B = 10
+B = 50
 P = 100
 
 # The first N indexes in the wikipedia table are used as tickers.
@@ -13,6 +13,14 @@ P = 100
 table = pd.read_html(
     'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
 tickers = list(table[0]['Symbol'].sort_values())[:N]
+
+convert_dot_to_dash_tickers = ['BF.B', 'BRK.B']
+
+for i in range(len(tickers)):
+    if tickers[i] in convert_dot_to_dash_tickers:
+        tickers[i] = tickers[i].replace('.', '-')
+        print(tickers[i])
+
 print(str(N) + ' tickers used:')
 print(tickers)
 

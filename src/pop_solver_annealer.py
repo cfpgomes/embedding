@@ -21,7 +21,7 @@ f = open('data/outN20q1B10P100.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
-q = data['q']               # Risk appetite
+#q = data['q']               # Risk appetite
 B = data['B']               # Budget
 #P = data['P']               # Penalization factor
 tickers = data['tickers']   # Tickers
@@ -34,7 +34,8 @@ print(mu)
 print('sigma matrix:')
 print(sigma)
 
-P = 100
+q = 1
+P = 0.9
 
 # Step 2: Formulate QUBO
 Q = defaultdict(float)
@@ -68,23 +69,24 @@ print(Q)
 
 # Get sampler
 sampler = DWaveSampler()
+embedding_type = 'normal'
 
 # Get embedding
-f = open('data/embedding_cliqueN20.json')
+f = open(f'data/embedding_{embedding_type}N{N}.json')
 embedding = json.load(f)
 print(embedding)
 
 # Draw the embedding
 dnx.draw_pegasus_embedding(
     sampler.to_networkx_graph(), embedding, unused_color=None)
-plt.savefig('images/embedding_cliqueN{}q{:.2f}B{}P{}.png'.format(N, q, B, P))
+plt.savefig(f'images/embedding_{embedding_type}N{N}q{q:.2f}B{B}P{P:.3f}.png')
 
 # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as Q.
-chain_strength = 360
+chain_strength = 4
 
 composite = FixedEmbeddingComposite(sampler, embedding=embedding)
 sampleset = composite.sample_qubo(
     Q, num_reads=1000, chain_strength=chain_strength)
 dwave.inspector.show(sampleset)
 sampleset.to_pandas_dataframe().sort_values(
-        by=['energy']).to_csv('results/cliquewithchain360.csv', index=False)
+        by=['energy']).to_csv(f'results/out_{embedding_type}N{N}q{q:.2f}B{B}P{P:.3f}C{chain_strength:.3f}.csv', index=False)

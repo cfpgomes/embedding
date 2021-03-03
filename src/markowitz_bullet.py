@@ -25,7 +25,7 @@ labels = []
 file_num = 0
 
 for filename in os.listdir('results'):
-    if 'cliquewithchain512_chimera.csv' in filename:
+    if 'out_normalN20q1.00B10P0.900C4.000.csv' in filename:
         ff = open('results/' + filename)
 
         start = filename.rfind('q')
@@ -62,11 +62,13 @@ for filename in os.listdir('results'):
                     portfolio_risk += 2 * best_solution[i] * \
                         best_solution[j] * sigma[tickers[i]][tickers[j]]
 
+            obj = q*np.transpose(best_solution).dot(sigma).dot(best_solution) - np.transpose(mu).dot(best_solution) + P * np.square(np.ones((1,N)).dot(best_solution) - B)
+
             for i in range(num_occur):
                 returns.append(portfolio_return)
                 risks.append(portfolio_risk)
                 solutions.append(best_solution)
-                objectives.append(q*np.transpose(best_solution).dot(sigma).dot(best_solution) - np.transpose(mu).dot(best_solution) + P * np.square(np.ones((1,20)).dot(best_solution) - B))
+                objectives.append(obj[0])
                 rets.append(portfolio_return)
                 rsks.append(portfolio_risk)
                 labels.append(filename[start:end])
@@ -79,40 +81,44 @@ for filename in os.listdir('results'):
         print('Average Return: {}'.format(sum(rets) / len(rets)))
         print('Average Risk: {}'.format(sum(rsks) / len(rsks)))
         file_num += 1
-    # elif '.json' in filename:
-    #     ff = open('results/' + filename)
-    #     best_solution = json.load(ff)["solution"]
+    elif 'q1.00B10P100_solution.json' in filename:
+        ff = open('results/' + filename)
+        best_solution = json.load(ff)["solution"]
 
-    #     start = filename.find('q')
-    #     end = filename.find('B')
+        start = filename.find('q')
+        end = filename.find('B')
 
-    #     print('File #{}: \tJSON \t{} \t{}'.format(
-    #         file_num, filename[start:end], best_solution))
+        print('File #{}: \tJSON \t{} \t{}'.format(
+            file_num, filename[start:end], best_solution))
 
-    #     portfolio_return = 0
-    #     portfolio_risk = 0
+        portfolio_return = 0
+        portfolio_risk = 0
 
-    #     for i in range(N):
-    #         portfolio_return += best_solution[i] * mu[tickers[i]]
-    #         portfolio_risk += best_solution[i] * sigma[tickers[i]
-    #                                                    ][tickers[i]] * sigma[tickers[i]][tickers[i]]
+        for i in range(N):
+            portfolio_return += best_solution[i] * mu[tickers[i]]
+            portfolio_risk += best_solution[i] * sigma[tickers[i]
+                                                       ][tickers[i]] * sigma[tickers[i]][tickers[i]]
 
-    #     portfolio_return /= N
+        portfolio_return /= N
 
-    #     for i in range(N):
-    #         for j in range(i+1, N):
-    #             portfolio_risk += 2 * best_solution[i] * \
-    #                 best_solution[j] * sigma[tickers[i]][tickers[j]]
+        for i in range(N):
+            for j in range(i+1, N):
+                portfolio_risk += 2 * best_solution[i] * \
+                    best_solution[j] * sigma[tickers[i]][tickers[j]]
 
-    #     returns.append(portfolio_return)
-    #     risks.append(portfolio_risk)
-    #     labels.append(filename[start:end])
-    #     colors.append('#0000ff')
-    #     file_num += 1
+        returns.append(portfolio_return)
+        risks.append(portfolio_risk)
+        labels.append(filename[start:end])
+        if 'q1.00' in filename:
+            objectives.append(-1)
+        else:
+            objectives.append(-1)
+        file_num += 1
 
 fig, ax = plt.subplots()
 
-ax.scatter(risks, returns, c=colors, marker='o')
+print(objectives)
+ax.scatter(risks, returns, c=objectives, marker='o', cmap='autumn', vmin=-0.4, vmax=-0.15)
 
 ax.set(xlabel='Risk', ylabel='Return',
        title='Risk vs Return')
@@ -128,10 +134,8 @@ fig.savefig('images/markowitzN{}B{}P{}.png'.format(N, B, P))
 plt.show()
 
 fig, ax = plt.subplots()
-
-
-
-ax.scatter(list(range(len(objectives))), objectives, c=colors)
+#objectives.sort()
+ax.scatter(list(range(len(objectives))), objectives, c=objectives, cmap='autumn', vmin=-1, vmax=0)
 val, idx = min((val, idx) for (idx, val) in enumerate(objectives))
 print(f'{val},{idx},{solutions[idx]}')
 

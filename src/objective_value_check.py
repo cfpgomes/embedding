@@ -18,7 +18,7 @@ sigma = pd.DataFrame.from_dict(data['sigma'], orient='index').to_numpy()
 ipl_solution = np.array([1,1,0,0,0,0,1,1,0,0,1,1,0,0,0,1,1,0,1,1])
 
 # Dwave
-solution = np.array([0,1,0,1,0,1,1,1,0,0,1,1,0,0,0,1,1,0,1,0])
+solution = np.array([1,1,0,0,0,0,1,1,0,0,1,1,0,0,0,1,1,0,1,1])
 
 print("IPL:")
 print(q*np.transpose(ipl_solution).dot(sigma).dot(ipl_solution) - np.transpose(mu).dot(ipl_solution) + P * np.square(np.ones((1,20)).dot(ipl_solution) - B))

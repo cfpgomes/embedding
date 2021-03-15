@@ -18,18 +18,18 @@ s.t. card2{i in 1..n,j in 1..n}: y[i,j] <= x[j] ;
 s.t. card3{i in 1..n,j in 1..n}: y[i,j] >= x[i]+x[j]-1 ;    
     
 #objective function    
-minimize obj: sum{i in 1..n, j in 1..n} y[i,j] * sigma[i,j] * q - sum{i in 1..n} mu[i]*x[i];    
+maximize obj: sum{i in 1..n, j in 1..n} y[i,j] * sigma[i,j] * q - sum{i in 1..n} mu[i]*x[i];    
 
 solve;
-printf: "{ ""solution"": [%d", x[1] > "results/IPL_linearized_N100q0.90B50P100_solution.json";
-printf{i in 2..n}: ",%d", x[i] >> "results/IPL_linearized_N100q0.90B50P100_solution.json";
-printf: "]}" >> "results/IPL_linearized_N100q0.90B50P100_solution.json";
+printf: "{ ""solution"": [%d", x[1] > "results/IPL_max_linearized_N100q1.00B50P100_solution.json";
+printf{i in 2..n}: ",%d", x[i] >> "results/IPL_max_linearized_N100q1.00B50P100_solution.json";
+printf: "]}" >> "results/IPL_max_linearized_N100q1.00B50P100_solution.json";
 
 #data:
 data;
 
 param n := 100;
-param q := 0.9;
+param q := 1.0;
 param B := 50;
 param mu :=
 1 0.047436711484964776

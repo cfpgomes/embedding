@@ -5,12 +5,12 @@ import pandas as pd
 import os
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/outN20q1B10P100.json')
+f = open('data/outN100q1B50P100.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
 #q = data['q']               # Risk appetite
-q = 0.55
+q = 1
 B = data['B']               # Budget
 P = data['P']               # Penalization factor
 tickers = data['tickers']   # Tickers
@@ -26,7 +26,7 @@ labels = []
 file_num = 0
 
 for filename in os.listdir('results'):
-    if 'out_normalN20q0.55B10P0.900C4.000.csv' in filename:
+    if 'out_normalN100q1.00B50P10.000C4096.000.csv' in filename:
         ff = open('results/' + filename)
 
         start = filename.rfind('q')
@@ -82,7 +82,7 @@ for filename in os.listdir('results'):
         print('Average Return: {}'.format(sum(rets) / len(rets)))
         print('Average Risk: {}'.format(sum(rsks) / len(rsks)))
         file_num += 1
-    elif 'q0.55B10P100_solution.json' in filename:
+    elif 'q1.00B50P100_solution.json' in filename:
         ff = open('results/' + filename)
         best_solution = json.load(ff)["solution"]
 
@@ -110,7 +110,7 @@ for filename in os.listdir('results'):
         returns.append(portfolio_return)
         risks.append(portfolio_risk)
         labels.append(filename[start:end])
-        if 'q0.55' in filename:
+        if 'q1.00' in filename:
             objectives.append(-1)
         else:
             objectives.append(-1)
@@ -119,7 +119,8 @@ for filename in os.listdir('results'):
 fig, ax = plt.subplots()
 
 print(objectives)
-ax.scatter(risks, returns, c=objectives, marker='o', cmap='autumn', vmin=-0.4, vmax=-0.15)
+print('Length:{}'.format(len(objectives)))
+ax.scatter(risks, returns, c=objectives, marker='o', cmap='autumn', vmin=0, vmax=8)
 
 ax.set(xlabel='Risk', ylabel='Return',
        title='Risk vs Return')
@@ -128,19 +129,20 @@ ax.grid()
 # for i, label in enumerate(labels):
 #     ax.annotate(label, (risks[i], returns[i]))
 
-plt.xlim([0, 0.4])
-plt.ylim([0, 0.04])
+#plt.xlim([0, 3])
+#plt.ylim([0, 0.04])
 
 fig.savefig('images/markowitzN{}B{}P{}.png'.format(N, B, P))
 plt.show()
 
 fig, ax = plt.subplots()
 #objectives.sort()
-ax.scatter(list(range(len(objectives))), objectives, c=objectives, cmap='autumn', vmin=-1, vmax=0)
+ax.scatter(list(range(len(objectives))), objectives, c=objectives, cmap='autumn', vmin=0, vmax=8)
 val, idx = min((val, idx) for (idx, val) in enumerate(objectives))
 print(f'{val},{idx},{solutions[idx]}')
 
-plt.ylim([-10, 1000])
+#plt.ylim([-10, 2000])
+#plt.ylim([-1.5, 1.5])
 plt.xlim([-10, 1010])
 ax.set(xlabel='Index of solutions', ylabel='Objective Value',
        title='Value of solutions')

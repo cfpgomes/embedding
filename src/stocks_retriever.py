@@ -3,9 +3,9 @@ import pandas as pd
 import numpy as np
 import json
 
-N = 100
+N = 50
 q = 1
-B = 50
+B = 25
 P = 100
 
 # The first N indexes in the wikipedia table are used as tickers.

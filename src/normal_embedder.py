@@ -4,7 +4,7 @@ import networkx as nx
 import json
 
 # Step 1: Get parameters N from data
-with open('data/outN100q1B50P100.json') as f:
+with open('data/outN50q1B25P100.json') as f:
     data = json.load(f)
 
     N = int(data['N'])  # Universe size

@@ -17,7 +17,7 @@ import dwave_networkx as dnx
 # 3. Solve it.
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/outN20q1B10P100.json')
+f = open('data/outN50q1B25P100.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
@@ -35,7 +35,7 @@ print('sigma matrix:')
 print(sigma)
 
 q = 1
-P = 0.9
+P = 10
 
 # Step 2: Formulate QUBO
 Q = defaultdict(float)
@@ -69,7 +69,7 @@ print(Q)
 
 # Get sampler
 sampler = DWaveSampler()
-embedding_type = 'normal'
+embedding_type = 'clique'
 
 # Get embedding
 f = open(f'data/embedding_{embedding_type}N{N}.json')
@@ -82,7 +82,7 @@ dnx.draw_pegasus_embedding(
 plt.savefig(f'images/embedding_{embedding_type}N{N}q{q:.2f}B{B}P{P:.3f}.png')
 
 # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as Q.
-chain_strength = 4
+chain_strength = 100
 
 composite = FixedEmbeddingComposite(sampler, embedding=embedding)
 sampleset = composite.sample_qubo(

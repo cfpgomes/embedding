@@ -3,7 +3,7 @@ from dwave.embedding.pegasus import find_clique_embedding
 import json
 
 # Step 1: Get parameters N from data
-with open('data/outN20q1B10P100.json') as f:
+with open('data/outN50q1B25P100.json') as f:
     data = json.load(f)
 
     N = int(data['N'])               # Universe size

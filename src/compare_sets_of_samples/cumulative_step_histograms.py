@@ -76,7 +76,6 @@ ax2.hist(set2_samples_value, 1000, density=True, histtype='step',
          cumulative=True, label='clique')
 
 # Tidy up the figure
-fig.suptitle('Cumulative step histograms')
 ax1.grid(True)
 ax1.legend(loc='right')
 ax1.set_title('Solution Energies')
@@ -97,9 +96,12 @@ date = 'Y{:04}M{:02}D{:02}h{:02}m{:02}s{:02}'.format(
 if not os.path.exists('images/cumulative_step_histograms'):
     os.makedirs('images/cumulative_step_histograms')
 
-fig.text(0.5,0.005,'How to interpret: For every `x`, its associated `y` is the percentage of samples with a value lower than it.\nTherefore, for any `x`, the higher its `y` value, the better.', ha='center', size='xx-small')
+fig.text(0.5,0.005,'How to interpret: For every `x`, its associated `y` is the percentage of samples with a value lower than it.\nTherefore, for any `x`, the higher its `y` value, the better. Also, the earlier the plot "stops", the better.', ha='center', size='xx-small')
+
+output_name = f'N{N}B{B}q{q}P{P}W{work_id}{date}'
+fig.suptitle('Cumulative step histograms - ' + output_name)
 
 # Save as 2160p image
 plt.savefig(
-    f'images/cumulative_step_histograms/N{N}B{B}q{q}P{P}W{work_id}{date}.png', dpi=360)
+    f'images/cumulative_step_histograms/{output_name}.png', dpi=360)
 plt.show()

@@ -97,6 +97,8 @@ date = 'Y{:04}M{:02}D{:02}h{:02}m{:02}s{:02}'.format(
 if not os.path.exists('images/cumulative_step_histograms'):
     os.makedirs('images/cumulative_step_histograms')
 
+fig.text(0.5,0.005,'How to interpret: For every `x`, its associated `y` is the percentage of samples with a value lower than it.\nTherefore, for any `x`, the higher its `y` value, the better.', ha='center', size='xx-small')
+
 # Save as 2160p image
 plt.savefig(
     f'images/cumulative_step_histograms/N{N}B{B}q{q}P{P}W{work_id}{date}.png', dpi=360)

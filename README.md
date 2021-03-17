@@ -16,16 +16,32 @@ Perform an empirical study on how variables affect the results in a D-Wave syste
 - **q** - Risk appetite
 
 ### POP formulation independent variables
-- **N** - Universe size (number of assets to choose from)
+- **N** - Universe size (number of assets to choose from) - 
 - **B** - Budget (number of assets to choose)
 - **mu** - Expected return
 - **sigma** - Covariance matrix
 
 ### D-Wave system parameters
 - **Chain Strength** - Non-negative float numbers between system limits.
-- **Embedding** - Normal or Clique
+- **Embedding** - Normal or Clique, experimentar third-party e custom
 - **Shots** - Positive integers below system limit.
 - **Annealing** - Standard, Pause, Quench, or Reverse Annealing
 - **Annealing time** - Sets the duration (in microseconds) of quantum annealing time, per read.
 
-Dúvida: Ising em vez de QUBO?
+- Ising só pra eventualmente comparar
+
+#
+
+Encontrar formula para P
+
+Definir 3 datasets  reais.
+
+Como seleccionar ponto de cada execução (que tem vários shots)
+
+
+
+1º Fixar todos menos datasets q. (usar implementação default)
+
+2º Fixar Tudo menos N B (escolher melhores P q e fixar dataset real normal)
+
+3º depois o mesmo para parametros de implementação

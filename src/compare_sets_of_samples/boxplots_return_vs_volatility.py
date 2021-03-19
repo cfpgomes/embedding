@@ -23,6 +23,20 @@ with open(data_filename) as jsonfile:
     mu = pd.Series(data['mu']).to_numpy()
     sigma = pd.DataFrame.from_dict(data['sigma'], orient='index').to_numpy()
 
+classical_solution_min_filename = 'results/IPL_linearized_N20q1.00B10P100_solution.json'
+classical_solution_max_filename = 'results/IPL_linearized_max_N20q1.00B10P100_solution.json'
+
+min_solution = None
+max_solution = None
+
+with open(classical_solution_min_filename) as jsonfile:
+    data = json.load(jsonfile)
+    min_solution = data['solution']
+
+with open(classical_solution_max_filename) as jsonfile:
+    data = json.load(jsonfile)
+    max_solution = data['solution']
+
 set1_filename = "results/outnormalN20q1.00B10P100chain512.csv"
 set2_filename = "results/outcliqueN20q1.00B10P100chain512.csv"
 
@@ -101,15 +115,31 @@ for line in ax2_boxplots_dic['fliers']:
     # draw on right side
     ax2.text(x+0.15, y, f'{num}\noutliers', horizontalalignment='left')
 
+# Draw best classical value:
+min_solution_expected_return = np.transpose(mu).dot(min_solution)
+print(min_solution_expected_return)
+ax1.axhline(y=min_solution_expected_return, color='red', linestyle='-', label='classical best')
+min_solution_volatility = q*np.transpose(min_solution).dot(sigma).dot(min_solution)
+print(min_solution_volatility)
+ax2.axhline(y=min_solution_volatility, color='red', linestyle='-', label='classical best')
+
+# Draw worst classical value:
+max_solution_expected_return = np.transpose(mu).dot(max_solution)
+print(max_solution_expected_return)
+ax1.axhline(y=max_solution_expected_return, color='darkred', linestyle='-', label='classical worst')
+max_solution_volatility = q*np.transpose(max_solution).dot(sigma).dot(max_solution)
+print(max_solution_volatility)
+ax2.axhline(y=max_solution_volatility, color='darkred', linestyle='-', label='classical worst')
 
 # Tidy up the figure
 ax1.grid(True)
+ax1.legend()
 ax1.set_ylabel('Expected Return')
 ax1.set_xlabel('Embedding')
 ax2.grid(True)
+ax2.legend()
 ax2.set_ylabel('Volatility')
 ax2.set_xlabel('Embedding')
-
 
 # Get timestamp
 date_obj = datetime.now()

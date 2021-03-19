@@ -45,8 +45,8 @@ for filename in os.listdir('results'):
 
             num_occur = int(best_solution_line.split(',')[-1])
 
-            if sum(best_solution) != B:
-                continue
+            # if sum(best_solution) != B:
+            #     continue
 
             portfolio_return = 0
             portfolio_risk = 0
@@ -141,7 +141,7 @@ ax.scatter(list(range(len(objectives))), objectives, c=objectives, cmap='autumn'
 val, idx = min((val, idx) for (idx, val) in enumerate(objectives))
 print(f'{val},{idx},{solutions[idx]}')
 
-#plt.ylim([-10, 2000])
+plt.ylim([-10, 2000])
 #plt.ylim([-1.5, 1.5])
 plt.xlim([-10, 1010])
 ax.set(xlabel='Index of solutions', ylabel='Objective Value',

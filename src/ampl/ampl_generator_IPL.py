@@ -4,11 +4,11 @@ import numpy as np
 import shutil
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/outN50q1B25P100.json')
+f = open('data/outN20q1B10P100.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
-q = data['q']               # Risk appetite
+q = 2500             # Risk appetite
 B = data['B']               # Budget
 P = data['P']               # Penalization factor
 tickers = data['tickers']   # Tickers

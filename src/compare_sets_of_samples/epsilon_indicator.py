@@ -110,7 +110,7 @@ for solution in classical_solutions:
 ax2_epsilon = 0
 for solution in classical_solutions:
     tmp = float('inf')
-    for sample in set2_dominating_samples:''
+    for sample in set2_dominating_samples:
         tmp = min(tmp, max(sample['expected_return'] / solution['expected_return'],
                   sample['volatility']/solution['volatility']))
     ax2_epsilon = max(ax2_epsilon, tmp)

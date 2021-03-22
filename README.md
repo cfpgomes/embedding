@@ -30,18 +30,42 @@ Perform an empirical study on how variables affect the results in a D-Wave syste
 
 - Ising só pra eventualmente comparar
 
-#
+## Calendar
 
-Encontrar formula para P
+Weeks start on Tuesday and end on Monday.
 
-Definir 3 datasets  reais.
+- **March 23 - March 29** - P formulation and datasets, Scenario 1 - Datasets
+- **March 30 - April 5** - Scenario 2 - N and B
+- **April 6 - April 12** - Scenario 3 - Chain Strength and Embedding
+- **April 13 - April 19** - Scenario 4 - Shots and Annealing
+- **April 20 - April 26** - Scenario 5 - Annealing and Annealing Time
 
-Como seleccionar ponto de cada execução (que tem vários shots)
+- **April 27 - May 3** - Scenario 6 - ???
+- **May 4 - May 10** - Scenario 7 - ???
+
+- **May 11 - May 17** - Writing
+- **May 18 - May 24** - Writing
+- **May 25 - May 31** - Writing
+- **June 1 - June 7** - Writing
+- **June 8 - June 14** - Writing
+- **June 15 - June 21** - Writing
+- **June 22 - June 28** - Writing
+
+## Anything else
+
+Encontrar formula para P - done
+
+Definir 3 datasets  reais. 
+
+Como seleccionar ponto de cada execução (que tem vários shots) - done
 
 
 
-1º Fixar todos menos datasets q. (usar implementação default)
+1º Fixar todos menos datasets. (usar implementação default)
 
 2º Fixar Tudo menos N B (escolher melhores P q e fixar dataset real normal)
 
 3º depois o mesmo para parametros de implementação
+
+
+

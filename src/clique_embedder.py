@@ -1,5 +1,6 @@
 from dwave.system import DWaveSampler
 from dwave.embedding.pegasus import find_clique_embedding
+import dwave_networkx as dnx
 import json
 
 # Step 1: Get parameters N from data
@@ -9,10 +10,17 @@ with open('data/outN50q1B25P100.json') as f:
     N = int(data['N'])               # Universe size
 
     # Step 2: Find clique embedding
+    sampler = DWaveSampler()
+
     embedding = find_clique_embedding(
-        N, target_graph=DWaveSampler().to_networkx_graph())
+        N, target_graph=sampler.to_networkx_graph())
     print(embedding)
 
+    # Draw the embedding
+    dnx.draw_pegasus_embedding(
+        sampler.to_networkx_graph(), embedding, unused_color=None)
+    plt.savefig(f'images/embedding_cliqueN{N}.png')
+
     # Step 3: Store embedding to data.
-    with open("data/embedding_cliqueN{}.json".format(N), "w") as ff:
+    with open(f'data/embedding_cliqueN{N}.json', 'w') as ff:
         json.dump(embedding, ff)

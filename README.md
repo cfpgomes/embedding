@@ -35,7 +35,7 @@ Perform an empirical study on how variables affect the results in a D-Wave syste
 Weeks start on Tuesday and end on Monday.
 
 - **March 23 - March 29** - Experiencia Preliminar, P formulation and datasets, Scenario 1 - N
-- **March 30 - April 5** - Scenario 2 and 3 - Datasets e depois B 
+- **March 30 - April 5** - Scenario 2 and 3 - B e depois datasets
 - **April 6 - April 12** - Scenario 4 - Chain Strength
 - **April 13 - April 19** - Scenario 5 - Ver de novo embedding and Embedding
 - **April 20 - April 26** - Scenario 6 - Shots and Annealing

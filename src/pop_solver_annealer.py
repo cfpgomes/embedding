@@ -21,20 +21,17 @@ f = open('data/outN50q1B25P100.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
-#q = data['q']               # Risk appetite
-B = data['B']               # Budget
-#P = data['P']               # Penalization factor
 tickers = data['tickers']   # Tickers
 mu = pd.Series(data['mu'])
 sigma = pd.DataFrame.from_dict(data['sigma'], orient='index')
 
-#print('q B P: {} {} {}'.format(q, B, P))
 print('mu vector:')
 print(mu)
 print('sigma matrix:')
 print(sigma)
 
-q = 1
+B = int(N * 0.5)
+q_values = list(range(0,10)) 
 P = 10
 
 # Step 2: Formulate QUBO
@@ -89,4 +86,4 @@ sampleset = composite.sample_qubo(
     Q, num_reads=1000, chain_strength=chain_strength)
 dwave.inspector.show(sampleset)
 sampleset.to_pandas_dataframe().sort_values(
-        by=['energy']).to_csv(f'results/out_{embedding_type}N{N}q{q:.2f}B{B}P{P:.3f}C{chain_strength:.3f}.csv', index=False)
+    by=['energy']).to_csv(f'results/out_{embedding_type}N{N}q{q:.2f}B{B}P{P:.3f}C{chain_strength:.3f}.csv', index=False)

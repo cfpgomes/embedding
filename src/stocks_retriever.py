@@ -4,9 +4,6 @@ import numpy as np
 import json
 
 N = 50
-q = 1
-B = 25
-P = 100
 
 # The first N indexes in the wikipedia table are used as tickers.
 # TODO: Change method of choosing stocks.
@@ -46,12 +43,9 @@ print('Sigma:')
 print(sigma)
 
 # Export data to file
-with open('data/outN{}q{}B{}P{}.json'.format(N, q, B, P), 'w') as f:
+with open('data/outN{}.json'.format(N, B), 'w') as f:
     json.dump({
         'N': N,
-        'q': q,
-        'B': B,
-        'P': P,
         'tickers': tickers,
         'mu': mu.to_dict(),
         'sigma': sigma.to_dict(),

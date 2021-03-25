@@ -2,6 +2,7 @@ import json
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
+import os
 
 # To formulate QUBO
 from collections import defaultdict
@@ -20,7 +21,7 @@ def print_var(variable_name, variable):
 # 3. Solve it.
 
 # Results are stored on a specific folder
-folder_name = 'scenario2_B0.5'
+folder_name = 'scenario2_B0.5_normal_fixed_chain_strength_fixed_P_10000_shots'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
@@ -43,9 +44,20 @@ print_var('B', B)
 q_values = list(np.linspace(0, 1, num=10, endpoint=False)) + list(np.linspace(1, 10, num=9, endpoint = False)) + [10, 100]
 print_var('q_values', q_values)
 
+min_sigma = 0
+for i in range(N):
+    for j in range(i+1, N):
+        if sigma[tickers[i]][tickers[j]] < 0:
+            min_sigma += sigma[tickers[i]][tickers[j]]
+
+max_mu = 0
+for i in range(N):
+    if mu[tickers[i]] > 0:
+        max_mu += mu[tickers[i]]
+
 # Get sampler
 sampler = DWaveSampler()
-embedding_type = 'clique'
+embedding_type = 'normal'
 
 # Get embedding
 f = open(f'data/embedding_{embedding_type}N{N}.json')
@@ -53,13 +65,16 @@ embedding = json.load(f)
 print_var('embedding', embedding)
 
 # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as Q.
-chain_strength = 100
+chain_strength = 200
 
 composite = FixedEmbeddingComposite(sampler, embedding=embedding)
 
 for q in q_values:
     # Step 2: Formulate QUBO
     Q = defaultdict(float)
+
+    #P = -q * min_sigma + max_mu
+    P = 10
 
     # There are three terms in the objective function: Covariance, Return, and Budget
 
@@ -87,7 +102,9 @@ for q in q_values:
 
     # Step 3: Solve QUBO
     sampleset = composite.sample_qubo(
-        Q, num_reads=1000, chain_strength=chain_strength)
+        Q, num_reads=10000, chain_strength=chain_strength)
+
+    chain_strength = sampleset.info['embedding_context']['chain_strength']
     dwave.inspector.show(sampleset)
     sampleset.to_pandas_dataframe().sort_values(
-        by=['energy']).to_csv(f'results/{folder_name}/out_{embedding_type}N{N}q{q:.2f}B{B}P{P:.3f}C{chain_strength:.3f}.csv', index=False)
+        by=['energy']).to_csv(f'results/{folder_name}/out_{embedding_type}N{N}q{q:.2f}B{B}P{P:.3f}C{chain_strength}.csv', index=False)

@@ -11,20 +11,32 @@ work_id = 0
 N = None
 q = 1
 B = None
-P = 100
 mu = None
 sigma = None
 
-data_filename = 'data/outN20q1B10P100.json'
+data_filename = 'data/out_N50_p1mo_i1d.json'
 with open(data_filename) as jsonfile:
     data = json.load(jsonfile)
     N = data['N']               # Universe size
-    B = data['B']               # Budget
+    B = int(N*0.2)              # Budget
     mu = pd.Series(data['mu']).to_numpy()
     sigma = pd.DataFrame.from_dict(data['sigma'], orient='index').to_numpy()
+    
+min_sigma = 0
+for i in range(N):
+    for j in range(i+1, N):
+        if sigma[i][j] < 0:
+            min_sigma += sigma[i][j]
 
-classical_solution_min_filename = 'results/IPL_linearized_N20q1.00B10P100_solution.json'
-classical_solution_max_filename = 'results/IPL_linearized_max_N20q1.00B10P100_solution.json'
+max_mu = 0
+for i in range(N):
+    if mu[i] > 0:
+        max_mu += mu[i]
+
+P = -q * min_sigma + max_mu
+
+classical_solution_min_filename = 'results/scenario2_B0.2_classical/IPL_linearized_N50q1.00B10.json'
+classical_solution_max_filename = 'results/scenario2_B0.2_classical/IPL_linearized_N50q1.00B10.json'
 
 min_solution = None
 max_solution = None
@@ -37,8 +49,8 @@ with open(classical_solution_max_filename) as jsonfile:
     data = json.load(jsonfile)
     max_solution = data['solution']
 
-set1_filename = "results/outnormalN20q1.00B10P100chain512.csv"
-set2_filename = "results/outcliqueN20q1.00B10P100chain512.csv"
+set1_filename = "results/scenario2_B0.2_normal_fixed_chain_strength/out_normalN50q1.00B10P0.085C100.csv"
+set2_filename = "results/scenario2_B0.2_normal_fixed_chain_strength/out_normalN50q1.00B10P10.000C100.csv"
 
 set1_samples_energy = []
 set2_samples_energy = []
@@ -87,30 +99,30 @@ print(vmin_value, vmax_value)
 
 ax1.scatter(list(range(len(set1_samples_energy))),
             set1_samples_energy, c='red', marker='|')
-ax1.set_ylim(vmin_energy, vmax_energy)
+# ax1.set_ylim(vmin_energy, vmax_energy)
 
 ax2.scatter(list(range(len(set1_samples_value))),
             set1_samples_value, c='red', marker='|')
-ax2.set_ylim(vmin_value, vmax_value)
+# ax2.set_ylim(vmin_value, vmax_value)
 
 ax3.scatter(list(range(len(set2_samples_energy))),
             set2_samples_energy, c='blue', marker='|')
-ax3.set_ylim(vmin_energy, vmax_energy)
+# ax3.set_ylim(vmin_energy, vmax_energy)
 
 ax4.scatter(list(range(len(set2_samples_value))),
             set2_samples_value, c='blue', marker='|')
-ax4.set_ylim(vmin_value, vmax_value)
+# ax4.set_ylim(vmin_value, vmax_value)
 
 
 # Tidy up the figure
 ax1.grid(True)
 ax1.set_title('Solution Energy')
-ax1.set_ylabel('Normal Embedding')
+ax1.set_ylabel('P=0.085')
 ax2.grid(True)
 ax2.set_title('Solution Objective Value')
 ax3.grid(True)
 ax3.set_xlabel('Solution Index')
-ax3.set_ylabel('Clique Embedding')
+ax3.set_ylabel('P=10')
 ax4.grid()
 ax4.set_xlabel('Solution Index')
 

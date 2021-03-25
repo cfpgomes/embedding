@@ -27,30 +27,54 @@ def get_volatility(sol, N, B, sigma):
 work_id = 0
 N = None
 q = 1
-B = None
-P = 100
 mu = None
 sigma = None
 
-data_filename = 'data/outN20q1B10P100.json'
+data_filename = 'data/out_N50_p1mo_i1d.json'
 with open(data_filename) as jsonfile:
     data = json.load(jsonfile)
     N = data['N']               # Universe size
-    B = data['B']               # Budget
     mu = pd.Series(data['mu']).to_numpy()
     sigma = pd.DataFrame.from_dict(data['sigma'], orient='index').to_numpy()
 
-classical_solutions_foldername = 'results/N20B10'
-classical_solutions = []
 
-for filename in os.listdir(classical_solutions_foldername):
-    with open(classical_solutions_foldername+'/'+filename) as jsonfile:
-        data = json.load(jsonfile)
-        classical_solutions.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N, B, mu, sigma), 'expected_return': get_expected_return(
-            data['solution'], N, B, mu), 'volatility': get_volatility(data['solution'], N, B, sigma), 'equals_budget': equals_budget(data['solution'], N, B)})
+min_sigma = 0
+for i in range(N):
+    for j in range(i+1, N):
+        if sigma[i][j] < 0:
+            min_sigma += sigma[i][j]
 
-set1_foldername = 'results/outnormalN20B10'
-set2_foldername = 'results/outcliqueN20B10'
+max_mu = 0
+for i in range(N):
+    if mu[i] > 0:
+        max_mu += mu[i]
+
+P = -q * min_sigma + max_mu
+
+B1 = int(N*0.5)
+classical_solutions1_foldername = 'results/scenario2_B0.5_classical'
+classical_solutions1 = []
+
+B2 = int(N*0.5)
+classical_solutions2_foldername = 'results/scenario2_B0.5_classical'
+classical_solutions2 = []
+
+for filename in os.listdir(classical_solutions1_foldername):
+    if '.json' in filename:
+        with open(classical_solutions1_foldername+'/'+filename) as jsonfile:
+            data = json.load(jsonfile)
+            classical_solutions1.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N, B1, mu, sigma), 'expected_return': get_expected_return(
+                data['solution'], N, B1, mu), 'volatility': get_volatility(data['solution'], N, B1, sigma), 'equals_budget': equals_budget(data['solution'], N, B1)})
+
+for filename in os.listdir(classical_solutions2_foldername):
+    if '.json' in filename:
+        with open(classical_solutions2_foldername+'/'+filename) as jsonfile:
+            data = json.load(jsonfile)
+            classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N, B2, mu, sigma), 'expected_return': get_expected_return(
+                data['solution'], N, B2, mu), 'volatility': get_volatility(data['solution'], N, B2, sigma), 'equals_budget': equals_budget(data['solution'], N, B2)})
+
+set1_foldername = 'results/scenario2_B0.5_normal_fixed_chain_strength_fixed_P_try2'
+set2_foldername = 'results/scenario2_B0.5_normal_fixed_chain_strength_fixed_P_10000_shots'
 
 set1_samples = []
 set2_samples = []
@@ -62,8 +86,8 @@ for filename in os.listdir(set1_foldername):
         for row in reader:
             sol = np.array(list(map(float, row[:-3])))
             for _ in range(int(row[-1])):
-                set1_samples.append({'sol': sol, 'objective': get_objective_value(sol, N, B, mu, sigma), 'expected_return': get_expected_return(
-                    sol, N, B, mu), 'volatility': get_volatility(sol, N, B, sigma), 'equals_budget': equals_budget(sol, N, B)})
+                set1_samples.append({'sol': sol, 'objective': get_objective_value(sol, N, B1, mu, sigma), 'expected_return': get_expected_return(
+                    sol, N, B1, mu), 'volatility': get_volatility(sol, N, B1, sigma), 'equals_budget': equals_budget(sol, N, B1)})
 
 for filename in os.listdir(set2_foldername):
     with open(set2_foldername+'/'+filename) as csvfile:
@@ -72,8 +96,8 @@ for filename in os.listdir(set2_foldername):
         for row in reader:
             sol = np.array(list(map(float, row[:-3])))
             for _ in range(int(row[-1])):
-                set2_samples.append({'sol': sol, 'objective': get_objective_value(sol, N, B, mu, sigma), 'expected_return': get_expected_return(
-                    sol, N, B, mu), 'volatility': get_volatility(sol, N, B, sigma), 'equals_budget': equals_budget(sol, N, B)})
+                set2_samples.append({'sol': sol, 'objective': get_objective_value(sol, N, B2, mu, sigma), 'expected_return': get_expected_return(
+                    sol, N, B2, mu), 'volatility': get_volatility(sol, N, B2, sigma), 'equals_budget': equals_budget(sol, N, B2)})
 
 # 2 columns, 9 per 6 inches figure
 fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(9, 6))
@@ -83,24 +107,30 @@ set1_dominating_samples = list(
 set2_dominating_samples = list(
     filter(lambda x: x['equals_budget'], set2_samples))
 
+print(len(set1_dominating_samples))
+print(len(set2_dominating_samples))
+
 set1_dominating_samples = list(filter(lambda x: not any(
     (x['expected_return'] < y['expected_return'] and x['volatility'] > y['volatility']) for y in set1_dominating_samples), set1_dominating_samples))
 set2_dominating_samples = list(filter(lambda x: not any(
     (x['expected_return'] < y['expected_return'] and x['volatility'] > y['volatility']) for y in set2_dominating_samples), set2_dominating_samples))
 
+print(len(set1_dominating_samples))
+print(len(set2_dominating_samples))
+
 ax1.scatter(list(map(lambda x: x['volatility'], set1_dominating_samples)), list(
     map(lambda x: x['expected_return'], set1_dominating_samples)), color='red', label='normal')
-ax1.scatter(list(map(lambda x: x['volatility'], classical_solutions)), list(
-    map(lambda x: x['expected_return'], classical_solutions)), color='blue', label='classical')
+ax1.scatter(list(map(lambda x: x['volatility'], classical_solutions1)), list(
+    map(lambda x: x['expected_return'], classical_solutions1)), color='blue', label='classical')
 
 ax2.scatter(list(map(lambda x: x['volatility'], set2_dominating_samples)), list(
     map(lambda x: x['expected_return'], set2_dominating_samples)), color='red', label='clique')
-ax2.scatter(list(map(lambda x: x['volatility'], classical_solutions)), list(
-    map(lambda x: x['expected_return'], classical_solutions)), color='blue', label='classical')
+ax2.scatter(list(map(lambda x: x['volatility'], classical_solutions2)), list(
+    map(lambda x: x['expected_return'], classical_solutions2)), color='blue', label='classical')
 
 
 ax1_epsilon = 0
-for solution in classical_solutions:
+for solution in classical_solutions1:
     tmp = float('inf')
     for sample in set1_dominating_samples:
         tmp = min(tmp, max(sample['expected_return'] / solution['expected_return'],
@@ -108,7 +138,7 @@ for solution in classical_solutions:
     ax1_epsilon = max(ax1_epsilon, tmp)
 
 ax2_epsilon = 0
-for solution in classical_solutions:
+for solution in classical_solutions2:
     tmp = float('inf')
     for sample in set2_dominating_samples:
         tmp = min(tmp, max(sample['expected_return'] / solution['expected_return'],
@@ -128,14 +158,14 @@ ax1.grid(True)
 ax1.set_xlim(0, right)
 ax1.set_ylim(0, top)
 ax1.legend()
-ax1.set_title(f'ε = {ax1_epsilon}')
+ax1.set_title(f'{set1_foldername}\nε = {ax1_epsilon}')
 ax1.set_ylabel('Expected Return')
 ax1.set_xlabel('Volatility')
 ax2.grid(True)
 ax2.set_xlim(0, right)
 ax2.set_ylim(0, top)
 ax2.legend()
-ax2.set_title(f'ε = {ax2_epsilon}')
+ax2.set_title(f'{set2_foldername}\nε = {ax2_epsilon}')
 ax2.set_ylabel('Expected Return')
 ax2.set_xlabel('Volatility')
 
@@ -153,7 +183,7 @@ if not os.path.exists('images/' + folder_name):
 fig.text(0.5, 0.005, 'How to interpret: Blue markers are part of the efficient frontier. The epsilon indicator is the minimum factor by which the red set has to be multiplied in the objective so as to weakly dominate the blue set.\nHence, the closer to 1 is the epsilon indicator, the better the red set.',
          ha='center', size='xx-small')
 
-output_name = f'N{N}B{B}q{q}P{P}W{work_id}{date}'
+output_name = f'N{N}q{q}P{P}W{work_id}{date}'
 fig.suptitle('Epsilon Indicator - ' + output_name)
 
 # Save as 2160p image

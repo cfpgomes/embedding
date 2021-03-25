@@ -5,17 +5,29 @@ import pandas as pd
 import os
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/outN100q1B50P100.json')
+f = open('data/out_N50_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
 #q = data['q']               # Risk appetite
 q = 1
-B = data['B']               # Budget
-P = data['P']               # Penalization factor
+B = int(N*0.6)
 tickers = data['tickers']   # Tickers
 mu = pd.Series(data['mu'])
 sigma = pd.DataFrame.from_dict(data['sigma'], orient='index')
+
+min_sigma = 0
+for i in range(N):
+    for j in range(i+1, N):
+        if sigma[tickers[i]][tickers[j]] < 0:
+            min_sigma += sigma[tickers[i]][tickers[j]]
+
+max_mu = 0
+for i in range(N):
+    if mu[tickers[i]] > 0:
+        max_mu += mu[tickers[i]]
+
+P = -q * min_sigma + max_mu
 
 returns = []
 colors = []
@@ -25,9 +37,9 @@ risks = []
 labels = []
 file_num = 0
 
-for filename in os.listdir('results'):
-    if 'out_normalN100q1.00B50P10.000C4096.000.csv' in filename:
-        ff = open('results/' + filename)
+for filename in os.listdir('results/scenario2_B0.8_classical')+os.listdir('results/scenario2_B0.8_normal_fixed_chain_strength'):
+    if '.csv' in filename:
+        ff = open('results/scenario2_B0.8_normal_fixed_chain_strength/' + filename)
 
         start = filename.rfind('q')
         end = filename.rfind('B')
@@ -45,8 +57,8 @@ for filename in os.listdir('results'):
 
             num_occur = int(best_solution_line.split(',')[-1])
 
-            # if sum(best_solution) != B:
-            #     continue
+            if sum(best_solution) != B:
+                continue
 
             portfolio_return = 0
             portfolio_risk = 0
@@ -78,12 +90,9 @@ for filename in os.listdir('results'):
                 else: 
                     colors.append('#ff0000') # red
             #break # Remove comment to show best solution only
-
-        print('Average Return: {}'.format(sum(rets) / len(rets)))
-        print('Average Risk: {}'.format(sum(rsks) / len(rsks)))
         file_num += 1
-    elif 'q1.00B50P100_solution.json' in filename:
-        ff = open('results/' + filename)
+    elif '.json' in filename:
+        ff = open('results/scenario2_B0.8_classical/' + filename)
         best_solution = json.load(ff)["solution"]
 
         start = filename.find('q')
@@ -141,9 +150,9 @@ ax.scatter(list(range(len(objectives))), objectives, c=objectives, cmap='autumn'
 val, idx = min((val, idx) for (idx, val) in enumerate(objectives))
 print(f'{val},{idx},{solutions[idx]}')
 
-plt.ylim([-10, 2000])
+#plt.ylim([-10, 2000])
 #plt.ylim([-1.5, 1.5])
-plt.xlim([-10, 1010])
+#plt.xlim([-10, 1010])
 ax.set(xlabel='Index of solutions', ylabel='Objective Value',
        title='Value of solutions')
 ax.grid()

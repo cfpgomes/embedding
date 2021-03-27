@@ -73,8 +73,8 @@ for filename in os.listdir(classical_solutions2_foldername):
             classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N, B2, mu, sigma), 'expected_return': get_expected_return(
                 data['solution'], N, B2, mu), 'volatility': get_volatility(data['solution'], N, B2, sigma), 'equals_budget': equals_budget(data['solution'], N, B2)})
 
-set1_foldername = 'results/scenario2_B0.5_normal_fixed_chain_strength_fixed_P_try2'
-set2_foldername = 'results/scenario2_B0.5_normal_fixed_chain_strength_fixed_P_10000_shots'
+set1_foldername = 'results/scenario2_B0.5_normal_fixed_chain_strength_fixed_P_10000_shots'
+set2_foldername = 'results/scenario2_B0.5_clique_fixed_chain_strength_fixed_P_10000_shots'
 
 set1_samples = []
 set2_samples = []
@@ -130,19 +130,21 @@ ax2.scatter(list(map(lambda x: x['volatility'], classical_solutions2)), list(
 
 
 ax1_epsilon = 0
-for solution in classical_solutions1:
+for solution in set1_dominating_samples:
     tmp = float('inf')
-    for sample in set1_dominating_samples:
-        tmp = min(tmp, max(sample['expected_return'] / solution['expected_return'],
-                  sample['volatility']/solution['volatility']))
+    for sample in classical_solutions1:
+        obj_ret_div = sample['expected_return'] / solution['expected_return']
+        obj_vol_div = sample['volatility'] / solution['volatility']
+        tmp = min(tmp, max(obj_ret_div, obj_vol_div))
     ax1_epsilon = max(ax1_epsilon, tmp)
 
 ax2_epsilon = 0
-for solution in classical_solutions2:
+for solution in set2_dominating_samples:
     tmp = float('inf')
-    for sample in set2_dominating_samples:
-        tmp = min(tmp, max(sample['expected_return'] / solution['expected_return'],
-                  sample['volatility']/solution['volatility']))
+    for sample in classical_solutions2:
+        obj_ret_div = sample['expected_return'] / solution['expected_return']
+        obj_vol_div = sample['volatility'] / solution['volatility']
+        tmp = min(tmp, max(obj_ret_div, obj_vol_div))
     ax2_epsilon = max(ax2_epsilon, tmp)
 
 # Tidy up the figure
@@ -158,14 +160,14 @@ ax1.grid(True)
 ax1.set_xlim(0, right)
 ax1.set_ylim(0, top)
 ax1.legend()
-ax1.set_title(f'{set1_foldername}\nε = {ax1_epsilon}')
+ax1.set_title(f'{set1_foldername}\nε = {ax1_epsilon}', size='xx-small')
 ax1.set_ylabel('Expected Return')
 ax1.set_xlabel('Volatility')
 ax2.grid(True)
 ax2.set_xlim(0, right)
 ax2.set_ylim(0, top)
 ax2.legend()
-ax2.set_title(f'{set2_foldername}\nε = {ax2_epsilon}')
+ax2.set_title(f'{set2_foldername}\nε = {ax2_epsilon}', size='xx-small')
 ax2.set_ylabel('Expected Return')
 ax2.set_xlabel('Volatility')
 

@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDER_NAME="scenario2_B0.2_classical"
+FOLDER_NAME="scenario2_B0.5_classical"
 
 mkdir -p "src/lp/"$FOLDER_NAME""
 

@@ -8,7 +8,7 @@ data = json.load(f)
 
 N = data['N']               # Universe size
 
-folder_name = 'results/scenario2_B0.2_classical'
+folder_name = 'results/scenario2_B0.5_classical'
 
 for filename in os.listdir(folder_name):
     if '.lp.out' in filename:

@@ -21,7 +21,7 @@ def print_var(variable_name, variable):
 # 3. Solve it.
 
 # Results are stored on a specific folder
-folder_name = 'scenario2_B0.5_normal_fixed_chain_strength_fixed_P_10000_shots'
+folder_name = 'scenario2_B0.5_clique_fixed_chain_strength_fixed_P_10000_shots'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
@@ -57,7 +57,7 @@ for i in range(N):
 
 # Get sampler
 sampler = DWaveSampler()
-embedding_type = 'normal'
+embedding_type = 'clique'
 
 # Get embedding
 f = open(f'data/embedding_{embedding_type}N{N}.json')

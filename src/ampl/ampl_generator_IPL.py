@@ -5,7 +5,7 @@ import shutil
 import os
 
 # Results are stored on a specific folder
-folder_name = 'scenario1_N8_classical'
+folder_name = 'scenario1_N64_classical'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
@@ -14,7 +14,7 @@ if not os.path.exists('src/ampl/' + folder_name):
     os.makedirs('src/ampl/' + folder_name)
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/out_diversified_N8_p1mo_i1d.json')
+f = open('data/out_diversified_N64_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
@@ -38,7 +38,7 @@ for i in range(N):
 print('q maximo calculado:')
 print(int(-max_mu/min_sigma)+1)
 
-q_values = list(np.linspace(10.44, 10.56, num=9, endpoint=False))
+q_values = list(np.linspace(7, 8, num=10, endpoint=False))
 
 for q in q_values:
     print('q usado:')

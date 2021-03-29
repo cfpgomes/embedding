@@ -2,10 +2,11 @@ from dwave.system import DWaveSampler
 from minorminer import find_embedding
 import networkx as nx
 import dwave_networkx as dnx
+import matplotlib.pyplot as plt
 import json
 
 # Step 1: Get parameters N from data
-with open('data/outN50q1B25P100.json') as f:
+with open('data/out_diversified_N64_p1mo_i1d.json') as f:
     data = json.load(f)
 
     N = int(data['N'])  # Universe size

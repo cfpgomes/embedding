@@ -5,7 +5,7 @@ import shutil
 import os
 
 # Results are stored on a specific folder
-folder_name = 'scenario2_B0.2_classical'
+folder_name = 'scenario1_N8_classical'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
@@ -14,11 +14,11 @@ if not os.path.exists('src/ampl/' + folder_name):
     os.makedirs('src/ampl/' + folder_name)
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/out_N50_p1mo_i1d.json')
+f = open('data/out_diversified_N8_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
-B = int(N * 0.2)            # Budget
+B = int(N * 0.5)            # Budget
 tickers = data['tickers']   # Tickers
 print(tickers)
 mu = pd.Series(data['mu'])
@@ -38,7 +38,7 @@ for i in range(N):
 print('q maximo calculado:')
 print(int(-max_mu/min_sigma)+1)
 
-q_values = list(np.linspace(0, 1, num=10, endpoint=False)) + list(np.linspace(1, 10, num=9, endpoint=False)) + [10, 100]
+q_values = list(np.linspace(10.44, 10.56, num=9, endpoint=False))
 
 for q in q_values:
     print('q usado:')

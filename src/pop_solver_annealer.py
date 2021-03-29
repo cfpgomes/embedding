@@ -1,7 +1,6 @@
 import json
 import pandas as pd
 import numpy as np
-import matplotlib.pyplot as plt
 import os
 
 # To formulate QUBO
@@ -12,6 +11,8 @@ from dwave.system import DWaveSampler, FixedEmbeddingComposite
 import dwave.inspector
 
 # To print variables:
+
+
 def print_var(variable_name, variable):
     print(f'{variable_name}:\n{variable}')
 
@@ -20,14 +21,15 @@ def print_var(variable_name, variable):
 # 2. Formulate QUBO
 # 3. Solve it.
 
+
 # Results are stored on a specific folder
-folder_name = 'scenario2_B0.5_clique_fixed_chain_strength_fixed_P_10000_shots'
+folder_name = 'scenario1_N64_annealer'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/out_N50_p1mo_i1d.json')
+f = open('data/out_diversified_N64_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
@@ -41,7 +43,7 @@ print_var('sigma', sigma)
 B = int(N * 0.5)
 print_var('B', B)
 
-q_values = list(np.linspace(0, 1, num=10, endpoint=False)) + list(np.linspace(1, 10, num=9, endpoint = False)) + [10, 100]
+q_values = [0, 0.2, 0.4, 0.6, 2, 5, 6, 7, 8, 10, 100, 500]
 print_var('q_values', q_values)
 
 min_sigma = 0
@@ -57,7 +59,7 @@ for i in range(N):
 
 # Get sampler
 sampler = DWaveSampler()
-embedding_type = 'clique'
+embedding_type = 'normal'
 
 # Get embedding
 f = open(f'data/embedding_{embedding_type}N{N}.json')
@@ -65,7 +67,7 @@ embedding = json.load(f)
 print_var('embedding', embedding)
 
 # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as Q.
-chain_strength = 200
+#chain_strength = 200
 
 composite = FixedEmbeddingComposite(sampler, embedding=embedding)
 
@@ -101,8 +103,7 @@ for q in q_values:
     print_var('Q', Q)
 
     # Step 3: Solve QUBO
-    sampleset = composite.sample_qubo(
-        Q, num_reads=10000, chain_strength=chain_strength)
+    sampleset = composite.sample_qubo(Q, num_reads=1000)
 
     chain_strength = sampleset.info['embedding_context']['chain_strength']
     dwave.inspector.show(sampleset)

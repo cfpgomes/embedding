@@ -4,7 +4,7 @@ import numpy as np
 import json
 from datetime import datetime
 
-N = 50
+N = 64
 
 # The first N indexes in the wikipedia table are used as tickers.
 # TODO: Change method of choosing stocks.
@@ -16,7 +16,7 @@ print(table[lambda x: x['GICS Sector'] == 'Communication Services'])
 
 tickers = None
 
-dataset_type = 'weakly_correlated'
+dataset_type = 'diversified'
 
 if dataset_type == 'alphabetical':
     tickers = list(table['Symbol'].sort_values())[:N]
@@ -85,6 +85,9 @@ data = data.dropna().pct_change().dropna()
 print('Data:')
 print(data)
 
+print('Tickers:')
+print(list(data.columns))
+
 # Mu is monthly expected return
 mu = data.mean(0)
 print('Mu:')
@@ -95,22 +98,20 @@ sigma = data.cov(0)
 print('Sigma:')
 print(sigma)
 
-sigma_sum = sigma.to_numpy().sum()
-print(f'{dataset_type}:{sigma_sum}')
 
-# # Get timestamp
-# date_obj = datetime.now()
-# date = 'Y{:04}M{:02}D{:02}h{:02}m{:02}s{:02}'.format(
-#     date_obj.year, date_obj.month, date_obj.day, date_obj.hour, date_obj.minute, date_obj.second)
+# Get timestamp
+date_obj = datetime.now()
+date = 'Y{:04}M{:02}D{:02}h{:02}m{:02}s{:02}'.format(
+    date_obj.year, date_obj.month, date_obj.day, date_obj.hour, date_obj.minute, date_obj.second)
 
-# # Export data to file
-# with open(f'data/out_{dataset_type}_N{N}_p{period}_i{interval}.json', 'w') as f:
-#     json.dump({
-#         'N': N,
-#         'period': period,
-#         'interval': interval,
-#         'tickers': tickers,
-#         'date': date,
-#         'mu': mu.to_dict(),
-#         'sigma': sigma.to_dict(),
-#     }, fp=f, indent=4)
+# Export data to file
+with open(f'data/out_{dataset_type}_N{N}_p{period}_i{interval}.json', 'w') as f:
+    json.dump({
+        'N': N,
+        'period': period,
+        'interval': interval,
+        'tickers': list(data.columns),
+        'date': date,
+        'mu': mu.to_dict(),
+        'sigma': sigma.to_dict(),
+    }, fp=f, indent=4)

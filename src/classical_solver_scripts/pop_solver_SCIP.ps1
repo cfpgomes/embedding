@@ -1,3 +1,3 @@
-$FOLDER_NAME = "scenario2_B0.5_classical"
-
-Get-ChildItem -Path src\lp\$FOLDER_NAME | ForEach-Object {scip -f $_.FullName -l results\"$FOLDER_NAME"\$_.out}
+$FOLDER_NAME = "scenario1_N8_classical"
+$FOLDER_NAME
+Get-ChildItem -Path src\lp\$FOLDER_NAME | ForEach-Object -Parallel {scip -f $_.FullName -l results\$($using:FOLDER_NAME)\$($_.Name).out}

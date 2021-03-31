@@ -43,7 +43,7 @@ print_var('sigma', sigma)
 B = int(N * 0.5)
 print_var('B', B)
 
-q_values = [0, 0.2, 0.4, 0.6, 2, 5, 6, 7, 8, 10, 100, 500]
+q_values = [1.1, 1.3, 1.5]
 print_var('q_values', q_values)
 
 min_sigma = 0
@@ -67,7 +67,7 @@ embedding = json.load(f)
 print_var('embedding', embedding)
 
 # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as Q.
-#chain_strength = 200
+chain_strength = 200
 
 composite = FixedEmbeddingComposite(sampler, embedding=embedding)
 
@@ -75,8 +75,7 @@ for q in q_values:
     # Step 2: Formulate QUBO
     Q = defaultdict(float)
 
-    #P = -q * min_sigma + max_mu
-    P = 10
+    P = -q * min_sigma + max_mu
 
     # There are three terms in the objective function: Covariance, Return, and Budget
 

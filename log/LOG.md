@@ -54,3 +54,6 @@ However, during those executions, dwave's problem inspector warned that the chai
 
 ## Scenario B1
 
+Looking at the percent of chain breaks in scenario A1, we have the following boxplots:
+
+Fazer

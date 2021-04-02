@@ -31,7 +31,7 @@ B = None
 mu = None
 sigma = None
 
-data_filename = 'data/out_diversified_N64_p1mo_i1d.json'
+data_filename = 'data/out_diversified_N16_p1mo_i1d.json'
 with open(data_filename) as jsonfile:
     data = json.load(jsonfile)
     N = data['N']               # Universe size
@@ -55,7 +55,7 @@ for i in range(N):
 
 P = -q * min_sigma + max_mu
 
-classical_solutions_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions_foldername = 'results/scenarioA1_N16_classical'
 classical_solutions = []
 
 for filename in os.listdir(classical_solutions_foldername):
@@ -65,8 +65,8 @@ for filename in os.listdir(classical_solutions_foldername):
             classical_solutions.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N, B, mu, sigma), 'expected_return': get_expected_return(
                 data['solution'], N, B, mu), 'volatility': get_volatility(data['solution'], N, B, sigma), 'equals_budget': equals_budget(data['solution'], N, B)})
 
-set1_foldername = 'results/scenarioB1_N64_Pformulated_Cformulated_annealer'
-set2_foldername = 'results/scenarioB1_N64_Pformulated_Cformulated_FIXED_annealer'
+set1_foldername = 'results/scenarioA1_N16_Pformulated_annealer'
+set2_foldername = 'results/scenarioB1_N16_Pformulated_Cformulated0.125_annealer'
 
 set1_samples = []
 set2_samples = []
@@ -182,19 +182,19 @@ bar1_names = ['Valid', 'Invalid', 'Repeated','Repeated Valids']
 
 bar2_names = ['Average Expected Return', 'Average Volatility', 'Average Expected Return of Valid', 'Average Volatility of Valids', 'Epsilon Indicator']
 
-ax1.barh(bar1_names, [set1_num_valid, set1_num_invalid, set1_num_repeated, set1_num_repeated_valid], align='edge', height=0.4, label='formulated', color='red')
+ax1.barh(bar1_names, [set1_num_valid, set1_num_invalid, set1_num_repeated, set1_num_repeated_valid], align='edge', height=0.4, label='default', color='red')
 for i, v in enumerate([set1_num_valid, set1_num_invalid, set1_num_repeated, set1_num_repeated_valid]):
     ax1.text(v, i+0.2, f'{v:.3f}', va='center')
 
-ax1.barh(bar1_names, [set2_num_valid, set2_num_invalid, set2_num_repeated, set2_num_repeated_valid], align='edge', height=-0.4, label='CORRIGIDO', color='blue')
+ax1.barh(bar1_names, [set2_num_valid, set2_num_invalid, set2_num_repeated, set2_num_repeated_valid], align='edge', height=-0.4, label='formulated', color='blue')
 for i, v in enumerate([set2_num_valid, set2_num_invalid, set2_num_repeated, set2_num_repeated_valid]):
     ax1.text(v, i-0.2, f'{v:.3f}', va='center')
 
-ax2.barh(bar2_names, [set1_average_expected_return, set1_average_volatility, set1_average_expected_return_valid, set1_average_volatility_valid, set1_epsilon], align='edge', height=0.4, label='formulated', color='red')
+ax2.barh(bar2_names, [set1_average_expected_return, set1_average_volatility, set1_average_expected_return_valid, set1_average_volatility_valid, set1_epsilon], align='edge', height=0.4, label='default', color='red')
 for i, v in enumerate([set1_average_expected_return, set1_average_volatility, set1_average_expected_return_valid, set1_average_volatility_valid, set1_epsilon]):
     ax2.text(v, i+0.2, f'{v:.3f}', va='center')
 
-ax2.barh(bar2_names, [set2_average_expected_return, set2_average_volatility, set2_average_expected_return_valid, set2_average_volatility_valid, set2_epsilon], align='edge', height=-0.4, label='CORRIGIDO', color='blue')
+ax2.barh(bar2_names, [set2_average_expected_return, set2_average_volatility, set2_average_expected_return_valid, set2_average_volatility_valid, set2_epsilon], align='edge', height=-0.4, label='formulated', color='blue')
 for i, v in enumerate([set2_average_expected_return, set2_average_volatility, set2_average_expected_return_valid, set2_average_volatility_valid, set2_epsilon]):
     ax2.text(v, i-0.2, f'{v:.3f}', va='center')
 

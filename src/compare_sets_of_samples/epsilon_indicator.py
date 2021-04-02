@@ -33,8 +33,8 @@ mu2 = None
 sigma1 = None
 sigma2 = None
 
-data1_filename = 'data/out_diversified_N64_p1mo_i1d.json'
-data2_filename = 'data/out_diversified_N64_p1mo_i1d.json'
+data1_filename = 'data/out_diversified_N16_p1mo_i1d.json'
+data2_filename = 'data/out_diversified_N16_p1mo_i1d.json'
 
 with open(data1_filename) as jsonfile:
     data = json.load(jsonfile)
@@ -81,11 +81,11 @@ for i in range(N2):
 P2 = -q * min_sigma2 + max_mu2
 
 B1 = int(N1*0.5)
-classical_solutions1_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions1_foldername = 'results/scenarioA1_N16_classical'
 classical_solutions1 = []
 
 B2 = int(N2*0.5)
-classical_solutions2_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions2_foldername = 'results/scenarioA1_N16_classical'
 classical_solutions2 = []
 
 for filename in os.listdir(classical_solutions1_foldername):
@@ -102,8 +102,8 @@ for filename in os.listdir(classical_solutions2_foldername):
             classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N2, B2, mu2, sigma2, P2), 'expected_return': get_expected_return(
                 data['solution'], N2, B2, mu2), 'volatility': get_volatility(data['solution'], N2, B2, sigma2), 'equals_budget': equals_budget(data['solution'], N2, B2)})
 
-set1_foldername = 'results/scenarioB1_N64_Pformulated_Cformulated_annealer'
-set2_foldername = 'results/scenarioB1_N64_Pformulated_Cformulated_FIXED_annealer'
+set1_foldername = 'results/scenarioA1_N16_Pformulated_annealer'
+set2_foldername = 'results/scenarioB1_N16_Pformulated_Cformulated0.375_annealer'
 
 set1_samples = []
 set2_samples = []

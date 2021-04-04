@@ -14,15 +14,15 @@
 
 ## Actual order of scenarios
 
-| Scenarios | Parameters     | Week                     |
-| --------- | -------------- | ------------------------ |
-| **A1**    | **N**          | **March 23 - March 29** |
-| B1        | Chain Strength | March 30 - April 5       |
-| A2        | B              | March 30 - April 5       |
-| A3        | Datasets       | April 6 - April 12       |
-| B2        | Embedding      | April 13 - April 19      |
-| B3        | Shots          | April 20 - April 26      |
-| B4        | Annealing      | April 27 - May 3         |
+| Scenarios | Parameters          | Week                     |
+| --------- | ------------------- | ------------------------ |
+| **A1**    | **N**               | **March 23 - March 29** |
+| **B1**    | **Chain Strength** | **March 30 - April 5**   |
+| A2        | B                   | March 30 - April 5       |
+| A3        | Datasets            | April 6 - April 12       |
+| B2        | Embedding           | April 13 - April 19      |
+| B3        | Shots               | April 20 - April 26      |
+| B4        | Annealing           | April 27 - May 3         |
 
 ## Sidenotes to research about
 - Scenario A1 epsilon values appear to follow a linear trend: `y = (x-8) * 0.0142227624 + 1`
@@ -34,7 +34,7 @@ We started by experimenting several values of `N`, in order to find the maximum 
 
 The `N` values are: 8, 16, 32, and 64. P was calculated as `P = -q * min_sigma + max_mu`
 
-For this scenario, we used the "diversified" dataset and 1000 shots per execution. The q values are listed in the following table:
+For this scenario, we used the "diversified" dataset and 1000 shots per execution. The `q_values` are listed in the following table:
 
 | N  | q values                                                     | Epsilon Indicator |
 | -- | ------------------------------------------------------------ | ----------------- |
@@ -53,6 +53,7 @@ For this scenario, we used the "diversified" dataset and 1000 shots per executio
 As expected, the epsilon indicator increases with the `N` value. However, during those executions, dwave's problem inspector warned that the chains were too weak, and that, in the case of `N=64`, all samples had broken chains. Based on this warning, we decided to immediately execute scenario B1, changing the original order of scenarios.
 
 ## Scenario B1
+
 Looking at the fraction of chain breaks in Scenario A1, we know that on average each sample had almost a third (`0.31`) of its chains broken when `N=32`. This fraction increases to over half (`0.54`) when `N=64`! Those values are very high and are another clue that the chain strength needs to be adjusted, especially for those values of `N`.
 
 A good starting value for the chain strength is the maximum absolute value (`maxAbs`) of the QUBO matrix. However, this is not always the most optimal value. We need to test several values based on this initial value. By testing those values, we can find a value near the sweet spot between the probability that the chains are intact and the probability of finding optimal values. Refer to: https://www.dwavesys.com/sites/default/files/2_Wed_Am_PerfTips.pdf
@@ -126,3 +127,55 @@ Finally, for `N=32`, the sweet spot is near `chain_strength = 0.250 * maxAbs`, d
 For the remaining values of `N`, no sweet spot can be accurately found. For the case `N=16`, the epsilon values are so similar that they fall under the margin of variation. For the case of `N=8`, every try gave a perfect score of `1.000`.
 
 There is an exception for both cases of `N=8` and `N=16`. When `chain_strength = 0.125 * maxAbs` there is a high fraction of chain breaks and almost no samples are valid solutions. Thus, for this value of chain strength, the results are very bad.
+
+Based on those findings, the case `N=8` will not be tested in the remaining scenarios, since the annealer already achieved optimality.
+
+## Scenario A2
+
+For this scenario, we will be looking at how different budgets affect the performance of the annealer. Therefore, different fractions of `B` are going to be tested: 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, and 0.9. `N=16` uses the default chain strength. `N=32` uses `chain_strength = 0.250 * maxAbs`, and `N=64` uses `chain_strength = 0.625 * maxAbs`. **Reminder: the fraction used in previous scenarios was `B=0.5`!**
+
+Obviously, for each value of B, we first need to solve it classically. Then, from the results, we get the sequences of `q_values` to be used in the annealer.
+
+| N  | q values                                                     | Budget fraction |
+| -- | ------------------------------------------------------------ | --------------- |
+| 16 | 0, 20, 500                                                   | 0.1 (1)         |
+| 32 | 0, 7, 20, 40                                                 | 0.1 (3)         |
+| 64 | 0, 0.6, 2, 4, 6, 8, 20, 40, 80, 500                          | 0.1 (6)         |
+| 16 | 0, 8, 10, 40                                                 | 0.2 (3)         |
+| 32 | 0, 5, 8, 20, 30, 80                                          | 0.2 (6)         |
+| 64 | 0, 0.3, 0.8, 2, 4, 5, 7, 9, 20, 30, 500                      | 0.2 (12)        |
+| 16 | 0, 2, 6, 20, 60                                              | 0.3 (4)         |
+| 32 | 0, 3, 4, 10, 20, 50                                          | 0.3 (9)         |
+| 64 | 0, 0.2, 2, 3, 4, 5, 7, 9, 20, 30, 100                        | 0.3 (19)        |
+| 16 | 0, 2, 5, 10, 30                                              | 0.4 (6)         |
+| 32 | 0, 0.2, 0.9, 2, 4, 20, 30, 70, 500                           | 0.4 (12)        |
+| 64 | 0, 0.3, 0.6, 1, 2, 3, 4, 6, 8, 20, 30, 90                    | 0.4 (25)        |
+| 16 | 0, 2, 6, 100, 500                                            | 0.5 (8)         |
+| 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 0.5 (16)        |
+| 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 0.5 (32)        |
+| 16 | 0, 0.1, 0.8, 3, 20, 30                                       | 0.6 (9)         |
+| 32 | 0, 0.1, 0.5, 1, 2, 3, 7, 8, 20, 30                           | 0.6 (19)        |
+| 64 | 0, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 2, 3, 7, 9, 20              | 0.6 (38)        |
+| 16 | 0, 0.7, 20                                                   | 0.7 (11)        |
+| 32 | 0, 0.4, 2                                                    | 0.7 (22)        |
+| 64 | 0, 0.1, 0.2, 0.3, 0.7, 1, 2, 3, 4, 6, 20                     | 0.7 (44)        |
+| 16 | 0, 4                                                         | 0.8 (12)        |
+| 32 | 0, 0.8, 7, 9                                                 | 0.8 (25)        |
+| 64 | 0, 0.1, 0.2, 0.4, 0.5, 0.6, 1, 2, 3, 6, 20                   | 0.8 (51)        |
+| 16 | 0, 50                                                        | 0.9 (14)        |
+| 32 | 0, 0.8, 3                                                    | 0.9 (28)        |
+| 64 | 0, 0.6, 1, 2, 5, 500                                         | 0.9 (57)        |
+
+With those results, we obtained the following epsilon indicators:
+
+| Budget fraction | N16   | N32   | N64   |
+| --------------- | ----- | ----- | ----- |
+| 0.1             | 1.000 | inf   | 1.515 |
+| 0.2             | 1.000 | inf   | 1.537 |
+| 0.3             | 1.040 | 1.473 | 1.623 |
+| 0.4             | 1.085 | 1.222 | 1.477 |
+| 0.5             | 1.114 | 1.245 | 1.388 |
+| 0.6             | 1.149 | 1.326 | 1.452 |
+| 0.7             | 1.229 | 1.571 | 2.004 |
+| 0.8             | 1.048 | 1.195 | inf   |
+| 0.9             | 1.103 | 1.619 | inf   |

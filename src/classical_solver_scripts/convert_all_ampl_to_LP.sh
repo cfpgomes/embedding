@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDER_NAME="scenario1_N64_classical"
+FOLDER_NAME="scenarioA2_N16_B0.8_classical"
 
 mkdir -p "src/lp/"$FOLDER_NAME""
 

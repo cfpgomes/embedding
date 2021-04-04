@@ -5,7 +5,7 @@ import shutil
 import os
 
 # Results are stored on a specific folder
-folder_name = 'scenario1_N64_classical'
+folder_name = 'scenarioA2_N64_B0.8_classical'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
@@ -18,7 +18,7 @@ f = open('data/out_diversified_N64_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
-B = int(N * 0.5)            # Budget
+B = int(N * 0.8)            # Budget
 tickers = data['tickers']   # Tickers
 print(tickers)
 mu = pd.Series(data['mu'])
@@ -38,7 +38,7 @@ for i in range(N):
 print('q maximo calculado:')
 print(int(-max_mu/min_sigma)+1)
 
-q_values = list(np.linspace(7, 8, num=10, endpoint=False))
+q_values = list(np.linspace(0, 1, num=10, endpoint=False)) + list(np.linspace(1, 10, num=9, endpoint=False)) + [10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 500, 1000]
 
 for q in q_values:
     print('q usado:')

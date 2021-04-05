@@ -166,16 +166,26 @@ Obviously, for each value of B, we first need to solve it classically. Then, fro
 | 32 | 0, 0.8, 3                                                    | 0.9 (28)        |
 | 64 | 0, 0.6, 1, 2, 5, 500                                         | 0.9 (57)        |
 
+**Question: Is it bad to have different number of samples between cases?**
+
 With those results, we obtained the following epsilon indicators:
 
-| Budget fraction | N16   | N32   | N64   |
-| --------------- | ----- | ----- | ----- |
-| 0.1             | 1.000 | inf   | 1.515 |
-| 0.2             | 1.000 | inf   | 1.537 |
-| 0.3             | 1.040 | 1.473 | 1.623 |
-| 0.4             | 1.085 | 1.222 | 1.477 |
-| 0.5             | 1.114 | 1.245 | 1.388 |
-| 0.6             | 1.149 | 1.326 | 1.452 |
-| 0.7             | 1.229 | 1.571 | 2.004 |
-| 0.8             | 1.048 | 1.195 | inf   |
-| 0.9             | 1.103 | 1.619 | inf   |
+| Budget fraction | N16 (AvgChainBreak) | N32 (AvgChainBreak) | N64 (AvgChainBreak) |
+| --------------- | ------------------- | ------------------- | ------------------- |
+| 0.1             | 1.000 (0.00131)     | inf   (0.31518)     | 1.515 (0.13468)     |
+| 0.2             | 1.017 (0.00300)     | inf   (0.28815)     | 1.537 (0.00757)     |
+| 0.3             | 1.026 (0.00485)     | 1.473 (0.11416)     | 1.623 (0.00443)     |
+| 0.4             | 1.065 (0.00866)     | 1.222 (0.00299)     | 1.477 (0.00406)     |
+| 0.5             | 1.114 (0.01153)     | 1.245 (0.00170)     | 1.388 (0.00453)     |
+| 0.6             | 1.147 (0.00990)     | 1.326 (0.00115)     | 1.452 (0.00385)     |
+| 0.7             | 1.275 (0.00615)     | 1.571 (0.00127)     | 2.004 (0.00389)     |
+| 0.8             | 1.074 (0.00519)     | 1.195 (0.00090)     | inf   (0.00374)     |
+| 0.9             | 1.032 (0.00200)     | 1.619 (0.00105)     | inf   (0.00389)     |
+
+### Key Takeaways:
+
+For the case `N=16`: the chain break fraction increases until the budget is 0.5, and then decreases. Similarly, the epsilon indicator increases until 0.7 and then decreases.
+
+For the case `N=32`: the chain break fraction is very high for the budgets 0.1, 0.2 and 0.3. After that, it gets significantly better. The epsilon indicator seems to be at its best around `B=0.5`, but the variation is too high for any meaningful conclusion.
+
+For the case `N=64`: the chain break fraction is very high for the budget 0.1. After that, it gets significantly better. The epsilon indicator seems to be at its best around `B=0.5`. After this value, the epsilon indicator increases sharply, becoming `inf` at 0.8 and 0.9.

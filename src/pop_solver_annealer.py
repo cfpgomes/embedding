@@ -23,13 +23,13 @@ def print_var(variable_name, variable):
 
 
 # Results are stored on a specific folder
-folder_name = 'scenarioA2_N64_Pformulated_Cformulated_B0.9_annealer'
+folder_name = 'scenarioA2_N16_Pformulated_Cformulated_B0.1_annealer'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/out_diversified_N64_p1mo_i1d.json')
+f = open('data/out_diversified_N16_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
@@ -40,7 +40,7 @@ sigma = pd.DataFrame.from_dict(data['sigma'], orient='index')
 print_var('mu', mu)
 print_var('sigma', sigma)
 
-B = int(N * 0.9)
+B = int(N * 0.1)
 print_var('B', B)
 
 q_values = None
@@ -54,7 +54,7 @@ q_values = None
 # elif N == 64:
 #     q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
 
-q_values = [0, 0.6, 1, 2, 5, 500 ]
+q_values = [0, 20, 500 ]
 print_var('q_values', q_values)
 
 min_sigma = 0

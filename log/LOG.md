@@ -114,6 +114,25 @@ Finally, we obtained the following epsilon indicators (Lower is better):
 | 1.375 * maxAbs | **1.000** | 1.130 | 1.462 | 1.488 |
 | 1.500 * maxAbs | **1.000** | 1.182 | 1.445 | 1.583 |
 
+To validate such results, this scenario has been repeated for `N=16`, `N=32`, and `N=64`.
+
+| Chain strength | N16   | N32   | N64   |
+| -------------- | ----- | ----- | ----- |
+| default value  | 1.114 | 1.340 | 1.755 |
+| 0.125 * maxAbs | 1.858 | 1.426 | 1.726 |
+| 0.250 * maxAbs | 1.115 | 1.363 | 1.459 |
+| 0.375 * maxAbs | 1.176 | 1.292 | 1.330 |
+| 0.500 * maxAbs | 1.208 | 1.416 | 1.383 |
+| 0.625 * maxAbs | 1.147 | 1.466 | 1.485 |
+| 0.750 * maxAbs | 1.115 | 1.319 | 1.485 |
+| 0.875 * maxAbs | 1.137 | 1.334 | 1.486 |
+| 1.000 * maxAbs | 1.207 | 1.445 | 1.543 |
+| 1.125 * maxAbs | 1.114 | 1.324 | 1.517 |
+| 1.250 * maxAbs | 1.130 | 1.454 | 1.491 |
+| 1.375 * maxAbs | 1.130 | 1.348 | 1.472 |
+| 1.500 * maxAbs | 1.133 | 1.477 | 1.485 |
+
+
 `*` Interestingly, this iteration got 3 of the 5 optimal solutions.
 
 ### Key Takeaways:

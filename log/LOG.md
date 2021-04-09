@@ -18,7 +18,7 @@
 | --------- | ------------------- | ------------------------ |
 | **A1**    | **N**               | **March 23 - March 29** |
 | **B1**    | **Chain Strength** | **March 30 - April 5**   |
-| A2        | B                   | March 30 - April 5       |
+| **A2**    | **B**               | **March 30 - April 5**  |
 | A3        | Datasets            | April 6 - April 12       |
 | B2        | Embedding           | April 13 - April 19      |
 | B3        | Shots               | April 20 - April 26      |

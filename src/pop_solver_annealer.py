@@ -23,7 +23,7 @@ def print_var(variable_name, variable):
 
 
 # Results are stored on a specific folder
-folder_name = 'scenarioB1_N64_Pformulated_Cformulated1.500_annealer_try2'
+folder_name = 'scenarioB1_N64_Pformulated_Cformulated5.000_annealer_try3'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
@@ -110,13 +110,11 @@ for q in q_values:
 
     # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as Q.
     Q_key_max = max(Q.keys(), key=(lambda k: abs(Q[k])))
-    chain_strength = abs(Q[Q_key_max]) * 1.500
+    chain_strength = abs(Q[Q_key_max]) * 5.000
     # if N == 32:
     #     chain_strength = abs(Q[Q_key_max]) * 0.250
     # elif N == 64:
     #     chain_strength = abs(Q[Q_key_max]) * 0.625
-
-    
 
     print_var('Q', Q)
 
@@ -125,6 +123,8 @@ for q in q_values:
         Q, num_reads=1000, chain_strength=chain_strength)
 
     chain_strength = sampleset.info['embedding_context']['chain_strength']
-    dwave.inspector.show(sampleset)
+    #dwave.inspector.show(sampleset)
+
+    print('Solved')
     sampleset.to_pandas_dataframe().sort_values(
         by=['energy']).to_csv(f'results/{folder_name}/out_{embedding_type}N{N}q{q:.2f}B{B}P{P:.3f}C{chain_strength}.csv', index=False)

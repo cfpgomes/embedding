@@ -33,8 +33,8 @@ mu2 = None
 sigma1 = None
 sigma2 = None
 
-data1_filename = 'data/out_diversified_N64_p1mo_i1d.json'
-data2_filename = 'data/out_diversified_N64_p1mo_i1d.json'
+data1_filename = 'data/out_diversified_N32_p1mo_i1d.json'
+data2_filename = 'data/out_strongly_correlated_N32_p1mo_i1d.json'
 
 with open(data1_filename) as jsonfile:
     data = json.load(jsonfile)
@@ -82,12 +82,12 @@ P2 = -q * min_sigma2 + max_mu2
 
 B1 = int(N1*0.5)
 print(f'B1:{B1}')
-classical_solutions1_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions1_foldername = 'results/scenarioA1_N32_classical'
 classical_solutions1 = []
 
 B2 = int(N2*0.5)
 print(f'B2:{B2}')
-classical_solutions2_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions2_foldername = 'results/scenarioA3_N32_B0.5_strongly_correlated_classical'
 classical_solutions2 = []
 
 for filename in os.listdir(classical_solutions1_foldername):
@@ -104,8 +104,8 @@ for filename in os.listdir(classical_solutions2_foldername):
             classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N2, B2, mu2, sigma2, P2), 'expected_return': get_expected_return(
                 data['solution'], N2, B2, mu2), 'volatility': get_volatility(data['solution'], N2, B2, sigma2), 'equals_budget': equals_budget(data['solution'], N2, B2)})
 
-set1_foldername = 'results/scenarioB1_N64_Pformulated_Cformulated0.125_annealer_try3'
-set2_foldername = 'results/scenarioB1_N64_Pformulated_Cformulated5.000_annealer_try3'
+set1_foldername = 'results/scenarioA3_N32_Pformulated_Cformulated1.000_B0.5_diversified_annealer_try1'
+set2_foldername = 'results/scenarioA3_N32_Pformulated_Cformulated1.000_B0.5_strongly_correlated_annealer_try1'
 
 set1_samples = []
 set2_samples = []
@@ -219,7 +219,7 @@ fig.text(0.5, 0.005, 'How to interpret: Blue markers are part of the efficient f
 output_name = f'{scenario_name}{date}'
 fig.suptitle('Epsilon Indicator - ' + output_name)
 
-# Save as 2160p image
+# Save as 2 1 6 0p image
 plt.savefig(
     f'images/{folder_name}/{output_name}.png', dpi=360)
 plt.show()

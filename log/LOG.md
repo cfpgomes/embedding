@@ -118,6 +118,7 @@ To validate such results, this scenario has been repeated for `N=16`, `N=32`, an
 
 | Chain strength | N16   | N32   | N64   |
 | -------------- | ----- | ----- | ----- |
+| default value  | 1,072 | 1,535 | 1,830 |
 | 0,125 * maxAbs | 1,858 | 1,426 | 1,726 |
 | 0,250 * maxAbs | 1,115 | 1,363 | 1,459 |
 | 0,375 * maxAbs | 1,176 | 1,292 | 1,330 |
@@ -135,6 +136,7 @@ And one more time:
 
 | Chain strength | N16   | N32   | N64   |
 | -------------- | ----- | ----- | ----- |
+| default value  | 1,062 | 1,364 | 1,785 |
 | 0,125 * maxAbs | 3,627 | 1,426 | 1,641 |
 | 0,250 * maxAbs | 1,194 | 1,330 | 1,539 |
 | 0,375 * maxAbs | 1,171 | 1,527 | 1,384 |
@@ -149,26 +151,42 @@ And one more time:
 | 1,500 * maxAbs | 1,145 | 1,531 | 1,362 |
 | 5,000 * maxAbs | 1.250 | 1,249 | 1,468 |
 
+The results are summarized in the following charts. 
 
-`*` Interestingly, this iteration got 3 of the 5 optimal solutions.
+![N16](C:\Users\Claubit\Documents\GitHub\embedding\log\B1\N16.png "N16")
+![N32](C:\Users\Claubit\Documents\GitHub\embedding\log\B1\N32.png "N32")
+![N64](C:\Users\Claubit\Documents\GitHub\embedding\log\B1\N64.png "N64")
 
 ### Key Takeaways:
 
 Looking at the results, we notice that the impact of any change to the chain strength is higher for higher values of `N`.
 
-Next, for `N=64`, the sweet spot is near `chain_strength = 0.625 * maxAbs`, despite the fact that this spot does not return neither the highest fraction of valid points or the lowest fraction of chain breaks.
+It also becomes clear that, especially for higher values of `N`, the default chain strength is far from being the best value. It seems that for higher values of `N`, the farther is the default chain strength value from the best value.
 
-Finally, for `N=32`, the sweet spot is near `chain_strength = 0.250 * maxAbs`, despite the fact that this spot does not return the lowest fraction of chain breaks.
+Another thing that also becomes clear is that the fractions of chain breaks and valid solutions are not directly synonymous with the quality of the solutions.
 
-For the remaining values of `N`, no sweet spot can be accurately found. For the case `N=16`, the epsilon values are so similar that they fall under the margin of variation. For the case of `N=8`, every try gave a perfect score of `1.000`.
+For the case of `N=8`, every try gave a perfect score of `1.000`.
+
+For the case `N=16`, the epsilon values are so similar that they fall under the margin of variation. Thus we cannot place conclusions based on these results. (Note: in this case, the default strength is always the best!)
 
 There is an exception for both cases of `N=8` and `N=16`. When `chain_strength = 0.125 * maxAbs` there is a high fraction of chain breaks and almost no samples are valid solutions. Thus, for this value of chain strength, the results are very bad.
+
+This behavior is also noticeable for `N=32` and `N=64`, that present a relatively high epsilon indicator with this chain strength.
+
+It seems that, after this very weak chain strength, the following values of chain strength rapidly attain the lowest epsilon indicators registered, with a very slow climb afterwards.
+
+In the end, the results suggest that it is okay to choose any value that is part of the slow climb. However, from theory, we know that we should avoid any value over `1.000 * maxAbs`, since it scales down the problem.
+
+Therefore, for `N=16`, a safe range seems to be between the default value and `1.000 * maxAbs`. For `N=32`, this range seems to be between `0.250 * maxAbs` and `1.000 * maxAbs`. Finally, for `N=64`, this range seems to be between `0.375 * maxAbs` and `1.000 * maxAbs`.
 
 Based on those findings, the case `N=8` will not be tested in the remaining scenarios, since the annealer already achieved optimality.
 
 ## Scenario A2
 
-For this scenario, we will be looking at how different budgets affect the performance of the annealer. Therefore, different fractions of `B` are going to be tested: 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, and 0.9. `N=16` uses the default chain strength. `N=32` uses `chain_strength = 0.250 * maxAbs`, and `N=64` uses `chain_strength = 0.625 * maxAbs`. **Reminder: the fraction used in previous scenarios was `B=0.5`!**
+For this scenario, we will be looking at how different budgets affect the performance of the annealer. Therefore, different fractions of `B` are going to be tested: 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, and 0.9.
+
+I will be using `chain_strength = 1.000 * maxAbs`, for the reasons explained in the previous scenario.
+**Reminder: the fraction used in previous scenarios was `B=0.5`!**
 
 Obviously, for each value of B, we first need to solve it classically. Then, from the results, we get the sequences of `q_values` to be used in the annealer.
 
@@ -208,20 +226,48 @@ With those results, we obtained the following epsilon indicators:
 
 | Budget fraction | N16 (AvgChainBreak) | N32 (AvgChainBreak) | N64 (AvgChainBreak) |
 | --------------- | ------------------- | ------------------- | ------------------- |
-| 0.1             | 1.000 (0.00131)     | inf   (0.31518)     | 1.515 (0.13468)     |
-| 0.2             | 1.017 (0.00300)     | inf   (0.28815)     | 1.537 (0.00757)     |
-| 0.3             | 1.026 (0.00485)     | 1.473 (0.11416)     | 1.623 (0.00443)     |
-| 0.4             | 1.065 (0.00866)     | 1.222 (0.00299)     | 1.477 (0.00406)     |
-| 0.5             | 1.114 (0.01153)     | 1.245 (0.00170)     | 1.388 (0.00453)     |
-| 0.6             | 1.147 (0.00990)     | 1.326 (0.00115)     | 1.452 (0.00385)     |
-| 0.7             | 1.275 (0.00615)     | 1.571 (0.00127)     | 2.004 (0.00389)     |
-| 0.8             | 1.074 (0.00519)     | 1.195 (0.00090)     | inf   (0.00374)     |
-| 0.9             | 1.032 (0.00200)     | 1.619 (0.00105)     | inf   (0.00389)     |
+| 0.1             | 1.000 (0.00406)     | 1.668 (0.00979)     | 1.507 (0.01572)     |
+| 0.2             | 1.017 (0.00048)     | 1.274 (0.00151)     | 2.379 (0.00493)     |
+| 0.3             | 1.026 (0.00044)     | 1.427 (0.00152)     | 1.406 (0.00473)     |
+| 0.4             | 1.172 (0.00024)     | 1.253 (0.00134)     | 1.482 (0.00452)     |
+| 0.5             | 1.211 (0.00031)     | 1.297 (0.00127)     | 1.465 (0.00484)     |
+| 0.6             | 1.174 (0.00033)     | 1.317 (0.00141)     | 1.533 (0.00470)     |
+| 0.7             | 1.042 (0.00038)     | 1.960 (0.00108)     | 2.403 (0.00464)     |
+| 0.8             | 1.014 (0.00031)     | 1.419 (0.00144)     | inf   (0.00462)     |
+| 0.9             | 1.120 (0.00034)     | inf   (0.00129)     | inf   (0.00447)     |
 
 ### Key Takeaways:
 
-For the case `N=16`: the chain break fraction increases until the budget is 0.5, and then decreases. Similarly, the epsilon indicator increases until 0.7 and then decreases.
+The first thing I notice is that there is a high chain break fraction when the budget is `B=0.1`. Afterwards, it attains a consistently low fraction, with small variation.
 
-For the case `N=32`: the chain break fraction is very high for the budgets 0.1, 0.2 and 0.3. After that, it gets significantly better. The epsilon indicator seems to be at its best around `B=0.5`, but the variation is too high for any meaningful conclusion.
+For `N=32` and `N=64`, as expected from theory, the epsilon indicator is lower when the budget is or is close to `B=0.5`, since this value has the highest number of admissible solutions.
 
-For the case `N=64`: the chain break fraction is very high for the budget 0.1. After that, it gets significantly better. The epsilon indicator seems to be at its best around `B=0.5`. After this value, the epsilon indicator increases sharply, becoming `inf` at 0.8 and 0.9.
+Behavior for `N=16` is hard to grasp. I believe that `N=16` is a too small problem to get any significant benefit from changing parameters.
+
+Nonetheless, budget fraction is still a parameter that is particular to each practitioner.
+
+## Scenario A3
+
+For this scenario, we will study the influence from the dataset. Previous scenarios used a `diversified` dataset, with assets as uncorrelated as possible. Therefore, we are going to introduce another dataset, called `strongly_correlated`, from the same source, however, with strongly correlated assets. That is, with assets from the same sub-industry.
+
+The results are executed for sizes `N=32` and `N=64`, with parameters `chain_strength = 1.000 * maxAbs` and `B=0.5`. Since this scenario is small, the results have been repeated two more times, for a total of three tries.
+
+|  N and Dataset            | q values                                                     |
+| ------------------------- | ------------------------------------------------------------ |
+| `N32_diversified`         | 0, 0.4, 0.9, 2, 3, 9, 100                                    |
+| `N32_strongly_correlated` | 0, 1, 6, 10, 70, 90                                          |
+| `N64_diversified`         | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 |
+| `N64_strongly_correlated` | 0, 0.1, 0.2, 0.3, 0.6, 1, 2, 3, 4, 6, 10, 20, 80             |
+
+| Dataset                    | N32 (AvgChainBreak) (AvgFractionValid) | N64 (AvgChainBreak) (AvgFractionValid) |
+| -------------------------- | ------------------- | ------------------- |
+| `diversified` try1         | 1.433 (0.00075) | 1.516 (0.00409) |
+| `diversified` try2         | 1.505 (0.00092) | 1.435 (0.00413) |
+| `diversified` try3         | 1.500 (0.00074) | 1.501 (0.00384) |
+| `strongly_correlated` try1 | 1.300 (0.00093) | 1.701 (0.00370) |
+| `strongly_correlated` try2 | 1.352 (0.00103) | 1.641 (0.00363) |
+| `strongly_correlated` try3 | 1.482 (0.00076) | 1.668 (0.00360) |
+
+### Key Takeaways:
+
+The dataset choice does make a significant difference in the performance of the annealer. However, it does not seem to be caused by whether it is diversified or not.

@@ -23,13 +23,13 @@ def print_var(variable_name, variable):
 
 
 # Results are stored on a specific folder
-folder_name = 'scenarioB1_N64_Pformulated_Cformulated5.000_annealer_try3'
+folder_name = 'scenarioA3_N32_Pformulated_Cformulated1.000_B0.5_strongly_correlated_annealer_try1'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/out_diversified_N64_p1mo_i1d.json')
+f = open('data/out_strongly_correlated_N32_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
@@ -45,16 +45,23 @@ print_var('B', B)
 
 q_values = None
 
-if N == 8:
-    q_values = [0, 11, 20, 54]
-elif N == 16:
-    q_values = [0, 2, 6, 100, 500]
-elif N == 32:
-    q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
-elif N == 64:
-    q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
+# diversified
+# if N == 8:
+#     q_values = [0, 11, 20, 54]
+# elif N == 16:
+#     q_values = [0, 2, 6, 100, 500]
+# elif N == 32:
+#     q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
+# elif N == 64:
+#     q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
 
-#q_values = [0, 20, 500 ]
+# strongly_correlated
+if N == 32:
+    q_values = [0, 1, 6, 10, 70, 90]
+elif N == 64:
+    q_values = [0, 0.1, 0.2, 0.3, 0.6, 1, 2, 3, 4, 6, 10, 20, 80]
+
+# q_values = [0, 50]
 print_var('q_values', q_values)
 
 min_sigma = 0
@@ -108,13 +115,9 @@ for q in q_values:
     for i in range(N):
         Q[(str(i), str(i))] += float(-2 * B * P)
 
-    # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as Q.
+    # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as max abs value of Q.
     Q_key_max = max(Q.keys(), key=(lambda k: abs(Q[k])))
-    chain_strength = abs(Q[Q_key_max]) * 5.000
-    # if N == 32:
-    #     chain_strength = abs(Q[Q_key_max]) * 0.250
-    # elif N == 64:
-    #     chain_strength = abs(Q[Q_key_max]) * 0.625
+    chain_strength = abs(Q[Q_key_max]) * 1.000
 
     print_var('Q', Q)
 

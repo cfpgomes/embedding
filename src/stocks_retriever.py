@@ -4,7 +4,7 @@ import numpy as np
 import json
 from datetime import datetime
 
-N = 64
+N = 8
 
 # The first N indexes in the wikipedia table are used as tickers.
 # TODO: Change method of choosing stocks.
@@ -16,7 +16,9 @@ print(table[lambda x: x['GICS Sector'] == 'Communication Services'])
 
 tickers = None
 
-dataset_type = 'diversified'
+dataset_type = 'strongly_correlated'
+
+banned_tickers = ['FOXA', 'FB']
 
 if dataset_type == 'alphabetical':
     tickers = list(table['Symbol'].sort_values())[:N]
@@ -27,28 +29,10 @@ elif dataset_type == 'diversified':
     while len(tickers) < N:
         for sector in sectors:
             for index, row in table[lambda x: x['GICS Sector'] == sector].iterrows():
-                if row['Symbol'] not in tickers and row['GICS Sub-Industry'] not in taboo_subsectors:
+                if (row['Symbol'] not in tickers) and (row['GICS Sub-Industry'] not in taboo_subsectors) and (row['Symbol'] not in banned_tickers):
                     tickers.append(row['Symbol'])
                     taboo_subsectors.append(row['GICS Sub-Industry'])
                     break
-            if len(tickers) == N:
-                break
-elif dataset_type == 'weakly_correlated':
-    sectors = list(np.unique(table['GICS Sector']))
-    desired_subsectors = []
-    tickers = []
-    while len(tickers) < N:
-        for sector in sectors:
-            for index, row in table[lambda x: x['GICS Sector'] == sector].iterrows():
-                if row['Symbol'] not in tickers and row['GICS Sub-Industry'] not in desired_subsectors:
-                    tickers.append(row['Symbol'])
-                    desired_subsectors.append(row['GICS Sub-Industry'])
-                    if len(tickers) == N:
-                        break
-                    tickers.extend(list(table[lambda x: x['GICS Sub-Industry'] == row['GICS Sub-Industry']][lambda x: x['Symbol'] == row['Symbol']]['Symbol']))
-                    if len(tickers) > N:
-                        tickers = tickers[:N]
-                        break
             if len(tickers) == N:
                 break
 elif dataset_type == 'strongly_correlated':
@@ -57,7 +41,7 @@ elif dataset_type == 'strongly_correlated':
     while len(tickers) < N:
         for sector in sectors:
             for index, row in table[lambda x: x['GICS Sector'] == sector].iterrows():
-                if row['Symbol'] not in tickers:
+                if (row['Symbol'] not in tickers) and (row['Symbol'] not in banned_tickers):
                     tickers.append(row['Symbol'])
                     if len(tickers) == N:
                         break
@@ -78,11 +62,17 @@ print(tickers)
 period = '1mo'
 interval = '1d'
 data = yf.download(tickers, period=period, interval=interval)['Adj Close']
+print('Data:')
+print(data)
+
+print('debug:')
+for t in tickers:
+    print(data[t])
 
 # The data is then processed to drop NaN values, then to calculate percent
 # change between months, and then to drop NaN values again.
 data = data.dropna().pct_change().dropna()
-print('Data:')
+print('Data processed:')
 print(data)
 
 print('Tickers:')

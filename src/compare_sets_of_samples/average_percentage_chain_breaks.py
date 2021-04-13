@@ -7,7 +7,7 @@ import os
 import json
 import csv
 
-set_foldername = 'results/scenarioA2_N16_Pformulated_B0.9_annealer'
+set_foldername = 'results/scenarioA3_N32_Pformulated_Cformulated1.000_B0.5_diversified_annealer_try1'
 
 sum_fraction_chain_breaks = 0
 num_samples = 0

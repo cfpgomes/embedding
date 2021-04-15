@@ -18,17 +18,17 @@
 | --------- | ------------------- | ------------------------ |
 | **A1**    | **N**               | **March 23 - March 29** |
 | **B1**    | **Chain Strength** | **March 30 - April 5**   |
-| **A2**    | **B**               | **March 30 - April 5**  |
-| A3        | Datasets            | April 6 - April 12       |
+| **A2**    | **B**               | **April 6 - April 12**  |
+| B3        | Shots               | April 6 - April 12       |
 | B2        | Embedding           | April 13 - April 19      |
-| B3        | Shots               | April 20 - April 26      |
-| B4        | Annealing           | April 27 - May 3         |
+| B4        | Annealing           | April 20 - April 26      |
+| A3        | Datasets            | April 27 - May 3         |
 
 ## Sidenotes to research about
 - Scenario A1 epsilon values appear to follow a linear trend: `y = (x-8) * 0.0142227624 + 1`
 - Find what is the maximum `N` value that is supported by dwave
 
-## Scenario A1
+## Scenario A1 - N
 
 We started by experimenting several values of `N`, in order to find the maximum possible value of `N` that could be solved in a reasonable time by the classical solver.
 
@@ -52,7 +52,7 @@ For this scenario, we used the "diversified" dataset and 1000 shots per executio
 
 As expected, the epsilon indicator increases with the `N` value. However, during those executions, dwave's problem inspector warned that the chains were too weak, and that, in the case of `N=64`, all samples had broken chains. Based on this warning, we decided to immediately execute scenario B1, changing the original order of scenarios.
 
-## Scenario B1
+## Scenario B1 - Chain Strength
 
 Looking at the fraction of chain breaks in Scenario A1, we know that on average each sample had almost a third (`0.31`) of its chains broken when `N=32`. This fraction increases to over half (`0.54`) when `N=64`! Those values are very high and are another clue that the chain strength needs to be adjusted, especially for those values of `N`.
 
@@ -181,7 +181,7 @@ Therefore, for `N=16`, a safe range seems to be between the default value and `1
 
 Based on those findings, the case `N=8` will not be tested in the remaining scenarios, since the annealer already achieved optimality.
 
-## Scenario A2
+## Scenario A2 - B
 
 For this scenario, we will be looking at how different budgets affect the performance of the annealer. Therefore, different fractions of `B` are going to be tested: 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, and 0.9.
 
@@ -246,7 +246,63 @@ Behavior for `N=16` is hard to grasp. I believe that `N=16` is a too small probl
 
 Nonetheless, budget fraction is still a parameter that is particular to each practitioner.
 
-## Scenario A3
+## Scenario B3 - Shots
+
+The previous scenario, A2, made us wonder about the number of samples. That is, there is a possibility that the cases where B is farthest from `B=0.5` have worse performance because of having less values of `q` and thus less samples taken.
+Therefore, we pose a question: Is it better to increase the number of shots per value of `q` or to add more values of `q` to be executed?
+
+Since the results so far seem to have a good coverage of the efficient frontier, but still far from it, we believe that the issue is related to the number of samples per value of `q`. Hence, we are going to repeat the previous scenario with a new methodology to define the number of samples per value of `q`.
+
+Initially, each value of `q` had 1000 shots, i.e., 1000 samples taken. This time, each case will have a total allocated number of shots for every value of `q`. For example, if we have a case with three values of `q` and another case with five values of `q`, then, with a total allocation of 5000 shots per case, then the first case will have 1666 shots per value, while the second case will have 1000 shots per value.
+
+Based on this methodology, we will start with a total allocation of 15000 shots, such that each of the 15 values of `q` from case `B=0.5` have 1000 shots.
+
+| N  | q values                                                     | Budget fraction | Shots per value of q |
+| -- | ------------------------------------------------------------ | --------------- | -------------------- |
+| 16 | 0, 20, 500                                                   | 0.1 (1)         | 5000                 |
+| 32 | 0, 7, 20, 40                                                 | 0.1 (3)         | 3750                 |
+| 64 | 0, 0.6, 2, 4, 6, 8, 20, 40, 80, 500                          | 0.1 (6)         | 1500                 |
+| 16 | 0, 8, 10, 40                                                 | 0.2 (3)         | 3750                 |
+| 32 | 0, 5, 8, 20, 30, 80                                          | 0.2 (6)         | 2500                 |
+| 64 | 0, 0.3, 0.8, 2, 4, 5, 7, 9, 20, 30, 500                      | 0.2 (12)        | 1363                 |
+| 16 | 0, 2, 6, 20, 60                                              | 0.3 (4)         | 3000                 |
+| 32 | 0, 3, 4, 10, 20, 50                                          | 0.3 (9)         | 2500                 |
+| 64 | 0, 0.2, 2, 3, 4, 5, 7, 9, 20, 30, 100                        | 0.3 (19)        | 1363                 |
+| 16 | 0, 2, 5, 10, 30                                              | 0.4 (6)         | 3000                 |
+| 32 | 0, 0.2, 0.9, 2, 4, 20, 30, 70, 500                           | 0.4 (12)        | 1666                 |
+| 64 | 0, 0.3, 0.6, 1, 2, 3, 4, 6, 8, 20, 30, 90                    | 0.4 (25)        | 1250                 |
+| 16 | 0, 2, 6, 100, 500                                            | 0.5 (8)         | 3000                 |
+| 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 0.5 (16)        | 2142                 |
+| 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 0.5 (32)        | 1000                 |
+| 16 | 0, 0.1, 0.8, 3, 20, 30                                       | 0.6 (9)         | 2500                 |
+| 32 | 0, 0.1, 0.5, 1, 2, 3, 7, 8, 20, 30                           | 0.6 (19)        | 1500                 |
+| 64 | 0, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 2, 3, 7, 9, 20              | 0.6 (38)        | 1250                 |
+| 16 | 0, 0.7, 20                                                   | 0.7 (11)        | 5000                 |
+| 32 | 0, 0.4, 2                                                    | 0.7 (22)        | 5000                 |
+| 64 | 0, 0.1, 0.2, 0.3, 0.7, 1, 2, 3, 4, 6, 20                     | 0.7 (44)        | 1363                 |
+| 16 | 0, 4                                                         | 0.8 (12)        | 7500                 |
+| 32 | 0, 0.8, 7, 9                                                 | 0.8 (25)        | 3750                 |
+| 64 | 0, 0.1, 0.2, 0.4, 0.5, 0.6, 1, 2, 3, 6, 20                   | 0.8 (51)        | 1363                 |
+| 16 | 0, 50                                                        | 0.9 (14)        | 7500                 |
+| 32 | 0, 0.8, 3                                                    | 0.9 (28)        | 5000                 |
+| 64 | 0, 0.6, 1, 2, 5, 500                                         | 0.9 (57)        | 2500                 |
+
+We obtained the following epsilon indicators:
+
+| Budget fraction | N16 (AvgChainBreak) | N32 (AvgChainBreak) | N64 (AvgChainBreak) |
+| --------------- | ------------------- | ------------------- | ------------------- |
+| 0.1             | 1.000 | 1.227 | 2.681 |
+| 0.2             | 1.000 | 1.501 | 2.224 |
+| 0.3             | 1.019 | 1.429 | 1.502 |
+| 0.4             | 1.035 | 1.289 | 1.496 |
+| 0.5             | 1.147 | 1.409 | 1.542 |
+| 0.6             | 1.146 | 1.318 | 1.480 |
+| 0.7             | 1.013 | 1.833 | 1.954 |
+| 0.8             | 1.476 | 1.752 | inf   |
+| 0.9             | 1.032 | inf   | inf   |
+
+
+## Scenario A3 - Dataset
 
 For this scenario, we will study the influence from the dataset. Previous scenarios used a `diversified` dataset, with assets as uncorrelated as possible. Therefore, we are going to introduce another dataset, called `strongly_correlated`, from the same source, however, with strongly correlated assets. That is, with assets from the same sub-industry.
 

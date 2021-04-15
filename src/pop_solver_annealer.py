@@ -23,13 +23,13 @@ def print_var(variable_name, variable):
 
 
 # Results are stored on a specific folder
-folder_name = 'scenarioA3_N32_Pformulated_Cformulated1.000_B0.5_strongly_correlated_annealer_try1'
+folder_name = 'scenarioB3_N16_Pformulated_Cformulated1.000_B0.9_T15000_annealer'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/out_strongly_correlated_N32_p1mo_i1d.json')
+f = open('data/out_diversified_N16_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
@@ -40,7 +40,7 @@ sigma = pd.DataFrame.from_dict(data['sigma'], orient='index')
 print_var('mu', mu)
 print_var('sigma', sigma)
 
-B = int(N * 0.5)
+B = int(N * 0.9)
 print_var('B', B)
 
 q_values = None
@@ -56,13 +56,19 @@ q_values = None
 #     q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
 
 # strongly_correlated
-if N == 32:
-    q_values = [0, 1, 6, 10, 70, 90]
-elif N == 64:
-    q_values = [0, 0.1, 0.2, 0.3, 0.6, 1, 2, 3, 4, 6, 10, 20, 80]
+# if N == 32:
+#     q_values = [0, 1, 6, 10, 70, 90]
+# elif N == 64:
+#     q_values = [0, 0.1, 0.2, 0.3, 0.6, 1, 2, 3, 4, 6, 10, 20, 80]
 
-# q_values = [0, 50]
+q_values = [0, 50]
 print_var('q_values', q_values)
+
+shots_allocation = 15000
+
+shots = int(shots_allocation/len(q_values))
+
+print_var('shots per q_value', shots)
 
 min_sigma = 0
 for i in range(N):
@@ -123,7 +129,7 @@ for q in q_values:
 
     # Step 3: Solve QUBO
     sampleset = composite.sample_qubo(
-        Q, num_reads=1000, chain_strength=chain_strength)
+        Q, num_reads=shots, chain_strength=chain_strength)
 
     chain_strength = sampleset.info['embedding_context']['chain_strength']
     #dwave.inspector.show(sampleset)

@@ -83,6 +83,7 @@ for i in range(N):
 
 # Get sampler
 sampler = DWaveSampler()
+print_var('quota_conversion_rate', sampler.properties['quota_conversion_rate'])
 embedding_type = 'normal'
 
 # Get embedding

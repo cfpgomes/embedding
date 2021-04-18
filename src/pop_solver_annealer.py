@@ -23,13 +23,13 @@ def print_var(variable_name, variable):
 
 
 # Results are stored on a specific folder
-folder_name = 'scenarioB3_N16_Pformulated_Cformulated1.000_B0.9_T15000_annealer'
+folder_name = 'scenarioB3_N64_Pformulated_Cformulated1.000_B0.4_T15000_annealer_TEST'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/out_diversified_N16_p1mo_i1d.json')
+f = open('data/out_diversified_N64_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
@@ -40,20 +40,20 @@ sigma = pd.DataFrame.from_dict(data['sigma'], orient='index')
 print_var('mu', mu)
 print_var('sigma', sigma)
 
-B = int(N * 0.9)
+B = int(N * 0.4)
 print_var('B', B)
 
 q_values = None
 
 # diversified
-# if N == 8:
-#     q_values = [0, 11, 20, 54]
-# elif N == 16:
-#     q_values = [0, 2, 6, 100, 500]
-# elif N == 32:
-#     q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
-# elif N == 64:
-#     q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
+if N == 8:
+    q_values = [0, 11, 20, 54]
+elif N == 16:
+    q_values = [0, 2, 6, 100, 500]
+elif N == 32:
+    q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
+elif N == 64:
+    q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
 
 # strongly_correlated
 # if N == 32:
@@ -61,7 +61,7 @@ q_values = None
 # elif N == 64:
 #     q_values = [0, 0.1, 0.2, 0.3, 0.6, 1, 2, 3, 4, 6, 10, 20, 80]
 
-q_values = [0, 50]
+# q_values = [0, 50]
 print_var('q_values', q_values)
 
 shots_allocation = 15000
@@ -89,6 +89,7 @@ embedding_type = 'normal'
 # Get embedding
 f = open(f'data/embedding_{embedding_type}N{N}.json')
 embedding = json.load(f)
+embedding = {int(k):[int(i) for i in v] for k,v in embedding.items()}
 print_var('embedding', embedding)
 
 
@@ -105,22 +106,22 @@ for q in q_values:
     # Covariance term
     for i in range(N):
         for j in range(i, N):
-            Q[(str(i), str(j))] = float(q * sigma[tickers[i]][tickers[j]])
+            Q[(i, j)] = float(q * sigma[tickers[i]][tickers[j]])
 
     # Return term
     for i in range(N):
-        Q[(str(i), str(i))] += float(-mu[tickers[i]])
+        Q[(i, i)] += float(-mu[tickers[i]])
 
     # Budget term is decomposed into four terms, per the formula ((sum^{n-1}_{i=0} x_i) - B)^2
     for i in range(N):
-        Q[(str(i), str(i))] += float(P)
+        Q[(i, i)] += float(P)
 
     for i in range(N):
         for j in range(i + 1, N):
-            Q[(str(i), str(j))] += float(2*P)
+            Q[(i, j)] += float(2*P)
 
     for i in range(N):
-        Q[(str(i), str(i))] += float(-2 * B * P)
+        Q[(i, i)] += float(-2 * B * P)
 
     # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as max abs value of Q.
     Q_key_max = max(Q.keys(), key=(lambda k: abs(Q[k])))
@@ -136,5 +137,6 @@ for q in q_values:
     #dwave.inspector.show(sampleset)
 
     print('Solved')
+    print(sampleset)
     sampleset.to_pandas_dataframe().sort_values(
         by=['energy']).to_csv(f'results/{folder_name}/out_{embedding_type}N{N}q{q:.2f}B{B}P{P:.3f}C{chain_strength}.csv', index=False)

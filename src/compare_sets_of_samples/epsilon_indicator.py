@@ -33,8 +33,8 @@ mu2 = None
 sigma1 = None
 sigma2 = None
 
-data1_filename = 'data/out_diversified_N16_p1mo_i1d.json'
-data2_filename = 'data/out_diversified_N16_p1mo_i1d.json'
+data1_filename = 'data/out_diversified_N64_p1mo_i1d.json'
+data2_filename = 'data/out_diversified_N64_p1mo_i1d.json'
 
 with open(data1_filename) as jsonfile:
     data = json.load(jsonfile)
@@ -80,14 +80,14 @@ for i in range(N2):
 
 P2 = -q * min_sigma2 + max_mu2
 
-B1 = int(N1*0.9)
+B1 = int(N1*0.5)
 print(f'B1:{B1}')
-classical_solutions1_foldername = 'results/scenarioA2_N16_B0.9_classical'
+classical_solutions1_foldername = 'results/scenarioA1_N64_classical'
 classical_solutions1 = []
 
-B2 = int(N2*0.9)
+B2 = int(N2*0.5)
 print(f'B2:{B2}')
-classical_solutions2_foldername = 'results/scenarioA2_N16_B0.9_classical'
+classical_solutions2_foldername = 'results/scenarioA1_N64_classical'
 classical_solutions2 = []
 
 for filename in os.listdir(classical_solutions1_foldername):
@@ -104,8 +104,8 @@ for filename in os.listdir(classical_solutions2_foldername):
             classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N2, B2, mu2, sigma2, P2), 'expected_return': get_expected_return(
                 data['solution'], N2, B2, mu2), 'volatility': get_volatility(data['solution'], N2, B2, sigma2), 'equals_budget': equals_budget(data['solution'], N2, B2)})
 
-set1_foldername = 'results/scenarioA2_N16_Pformulated_Cformulated1.000_B0.9_annealer'
-set2_foldername = 'results/scenarioB3_N16_Pformulated_Cformulated1.000_B0.9_T15000_annealer'
+set1_foldername = 'results/scenarioB3_N64_Pformulated_Cformulated1.000_B0.5_T15000_annealer_FIXED'
+set2_foldername = 'results/scenarioB3_N64_B0.5_random'
 
 set1_samples = []
 set2_samples = []
@@ -159,7 +159,7 @@ set2_valid_samples = list(filter(lambda x: x['equals_budget'], set2_samples))
 ax1.scatter(list(map(lambda x: x['volatility'], set1_valid_samples)), list(
     map(lambda x: x['expected_return'], set1_valid_samples)), color='silver', label='annealer', s=4)
 ax2.scatter(list(map(lambda x: x['volatility'], set2_valid_samples)), list(
-    map(lambda x: x['expected_return'], set2_valid_samples)), color='silver', label='annealer', s=4)
+    map(lambda x: x['expected_return'], set2_valid_samples)), color='silver', label='random', s=4)
 
 ax1.scatter(list(map(lambda x: x['volatility'], set1_dominating_samples)), list(
     map(lambda x: x['expected_return'], set1_dominating_samples)), color='red', label='annealer best')
@@ -167,7 +167,7 @@ ax1.scatter(list(map(lambda x: x['volatility'], classical_solutions1)), list(
     map(lambda x: x['expected_return'], classical_solutions1)), color='blue', label='classical', s=4)
 
 ax2.scatter(list(map(lambda x: x['volatility'], set2_dominating_samples)), list(
-    map(lambda x: x['expected_return'], set2_dominating_samples)), color='red', label='annealer best')
+    map(lambda x: x['expected_return'], set2_dominating_samples)), color='red', label='random best')
 ax2.scatter(list(map(lambda x: x['volatility'], classical_solutions2)), list(
     map(lambda x: x['expected_return'], classical_solutions2)), color='blue', label='classical', s=4)
 
@@ -225,7 +225,7 @@ folder_name = 'epsilon_indicator'
 if not os.path.exists('images/' + folder_name):
     os.makedirs('images/' + folder_name)
 
-fig.text(0.5, 0.005, 'How to interpret: Blue markers are part of the efficient frontier. The epsilon indicator is the minimum factor by which the red set has to be multiplied in the objective so as to weakly dominate the blue set.\nHence, the closer to 1 is the epsilon indicator, the better the red set.',
+fig.text(0.6, 0.005, 'How to interpret: Blue markers are part of the efficient frontier. The epsilon indicator is the minimum factor by which the red set has to be multiplied in the objective so as to weakly dominate the blue set.\nHence, the closer to 1 is the epsilon indicator, the better the red set.',
          ha='center', size='xx-small')
 
 output_name = f'{scenario_name}{date}'

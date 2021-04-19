@@ -21,10 +21,10 @@ def print_var(variable_name, variable):
 # 2. Formulate QUBO
 # 3. Solve it.
 
-for xyz in ['_try1', '_try2', '_try3']:
+for xyz in ['_try4', '_try5']:
 
     # Results are stored on a specific folder
-    folder_name = f'scenarioB2_N64_Pformulated_Cformulated1.000_Allocated_clique_annealer{xyz}'
+    folder_name = f'scenarioB2_N64_Pformulated_Cformulated1.000_Allocated_default_annealer{xyz}'
     # Check if folder exists and creates if not
     if not os.path.exists('results/' + folder_name):
         os.makedirs('results/' + folder_name)
@@ -85,7 +85,7 @@ for xyz in ['_try1', '_try2', '_try3']:
     # Get sampler
     sampler = DWaveSampler()
     print_var('quota_conversion_rate', sampler.properties['quota_conversion_rate'])
-    embedding_type = 'clique'
+    embedding_type = 'normal'
 
     # Get embedding
     f = open(f'data/embedding_{embedding_type}N{N}.json')

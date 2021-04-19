@@ -333,20 +333,21 @@ So far, we used the `default` embedding. D-Wave offers another embedding option,
 
 | Embedding      | N16   | N32   | N64   |
 | -------------- | ----- | ----- | ----- |
-| `default` try1 | 1.057 | 1.165 | 1.593 |
-| `default` try2 | 1.039 | 1.275 | 1.548 |
-| `default` try3 | 1.072 | 1.275 | 1.568 |
-| `clique` try1  | 1.092 | 1.316 | 1.546 |
-| `clique` try2  | 1.092 | 1.320 | 1.510 |
-| `clique` try3  | 1.155 | 1.381 | 1.428 |
+| `default` try1 | 1,057 | 1,165 | 1,593 |
+| `default` try2 | 1,039 | 1,275 | 1,548 |
+| `default` try3 | 1,072 | 1,275 | 1,568 |
+| `default` try4 | 1,017 | 1,290 | 1,487 |
+| `default` try5 | 1,098 | 1,252 | 1,335 |
+| `clique` try1  | 1,092 | 1,316 | 1,546 |
+| `clique` try2  | 1,092 | 1,320 | 1,510 |
+| `clique` try3  | 1,155 | 1,381 | 1,428 |
+| `clique` try4  | 1,126 | 1,316 | 1,577 |
+| `clique` try5  | 1,092 | 1,254 | 1,518 |
 
-Averaging those results:
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N32.png "N32")
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N64.png "N64")
 
-| N  | Default | Clique | *Difference* |
-| -- | ------- | ------ | ------------ |
-| 16 | 1.056   | 1.113  | +0.057       |
-| 32 | 1.238   | 1.339  | +0.101       |
-| 64 | 1.570   | 1.495  | -0.075       |
 
 
 ## Scenario A3 - Dataset **UNFINISHED AND NEEDS CSV FIX!**

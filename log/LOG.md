@@ -19,13 +19,12 @@
 | **A1**    | **N**               | **March 23 - March 29** |
 | **B1**    | **Chain Strength** | **March 30 - April 5**   |
 | **A2**    | **B**               | **April 6 - April 12**  |
-| B3        | Shots               | April 6 - April 12       |
+| **B3**    | **Shots**           | **April 13 - April 19** |
 | B2        | Embedding           | April 13 - April 19      |
 | B4        | Annealing           | April 20 - April 26      |
 | A3        | Datasets            | April 27 - May 3         |
 
 ## Sidenotes to research about
-- Scenario A1 epsilon values appear to follow a linear trend: `y = (x-8) * 0.0142227624 + 1`
 - Find what is the maximum `N` value that is supported by dwave
 
 ## Scenario A1 - N
@@ -251,7 +250,7 @@ Behavior for all `N` values is hard to grasp. Nonetheless, budget fraction is a 
 The previous scenario, A2, made us wonder about the number of samples. That is, there is a possibility that the cases where B is farthest from `B=0.5` have worse performance because of having less values of `q` and thus less samples taken.
 Therefore, we pose a question: Is it better to increase the number of shots per value of `q` or to add more values of `q` to be executed?
 
-Since the results so far seem to have a good coverage of the efficient frontier, but still far from it, we believe that the issue is related to the number of samples per value of `q`. Hence, we are going to repeat the previous scenario with a new methodology to define the number of samples per value of `q`.
+Since the results so far seem to have a good coverage of the efficient frontier, but still far from it, we believe that the issue is related to the number of samples per value of `q`. Hence, we are going to repeat the previous scenario with a new methodology to define the number of samples per value of `q`. This methodology is called `Allocated`.
 
 Initially, each value of `q` had 1000 shots, i.e., 1000 samples taken. This time, each case will have a total allocated number of shots for every value of `q`. For example, if we have a case with three values of `q` and another case with five values of `q`, then, with a total allocation of 5000 shots per case, then the first case will have 1666 shots per value, while the second case will have 1000 shots per value.
 
@@ -289,8 +288,8 @@ Based on this methodology, we will start with a total allocation of 15000 shots,
 
 We obtained the following epsilon indicators:
 
-| Budget fraction | N16 (AvgChainBreak) | N32 (AvgChainBreak) | N64 (AvgChainBreak) |
-| --------------- | ------------------- | ------------------- | ------------------- |
+| Budget fraction | N16   | N32   | N64   |
+| --------------- | ----- | ----- | ----- |
 | 0,1             | 1,000 | 1,069 | 1,667 |
 | 0,2             | 1,000 | 1,295 | 2,434 |
 | 0,3             | 1,000 | 1,293 | 1,651 |
@@ -301,13 +300,54 @@ We obtained the following epsilon indicators:
 | 0,8             | 1,000 | 1,413 | inf   |
 | 0,9             | 1,000 | inf   | inf   |
 
+However, we need to take into account that in real case scenarios, we won't be able to have these carefully chosen values of q. In fact, they were discovered because it was feasible to classically solve these scenarios! For this reason, we introduce another methodology, called `FullCoverage`. This methodology will execute the same values of q for every scenario. The list of values of q is based on guesswork and gained experience with the given scenarios: `0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1000`. As with `Allocated` methodology, this list is allocated to a total of 15000 samples (500 per value of q).
+
+| Budget fraction | N16   | N32   | N64   |
+| --------------- | ----- | ----- | ----- |
+| 0,1             | 1,000 | 1,182 | 5,000 |
+| 0,2             | 1,000 | 1,371 | 4,625 |
+| 0,3             | 1,000 | 1,341 | 1,739 |
+| 0,4             | 1,117 | 1,290 | 1,625 |
+| 0,5             | 1,072 | 1,330 | 1,530 |
+| 0,6             | 1,125 | 1,186 | 1,389 |
+| 0,7             | 1,162 | 1,358 | 1,626 |
+| 0,8             | 1,005 | 4,442 | inf   |
+| 0,9             | 1,000 | 1,374 | inf   |
+
+
 ![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N16.png "N16")
 ![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N32.png "N32")
 ![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N64.png "N64")
 
 ### Key Takeaways:
 
-Overally, the new methodology improved every case.
+Compared to the previous methodology, called `Simple`, the `Allocated` methodology brings improvements in almost every case. This is expected, since all the cases had their number of samples increased, minus the case `N=64 B=0.5`, which keeps the same number of samples (and also has the same performance in both methodologies).
+
+When looking at the more "realistic" `FullCover` methodology, the results are not the best, but don't fall shortly compared to `Allocated`.
+
+For the next scenarios, we are going to use the `Allocated` methodology, as well as `B=0.5`.
+
+## Scenario B2 - Embedding
+
+So far, we used the `default` embedding. D-Wave offers another embedding option, called `clique` embedding, which is going to be compared.
+
+| Embedding      | N16   | N32   | N64   |
+| -------------- | ----- | ----- | ----- |
+| `default` try1 | 1.057 | 1.165 | 1.593 |
+| `default` try2 | 1.039 | 1.275 | 1.548 |
+| `default` try3 | 1.072 | 1.275 | 1.568 |
+| `clique` try1  | 1.092 | 1.316 | 1.546 |
+| `clique` try2  | 1.092 | 1.320 | 1.510 |
+| `clique` try3  | 1.155 | 1.381 | 1.428 |
+
+Averaging those results:
+
+| N  | Default | Clique | *Difference* |
+| -- | ------- | ------ | ------------ |
+| 16 | 1.056   | 1.113  | +0.057       |
+| 32 | 1.238   | 1.339  | +0.101       |
+| 64 | 1.570   | 1.495  | -0.075       |
+
 
 ## Scenario A3 - Dataset **UNFINISHED AND NEEDS CSV FIX!**
 
@@ -322,14 +362,14 @@ The results are executed for sizes `N=32` and `N=64`, with parameters `chain_str
 | `N64_diversified`         | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 |
 | `N64_strongly_correlated` | 0, 0.1, 0.2, 0.3, 0.6, 1, 2, 3, 4, 6, 10, 20, 80             |
 
-| Dataset                    | N32 (AvgChainBreak) (AvgFractionValid) | N64 (AvgChainBreak) (AvgFractionValid) |
+| Dataset                    | N32 (AvgChainBreak) | N64 (AvgChainBreak) |
 | -------------------------- | ------------------- | ------------------- |
-| `diversified` try1         | 1.433 (0.00075) | 1.516 (0.00409) |
-| `diversified` try2         | 1.505 (0.00092) | 1.435 (0.00413) |
-| `diversified` try3         | 1.500 (0.00074) | 1.501 (0.00384) |
-| `strongly_correlated` try1 | 1.300 (0.00093) | 1.701 (0.00370) |
-| `strongly_correlated` try2 | 1.352 (0.00103) | 1.641 (0.00363) |
-| `strongly_correlated` try3 | 1.482 (0.00076) | 1.668 (0.00360) |
+| `diversified` try1         | 1.433 (0.00075)     | 1.516 (0.00409)     |
+| `diversified` try2         | 1.505 (0.00092)     | 1.435 (0.00413)     |
+| `diversified` try3         | 1.500 (0.00074)     | 1.501 (0.00384)     |
+| `strongly_correlated` try1 | 1.300 (0.00093)     | 1.701 (0.00370)     |
+| `strongly_correlated` try2 | 1.352 (0.00103)     | 1.641 (0.00363)     |
+| `strongly_correlated` try3 | 1.482 (0.00076)     | 1.668 (0.00360)     |
 
 ### Key Takeaways:
 

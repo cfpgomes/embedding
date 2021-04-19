@@ -1,10 +1,11 @@
 from dwave.system import DWaveSampler
 from dwave.embedding.pegasus import find_clique_embedding
+import matplotlib.pyplot as plt
 import dwave_networkx as dnx
 import json
 
 # Step 1: Get parameters N from data
-with open('data/outN50q1B25P100.json') as f:
+with open('data/out_diversified_N8_p1mo_i1d.json') as f:
     data = json.load(f)
 
     N = int(data['N'])               # Universe size

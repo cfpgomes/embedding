@@ -236,6 +236,8 @@ With those results, we obtained the following epsilon indicators:
 | 0,8             | 1,005 (0,00031)     | 1,408 (0,00144)     | inf   (0,00462)     |
 | 0,9             | 1,103 (0,00034)     | inf   (0,00129)     | inf   (0,00447)     |
 
+**Gráficos com os resultados deste cenário estão no cenário seguinte**
+
 ### Key Takeaways:
 
 The first thing I notice is that there is a high chain break fraction when the budget is `B=0.1`. Afterwards, it attains a consistently low fraction, with small variation.

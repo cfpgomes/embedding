@@ -80,14 +80,14 @@ for i in range(N2):
 
 P2 = -q * min_sigma2 + max_mu2
 
-B1 = int(N1*0.5)
+B1 = int(N1*0.1)
 print(f'B1:{B1}')
-classical_solutions1_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions1_foldername = 'results/scenarioA2_N64_B0.1_classical'
 classical_solutions1 = []
 
-B2 = int(N2*0.5)
+B2 = int(N2*0.1)
 print(f'B2:{B2}')
-classical_solutions2_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions2_foldername = 'results/scenarioA2_N64_B0.1_classical'
 classical_solutions2 = []
 
 for filename in os.listdir(classical_solutions1_foldername):
@@ -104,8 +104,8 @@ for filename in os.listdir(classical_solutions2_foldername):
             classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N2, B2, mu2, sigma2, P2), 'expected_return': get_expected_return(
                 data['solution'], N2, B2, mu2), 'volatility': get_volatility(data['solution'], N2, B2, sigma2), 'equals_budget': equals_budget(data['solution'], N2, B2)})
 
-set1_foldername = 'results/scenarioB3_N64_Pformulated_Cformulated1.000_B0.5_T15000_annealer_FIXED'
-set2_foldername = 'results/scenarioB3_N64_B0.5_random'
+set1_foldername = 'results/scenarioB3_N64_Pformulated_Cformulated1.000_B0.1_T15000_annealer'
+set2_foldername = 'results/scenarioB3_N64_Pformulated_Cformulated1.000_B0.1_T15000_annealer' + '_FIXED'
 
 set1_samples = []
 set2_samples = []
@@ -159,7 +159,7 @@ set2_valid_samples = list(filter(lambda x: x['equals_budget'], set2_samples))
 ax1.scatter(list(map(lambda x: x['volatility'], set1_valid_samples)), list(
     map(lambda x: x['expected_return'], set1_valid_samples)), color='silver', label='annealer', s=4)
 ax2.scatter(list(map(lambda x: x['volatility'], set2_valid_samples)), list(
-    map(lambda x: x['expected_return'], set2_valid_samples)), color='silver', label='random', s=4)
+    map(lambda x: x['expected_return'], set2_valid_samples)), color='silver', label='annealer', s=4)
 
 ax1.scatter(list(map(lambda x: x['volatility'], set1_dominating_samples)), list(
     map(lambda x: x['expected_return'], set1_dominating_samples)), color='red', label='annealer best')
@@ -167,7 +167,7 @@ ax1.scatter(list(map(lambda x: x['volatility'], classical_solutions1)), list(
     map(lambda x: x['expected_return'], classical_solutions1)), color='blue', label='classical', s=4)
 
 ax2.scatter(list(map(lambda x: x['volatility'], set2_dominating_samples)), list(
-    map(lambda x: x['expected_return'], set2_dominating_samples)), color='red', label='random best')
+    map(lambda x: x['expected_return'], set2_dominating_samples)), color='red', label='annealer best')
 ax2.scatter(list(map(lambda x: x['volatility'], classical_solutions2)), list(
     map(lambda x: x['expected_return'], classical_solutions2)), color='blue', label='classical', s=4)
 
@@ -191,28 +191,35 @@ for b in classical_solutions2:
     ax2_epsilon = max(ax2_epsilon, tmp)
 
 # Tidy up the figure
-(_, ax1_right) = ax1.get_xlim()
-(_, ax2_right) = ax2.get_xlim()
-(_, ax1_top) = ax1.get_ylim()
-(_, ax2_top) = ax2.get_ylim()
+(ax1_left, ax1_right) = ax1.get_xlim()
+(ax2_left, ax2_right) = ax2.get_xlim()
+(ax1_bottom, ax1_top) = ax1.get_ylim()
+(ax2_bottom, ax2_top) = ax2.get_ylim()
 
 right = max(ax1_right, ax2_right)
+left = min(ax1_left, ax2_left)
 top = max(ax1_top, ax2_top)
+bottom = min(ax1_bottom, ax2_bottom)
+
+left = min(0, left)
+bottom = min(0, bottom)
 
 ax1.grid(True)
-ax1.set_xlim(0, right)
-ax1.set_ylim(0, top)
+ax1.set_xlim(left, right)
+ax1.set_ylim(bottom, top)
 ax1.legend()
 ax1.set_title(f'{set1_foldername}\nε = {ax1_epsilon}', size='xx-small')
 ax1.set_ylabel('Expected Return')
 ax1.set_xlabel('Volatility')
 ax2.grid(True)
-ax2.set_xlim(0, right)
-ax2.set_ylim(0, top)
+ax2.set_xlim(left, right)
+ax2.set_ylim(bottom, top)
 ax2.legend()
 ax2.set_title(f'{set2_foldername}\nε = {ax2_epsilon}', size='xx-small')
 ax2.set_ylabel('Expected Return')
 ax2.set_xlabel('Volatility')
+
+print(f'{ax1_epsilon:0.3f}\n{ax2_epsilon:0.3f}')
 
 # Get timestamp
 date_obj = datetime.now()

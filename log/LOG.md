@@ -39,14 +39,14 @@ For this scenario, we used the "diversified" dataset and 1000 shots per executio
 | N  | q values                                                     | Epsilon Indicator |
 | -- | ------------------------------------------------------------ | ----------------- |
 | 8  | 0, 11, 20, 54                                                | 1.0               |
-| 16 | 0, 2, 6, 100, 500                                            | 1.114             |
-| 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 1.340             |
-| 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 1.755             |
+| 16 | 0, 2, 6, 100, 500                                            | 1.070             |
+| 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 1.967             |
+| 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 2.022             |
 
-![N8](C:\Users\Claubit\Documents\GitHub\embedding\log\A1\N8.png "N8")
-![N16](C:\Users\Claubit\Documents\GitHub\embedding\log\A1\N16.png "N16")
-![N32](C:\Users\Claubit\Documents\GitHub\embedding\log\A1\N32.png "N32")
-![N64](C:\Users\Claubit\Documents\GitHub\embedding\log\A1\N64.png "N64")
+![N8](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N8.png "N8")
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N32.png "N32")
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -100,62 +100,62 @@ Finally, we obtained the following epsilon indicators (Lower is better):
 
 | Chain strength | N8    | N16   | N32   | N64   |
 | -------------- | ----- | ----- | ----- | ----- |
-| default value  | 1,000 | 1,114 | 1,340 | 1,755 |
-| 0,125 * maxAbs | 1,368 | 6,672 | 1,426 | 1,640 |
-| 0,250 * maxAbs | 1,000 | 1,167 | 1,245 | 1,504 |
-| 0,375 * maxAbs | 1,000 | 1,176 | 1,275 | 1,429 |
-| 0,500 * maxAbs | 1,000 | 1,177 | 1,284 | 1,524 |
-| 0,625 * maxAbs | 1,000 | 1,208 | 1,325 | 1,388 |
-| 0,750 * maxAbs | 1,000 | 1,164 | 1,364 | 1,423 |
-| 0,875 * maxAbs | 1,000 | 1,208 | 1,372 | 1,358 |
-| 1,000 * maxAbs | 1,000 | 1,140 | 1,567 | 1,520 |
-| 1,125 * maxAbs | 1,000 | 1,182 | 1,350 | 1,421 |
-| 1,250 * maxAbs | 1,000 | 1,218 | 1,457 | 1,518 |
-| 1,375 * maxAbs | 1,000 | 1,130 | 1,462 | 1,488 |
-| 1,500 * maxAbs | 1,000 | 1,182 | 1,445 | 1,583 |
+| default value  | 1,000 | 1,070 | 1,967 | 2,022 |
+| 0,125 * maxAbs | 1,368 | 18,844| 1,767 | 1,977 |
+| 0,250 * maxAbs | 1,000 | 1,075 | 1,178 | 1,474 |
+| 0,375 * maxAbs | 1,000 | 1,057 | 1,203 | 1,580 |
+| 0,500 * maxAbs | 1,000 | 1,099 | 1,331 | 1,500 |
+| 0,625 * maxAbs | 1,000 | 1,098 | 1,269 | 1,410 |
+| 0,750 * maxAbs | 1,000 | 1,120 | 1,429 | 1,523 |
+| 0,875 * maxAbs | 1,000 | 1,123 | 1,430 | 1,587 |
+| 1,000 * maxAbs | 1,000 | 1,119 | 1,250 | 1,526 |
+| 1,125 * maxAbs | 1,000 | 1,099 | 1,142 | 1,539 |
+| 1,250 * maxAbs | 1,000 | 1,092 | 1,355 | 1,610 |
+| 1,375 * maxAbs | 1,000 | 1,110 | 1,352 | 1,465 |
+| 1,500 * maxAbs | 1,000 | 1,101 | 1,345 | 1,423 |
 
 To validate such results, this scenario has been repeated for `N=16`, `N=32`, and `N=64`.
 
 | Chain strength | N16   | N32   | N64   |
 | -------------- | ----- | ----- | ----- |
-| default value  | 1,072 | 1,535 | 1,830 |
-| 0,125 * maxAbs | 1,858 | 1,426 | 1,726 |
-| 0,250 * maxAbs | 1,115 | 1,363 | 1,459 |
-| 0,375 * maxAbs | 1,176 | 1,292 | 1,330 |
-| 0,500 * maxAbs | 1,208 | 1,416 | 1,383 |
-| 0,625 * maxAbs | 1,147 | 1,466 | 1,485 |
-| 0,750 * maxAbs | 1,115 | 1,319 | 1,485 |
-| 0,875 * maxAbs | 1,137 | 1,334 | 1,486 |
-| 1,000 * maxAbs | 1,207 | 1,445 | 1,543 |
-| 1,125 * maxAbs | 1,114 | 1,324 | 1,517 |
-| 1,250 * maxAbs | 1,130 | 1,454 | 1,491 |
-| 1,375 * maxAbs | 1,130 | 1,348 | 1,472 |
-| 1,500 * maxAbs | 1,133 | 1,477 | 1,485 |
+| default value  | 1,092 | 1,739 | 1,981 |
+| 0,125 * maxAbs | 2,314 | 1,813 | 2,185 |
+| 0,250 * maxAbs | 1,098 | 1,256 | 1,550 |
+| 0,375 * maxAbs | 1,109 | 1,336 | 1,492 |
+| 0,500 * maxAbs | 1,114 | 1,257 | 1,502 |
+| 0,625 * maxAbs | 1,110 | 1,322 | 1,503 |
+| 0,750 * maxAbs | 1,077 | 1,299 | 1,516 |
+| 0,875 * maxAbs | 1,120 | 1,307 | 1,489 |
+| 1,000 * maxAbs | 1,141 | 1,350 | 1,485 |
+| 1,125 * maxAbs | 1,114 | 1,327 | 1,430 |
+| 1,250 * maxAbs | 1,101 | 1,266 | 1,549 |
+| 1,375 * maxAbs | 1,169 | 1,198 | 1,508 |
+| 1,500 * maxAbs | 1,126 | 1,325 | 1,597 |
 
 And one more time:
 
 | Chain strength | N16   | N32   | N64   |
 | -------------- | ----- | ----- | ----- |
-| default value  | 1,062 | 1,364 | 1,785 |
-| 0,125 * maxAbs | 3,627 | 1,426 | 1,641 |
-| 0,250 * maxAbs | 1,194 | 1,330 | 1,539 |
-| 0,375 * maxAbs | 1,171 | 1,527 | 1,384 |
-| 0,500 * maxAbs | 1,179 | 1,261 | 1,495 |
-| 0,625 * maxAbs | 1,171 | 1,276 | 1,503 |
-| 0,750 * maxAbs | 1,166 | 1,374 | 1,474 |
-| 0,875 * maxAbs | 1,176 | 1,377 | 1,409 |
-| 1,000 * maxAbs | 1,147 | 1,313 | 1,470 |
-| 1,125 * maxAbs | 1,115 | 1,389 | 1,547 |
-| 1,250 * maxAbs | 1,246 | 1,563 | 1,568 |
-| 1,375 * maxAbs | 1,231 | 1,495 | 1,538 |
-| 1,500 * maxAbs | 1,145 | 1,531 | 1,362 |
-| 5,000 * maxAbs | 1.250 | 1,249 | 1,468 |
+| default value  | 1,070 | 1,728 | 1,988 |
+| 0,125 * maxAbs | 1,551 | 1,760 | 1,906 |
+| 0,250 * maxAbs | 1,070 | 1,266 | 1,462 |
+| 0,375 * maxAbs | 1,032 | 1,235 | 1,583 |
+| 0,500 * maxAbs | 1,040 | 1,325 | 1,514 |
+| 0,625 * maxAbs | 1,074 | 1,332 | 1,551 |
+| 0,750 * maxAbs | 1,141 | 1,270 | 1,458 |
+| 0,875 * maxAbs | 1,134 | 1,229 | 1,515 |
+| 1,000 * maxAbs | 1,141 | 1,252 | 1,536 |
+| 1,125 * maxAbs | 1,101 | 1,248 | 1,547 |
+| 1,250 * maxAbs | 1,092 | 1,303 | 1,523 |
+| 1,375 * maxAbs | 1,092 | 1,247 | 1,560 |
+| 1,500 * maxAbs | 1,120 | 1,391 | 1,519 |
+| 5,000 * maxAbs | 1.177 | 1,297 | 1,627 |
 
 The results are summarized in the following charts. 
 
-![N16](C:\Users\Claubit\Documents\GitHub\embedding\log\B1\N16.png "N16")
-![N32](C:\Users\Claubit\Documents\GitHub\embedding\log\B1\N32.png "N32")
-![N64](C:\Users\Claubit\Documents\GitHub\embedding\log\B1\N64.png "N64")
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N32.png "N32")
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -177,7 +177,7 @@ It seems that, after this very weak chain strength, the following values of chai
 
 In the end, the results suggest that it is okay to choose any value that is part of the slow climb. However, from theory, we know that we should avoid any value over `1.000 * maxAbs`, since it scales down the problem.
 
-Therefore, for `N=16`, a safe range seems to be between the default value and `1.000 * maxAbs`. For `N=32`, this range seems to be between `0.250 * maxAbs` and `1.000 * maxAbs`. Finally, for `N=64`, this range seems to be between `0.375 * maxAbs` and `1.000 * maxAbs`.
+Therefore, for all `N` values, a safe range seems to be between `0.250 * maxAbs` and `1.000 * maxAbs`.
 
 Based on those findings, the case `N=8` will not be tested in the remaining scenarios, since the annealer already achieved optimality.
 
@@ -226,15 +226,15 @@ With those results, we obtained the following epsilon indicators:
 
 | Budget fraction | N16 (AvgChainBreak) | N32 (AvgChainBreak) | N64 (AvgChainBreak) |
 | --------------- | ------------------- | ------------------- | ------------------- |
-| 0,1             | 1,000 (0,00406)     | 1,668 (0,00979)     | 1,507 (0,01572)     |
-| 0,2             | 1,017 (0,00048)     | 1,274 (0,00151)     | 2,379 (0,00493)     |
-| 0,3             | 1,026 (0,00044)     | 1,427 (0,00152)     | 1,406 (0,00473)     |
-| 0,4             | 1,172 (0,00024)     | 1,253 (0,00134)     | 1,482 (0,00452)     |
-| 0,5             | 1,211 (0,00031)     | 1,297 (0,00127)     | 1,465 (0,00484)     |
-| 0,6             | 1,174 (0,00033)     | 1,317 (0,00141)     | 1,533 (0,00470)     |
-| 0,7             | 1,042 (0,00038)     | 1,960 (0,00108)     | 2,403 (0,00464)     |
-| 0,8             | 1,014 (0,00031)     | 1,419 (0,00144)     | inf   (0,00462)     |
-| 0,9             | 1,120 (0,00034)     | inf   (0,00129)     | inf   (0,00447)     |
+| 0,1             | 1,000 (0,00406)     | 1,142 (0,00979)     | 1,846 (0,01572)     |
+| 0,2             | 1,000 (0,00048)     | 1,334 (0,00151)     | 2,929 (0,00493)     |
+| 0,3             | 1,026 (0,00044)     | 1,373 (0,00152)     | 1,750 (0,00473)     |
+| 0,4             | 1,113 (0,00024)     | 1,281 (0,00134)     | 1,640 (0,00452)     |
+| 0,5             | 1,075 (0,00031)     | 1,311 (0,00127)     | 1,513 (0,00484)     |
+| 0,6             | 1,146 (0,00033)     | 1,293 (0,00141)     | 1,441 (0,00470)     |
+| 0,7             | 1,162 (0,00038)     | 1,421 (0,00108)     | 1,907 (0,00464)     |
+| 0,8             | 1,005 (0,00031)     | 1,408 (0,00144)     | inf   (0,00462)     |
+| 0,9             | 1,103 (0,00034)     | inf   (0,00129)     | inf   (0,00447)     |
 
 ### Key Takeaways:
 
@@ -242,9 +242,7 @@ The first thing I notice is that there is a high chain break fraction when the b
 
 For `N=32` and `N=64`, as expected from theory, the epsilon indicator is lower when the budget is or is close to `B=0.5`, since this value has the highest number of admissible solutions.
 
-Behavior for `N=16` is hard to grasp. I believe that `N=16` is a too small problem to get any significant benefit from changing parameters.
-
-Nonetheless, budget fraction is still a parameter that is particular to each practitioner.
+Behavior for all `N` values is hard to grasp. Nonetheless, budget fraction is a parameter that is particular to each practitioner.
 
 ## Scenario B3 - Shots
 
@@ -291,18 +289,25 @@ We obtained the following epsilon indicators:
 
 | Budget fraction | N16 (AvgChainBreak) | N32 (AvgChainBreak) | N64 (AvgChainBreak) |
 | --------------- | ------------------- | ------------------- | ------------------- |
-| 0,1             | 1,000 | 1,227 | 2,681 |
-| 0,2             | 1,000 | 1,501 | 2,224 |
-| 0,3             | 1,019 | 1,429 | 1,502 |
-| 0,4             | 1,035 | 1,289 | 1,496 |
-| 0,5             | 1,147 | 1,409 | 1,542 |
-| 0,6             | 1,146 | 1,318 | 1,480 |
-| 0,7             | 1,013 | 1,833 | 1,954 |
-| 0,8             | 1,476 | 1,752 | inf   |
-| 0,9             | 1,032 | inf   | inf   |
+| 0,1             | 1,000 | 1,069 | 1,667 |
+| 0,2             | 1,000 | 1,295 | 2,434 |
+| 0,3             | 1,000 | 1,293 | 1,651 |
+| 0,4             | 1,030 | 1,277 | 1,632 |
+| 0,5             | 1,008 | 1,271 | 1,507 |
+| 0,6             | 1,072 | 1,298 | 1,521 |
+| 0,7             | 1,072 | 1,333 | 1,926 |
+| 0,8             | 1,000 | 1,413 | inf   |
+| 0,9             | 1,000 | inf   | inf   |
 
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N32.png "N32")
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N64.png "N64")
 
-## Scenario A3 - Dataset
+### Key Takeaways:
+
+Overally, the new methodology improved every case.
+
+## Scenario A3 - Dataset **UNFINISHED AND NEEDS CSV FIX!**
 
 For this scenario, we will study the influence from the dataset. Previous scenarios used a `diversified` dataset, with assets as uncorrelated as possible. Therefore, we are going to introduce another dataset, called `strongly_correlated`, from the same source, however, with strongly correlated assets. That is, with assets from the same sub-industry.
 

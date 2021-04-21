@@ -180,7 +180,7 @@ Therefore, for all `N` values, a safe range seems to be between `0.250 * maxAbs`
 
 Based on those findings, the case `N=8` will not be tested in the remaining scenarios, since the annealer already achieved optimality.
 
-## Scenario A2 - B
+## Scenario A2 - B **OLD**
 
 For this scenario, we will be looking at how different budgets affect the performance of the annealer. Therefore, different fractions of `B` are going to be tested: 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, and 0.9.
 
@@ -245,7 +245,7 @@ For `N=32` and `N=64`, as expected from theory, the epsilon indicator is lower w
 
 Behavior for all `N` values is hard to grasp. Nonetheless, budget fraction is a parameter that is particular to each practitioner.
 
-## Scenario B3 - Shots
+## Scenario B3 - Shots **OLD**
 
 The previous scenario, A2, made us wonder about the number of samples. That is, there is a possibility that the cases where B is farthest from `B=0.5` have worse performance because of having less values of `q` and thus less samples taken.
 Therefore, we pose a question: Is it better to increase the number of shots per value of `q` or to add more values of `q` to be executed?
@@ -319,6 +319,7 @@ However, we need to take into account that in real case scenarios, we won't be a
 ![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N32.png "N32")
 ![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N64.png "N64")
 
+
 ### Key Takeaways:
 
 Compared to the previous methodology, called `Simple`, the `Allocated` methodology brings improvements in almost every case. This is expected, since all the cases had their number of samples increased, minus the case `N=64 B=0.5`, which keeps the same number of samples (and also has the same performance in both methodologies).
@@ -326,6 +327,23 @@ Compared to the previous methodology, called `Simple`, the `Allocated` methodolo
 When looking at the more "realistic" `FullCover` methodology, the results are not the best, but don't fall shortly compared to `Allocated`.
 
 For the next scenarios, we are going to use the `Allocated` methodology, as well as `B=0.5`.
+
+## Scenario A2 and B3 - B and Shots
+
+2 factors: B and Shots
+
+"B" factor has three levels: Small Budget, Medium Budget and Large Budget (fractions 0.2, 0.5, and 0.8, respectively).
+
+"Shots" factor has three levels: Less directions and More shots per direction, Medium directions and Medium shots per direction, More directions and Less shots per direction (codenamed `lessDmoreS`, `mediumDmediumS`, and `moreDlessS`, respectively).
+
+Starting with N=64:
+
+|     | `lessDmoreS` | `mediumDmediumS` | `moreDlessS` |
+| --- | ------------ | ---------------- | ------------ |
+| 0,2 | 3.096        | 1.558            | 6.282        |
+| 0,5 | 1.580        | 1.486            | 1.505        |
+| 0,8 | inf          | inf              | inf          |
+
 
 ## Scenario B2 - Embedding
 
@@ -347,7 +365,6 @@ So far, we used the `default` embedding. D-Wave offers another embedding option,
 ![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N16.png "N16")
 ![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N32.png "N32")
 ![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N64.png "N64")
-
 
 
 ## Scenario A3 - Dataset **UNFINISHED AND NEEDS CSV FIX!**

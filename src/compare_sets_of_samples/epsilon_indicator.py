@@ -80,14 +80,14 @@ for i in range(N2):
 
 P2 = -q * min_sigma2 + max_mu2
 
-B1 = int(N1*0.5)
+B1 = int(N1*0.8)
 print(f'B1:{B1}')
-classical_solutions1_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions1_foldername = 'results/scenarioA2_N64_B0.8_classical'
 classical_solutions1 = []
 
-B2 = int(N2*0.5)
+B2 = int(N2*0.8)
 print(f'B2:{B2}')
-classical_solutions2_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions2_foldername = 'results/scenarioA2_N64_B0.8_classical'
 classical_solutions2 = []
 
 for filename in os.listdir(classical_solutions1_foldername):
@@ -104,8 +104,8 @@ for filename in os.listdir(classical_solutions2_foldername):
             classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N2, B2, mu2, sigma2, P2), 'expected_return': get_expected_return(
                 data['solution'], N2, B2, mu2), 'volatility': get_volatility(data['solution'], N2, B2, sigma2), 'equals_budget': equals_budget(data['solution'], N2, B2)})
 
-set1_foldername = 'results/scenarioB2_N64_Pformulated_Cformulated1.000_Allocated_clique_annealer_try4'
-set2_foldername = 'results/scenarioB2_N64_Pformulated_Cformulated1.000_Allocated_clique_annealer_try5'
+set1_foldername = 'results/scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B0.8_lessDmoreS_annealer'
+set2_foldername = 'results/scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B0.8_moreDlessS_annealer'
 
 set1_samples = []
 set2_samples = []

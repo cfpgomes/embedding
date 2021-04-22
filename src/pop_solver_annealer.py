@@ -24,7 +24,7 @@ def print_var(variable_name, variable):
 for factor1 in [0.2, 0.5, 0.8]:
     for factor2 in ['lessDmoreS', 'mediumDmediumS', 'moreDlessS']:
         # Results are stored on a specific folder
-        folder_name = f'scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B{factor1}_{factor2}_annealer_try3'
+        folder_name = f'scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B{factor1}_{factor2}_annealer_try5'
         # Check if folder exists and creates if not
         if not os.path.exists('results/' + folder_name):
             os.makedirs('results/' + folder_name)

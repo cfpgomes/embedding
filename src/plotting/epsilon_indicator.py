@@ -33,8 +33,8 @@ mu2 = None
 sigma1 = None
 sigma2 = None
 
-data1_filename = 'data/out_diversified_N32_p1mo_i1d.json'
-data2_filename = 'data/out_diversified_N32_p1mo_i1d.json'
+data1_filename = 'data/out_diversified_N64_p1mo_i1d.json'
+data2_filename = 'data/out_diversified_N64_p1mo_i1d.json'
 
 with open(data1_filename) as jsonfile:
     data = json.load(jsonfile)
@@ -80,14 +80,14 @@ for i in range(N2):
 
 P2 = -q * min_sigma2 + max_mu2
 
-B1 = int(N1*0.5)
+B1 = int(N1*0.2)
 print(f'B1:{B1}')
-classical_solutions1_foldername = 'results/scenarioA1_N32_classical'
+classical_solutions1_foldername = 'results/scenarioA2_N64_B0.2_classical'
 classical_solutions1 = []
 
-B2 = int(N2*0.5)
+B2 = int(N2*0.2)
 print(f'B2:{B2}')
-classical_solutions2_foldername = 'results/scenarioA1_N32_classical'
+classical_solutions2_foldername = 'results/scenarioA2_N64_B0.2_classical'
 classical_solutions2 = []
 
 for filename in os.listdir(classical_solutions1_foldername):
@@ -104,8 +104,8 @@ for filename in os.listdir(classical_solutions2_foldername):
             classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N2, B2, mu2, sigma2, P2), 'expected_return': get_expected_return(
                 data['solution'], N2, B2, mu2), 'volatility': get_volatility(data['solution'], N2, B2, sigma2), 'equals_budget': equals_budget(data['solution'], N2, B2)})
 
-set1_foldername = 'results/scenarioA2B3_N32_Pformulated_Cformulated1.000_Allocated_B0.8_moreDlessS_annealer_try5'
-set2_foldername = 'results/scenarioA2B3_N32_Pformulated_Cformulated1.000_Allocated_B0.8_moreDlessS_annealer_try4'
+set1_foldername = 'results/scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B0.2_lessDmoreS_annealer_try5'
+set2_foldername = 'results/scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B0.2_lessDmoreS_annealer_try4'
 
 set1_samples = []
 set2_samples = []
@@ -137,14 +137,22 @@ print(len(set2_samples))
 # 2 columns, 9 per 6 inches figure
 fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(9, 6))
 
+# Exclude non complying with budget
 set1_dominating_samples = list(
     filter(lambda x: x['equals_budget'], set1_samples))
 set2_dominating_samples = list(
     filter(lambda x: x['equals_budget'], set2_samples))
 
+# Exclude below zero return
+set1_dominating_samples = list(
+    filter(lambda x: x['expected_return'] > 0, set1_dominating_samples))
+set2_dominating_samples = list(
+    filter(lambda x: x['expected_return'] > 0, set2_dominating_samples))
+
 print(len(set1_dominating_samples))
 print(len(set2_dominating_samples))
 
+# Exclude dominated
 set1_dominating_samples = list(filter(lambda x: not any(
     (x['expected_return'] < y['expected_return'] and x['volatility'] > y['volatility']) for y in set1_dominating_samples), set1_dominating_samples))
 set2_dominating_samples = list(filter(lambda x: not any(
@@ -177,7 +185,8 @@ for b in classical_solutions1:
     tmp = float('inf')
     for a in set1_dominating_samples:
         obj_ret_div = b['expected_return'] / a['expected_return']
-        obj_vol_div = (max_sigma1 - b['volatility']) / (max_sigma1 - a['volatility'])
+        obj_vol_div = (max_sigma1 - b['volatility']) / \
+            (max_sigma1 - a['volatility'])
         tmp = min(tmp, max(obj_ret_div, obj_vol_div))
     ax1_epsilon = max(ax1_epsilon, tmp)
 
@@ -186,7 +195,8 @@ for b in classical_solutions2:
     tmp = float('inf')
     for a in set2_dominating_samples:
         obj_ret_div = b['expected_return'] / a['expected_return']
-        obj_vol_div = (max_sigma2 - b['volatility']) / (max_sigma2 - a['volatility'])
+        obj_vol_div = (max_sigma2 - b['volatility']) / \
+            (max_sigma2 - a['volatility'])
         tmp = min(tmp, max(obj_ret_div, obj_vol_div))
     ax2_epsilon = max(ax2_epsilon, tmp)
 

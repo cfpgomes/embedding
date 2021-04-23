@@ -15,9 +15,9 @@ output_name = f'{scenario_name}_{date}'
 if not os.path.exists('images/' + folder_name):
     os.makedirs('images/' + folder_name)
 
-lessDmoreS = [1.666, 1.674, 1.666, 1.766, 1.803]
-mediumDmediumS = [1.640, 1.691, 1.630, 1.664, 1.579]
-moreDlessS = [1.932, 1.873, 1.682, 1.656, 1.619]
+lessDmoreS = [ 1.988]
+mediumDmediumS = [float('inf'), float('inf'), float('inf'), float('inf'), float('inf')]
+moreDlessS = [float('inf'), float('inf'), float('inf'), float('inf'), float('inf')]
 
 fig1, ax1 = plt.subplots(figsize=(9, 6))
 ax1.set_title(output_name)

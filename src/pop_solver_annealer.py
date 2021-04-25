@@ -24,13 +24,13 @@ def print_var(variable_name, variable):
 for factor1 in [0.2, 0.5, 0.8]:
     for factor2 in ['lessDmoreS', 'mediumDmediumS', 'moreDlessS']:
         # Results are stored on a specific folder
-        folder_name = f'scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B{factor1}_{factor2}_annealer_try5'
+        folder_name = f'scenarioA2B3_N32_Pformulated_Cformulated1.000_Allocated_B{factor1}_{factor2}_annealer_try5'
         # Check if folder exists and creates if not
         if not os.path.exists('results/' + folder_name):
             os.makedirs('results/' + folder_name)
 
         # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-        f = open('data/out_diversified_N64_p1mo_i1d.json')
+        f = open('data/out_diversified_N32_p1mo_i1d.json')
         data = json.load(f)
 
         N = data['N']               # Universe size

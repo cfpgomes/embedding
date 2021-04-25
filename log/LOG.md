@@ -20,7 +20,8 @@
 | **B1**    | **Chain Strength** | **March 30 - April 5**   |
 | **A2**    | **B**               | **April 6 - April 12**  |
 | **B3**    | **Shots**           | **April 13 - April 19** |
-| B2        | Embedding           | April 13 - April 19      |
+| **A2B3**  | **B and Shots**     | **April 20 - April 26** |
+| **B2**    | **Embedding**       | **April 20 - April 26** |
 | B4        | Annealing           | April 20 - April 26      |
 | A3        | Datasets            | April 27 - May 3         |
 
@@ -42,10 +43,10 @@ For this scenario, we used the "diversified" dataset and 1000 shots per executio
 | 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 1.967             |
 | 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 2.022             |
 
-![N8](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N8.png "N8")
-![N16](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N16.png "N16")
-![N32](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N32.png "N32")
-![N64](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N64.png "N64")
+![N8](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N8.png "N8")
+![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N16.png "N16")
+![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N32.png "N32")
+![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -152,9 +153,9 @@ And one more time:
 
 The results are summarized in the following charts. 
 
-![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N16.png "N16")
-![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N32.png "N32")
-![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N64.png "N64")
+![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B1\N16.png "N16")
+![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B1\N32.png "N32")
+![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B1\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -315,9 +316,9 @@ However, we need to take into account that in real case scenarios, we won't be a
 | 0,9             | 1,000 | 1,374 | inf   |
 
 
-![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N16.png "N16")
-![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N32.png "N32")
-![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N64.png "N64")
+![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B3\N16.png "N16")
+![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B3\N32.png "N32")
+![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B3\N64.png "N64")
 
 
 ### Key Takeaways:
@@ -336,14 +337,23 @@ For the next scenarios, we are going to use the `Allocated` methodology, as well
 
 "Shots" factor has three levels: Less directions and More shots per direction, Medium directions and Medium shots per direction, More directions and Less shots per direction (codenamed `lessDmoreS`, `mediumDmediumS`, and `moreDlessS`, respectively).
 
-Starting with N=64:
+Starting with `N=32`:
 
-|     | `lessDmoreS` | `mediumDmediumS` | `moreDlessS` |
-| --- | ------------ | ---------------- | ------------ |
-| 0,2 | 3.096        | 1.558            | 6.282        |
-| 0,5 | 1.580        | 1.486            | 1.505        |
-| 0,8 | inf          | inf              | inf          |
+![N32B0.2](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N32B0.2.png "N32B0.2")
+![N32B0.5](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N32B0.5.png "N32B0.5")
+![N32B0.8](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N32B0.8.png "N32B0.8")
 
+And for `N=64`:
+
+![N64B0.2](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N64B0.2.png "N64B0.2")
+![N64B0.5](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N64B0.5.png "N64B0.5")
+![N64B0.8](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N64B0.8.png "N64B0.8")
+
+### Key Takeaways:
+
+Looking at `N=32`, `lessDmoreS` is better when `B=0.2`. When `B=0.5`, `mediumDmediumS` is better. Finally, when `B=0.8`, `lessDmoreS` is again the best, but closely followed by `mediumDmediumS`.
+
+Looking at `N=64`, `moreDlessS` is better when `B=0.2`. When `B=0.5`, `mediumDmediumS` is better, followed by `moreDlessS`. Finally, when `B=0.8`, there is nothing displayed, but `lessDmoreS` was the only one to provide a valid answer, with an epsilon indicator of `1.988`.
 
 ## Scenario B2 - Embedding
 
@@ -362,10 +372,13 @@ So far, we used the `default` embedding. D-Wave offers another embedding option,
 | `clique` try4  | 1,126 | 1,316 | 1,577 |
 | `clique` try5  | 1,092 | 1,254 | 1,518 |
 
-![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N16.png "N16")
-![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N32.png "N32")
-![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N64.png "N64")
+![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\N16.png "N16")
+![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\N32.png "N32")
+![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\N64.png "N64")
 
+### Key Takeaways:
+
+It seems that the higher the value of `N`, the better is the `clique` embedding compared to the `default`. Concretely, for `N=16` and `N=32`, the `default` embedding should be used, while for `N=64`, the `clique` embedding should be used. Therefore, for `N>64`, we should choose `clique` embedding.
 
 ## Scenario A3 - Dataset **UNFINISHED AND NEEDS CSV FIX!**
 

@@ -104,8 +104,8 @@ for filename in os.listdir(classical_solutions2_foldername):
             classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N2, B2, mu2, sigma2, P2), 'expected_return': get_expected_return(
                 data['solution'], N2, B2, mu2), 'volatility': get_volatility(data['solution'], N2, B2, sigma2), 'equals_budget': equals_budget(data['solution'], N2, B2)})
 
-set1_foldername = 'results/scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B0.2_lessDmoreS_annealer_try5'
-set2_foldername = 'results/scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B0.2_lessDmoreS_annealer_try4'
+set1_foldername = 'results/scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B0.2_lessDmoreS_annealer_try4'
+set2_foldername = 'results/scenarioA2B3_N64_Pformulated_Cformulated1.000_Allocated_B0.2_lessDmoreS_annealer_try5'
 
 set1_samples = []
 set2_samples = []

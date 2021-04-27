@@ -62,11 +62,11 @@ for factor1 in [0.2, 0.5, 0.8]:
         # elif N == 64:
         #     q_values = [0, 0.1, 0.2, 0.3, 0.6, 1, 2, 3, 4, 6, 10, 20, 80]
 
-        if factor2 == 'lessDmoreS':
+        if factor2 == 'moreDlessS':
             q_values = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1000]
         elif factor2 == 'mediumDmediumS':
             q_values = [0, 0.2, 0.4, 0.6, 0.8, 1, 2, 3, 4, 5, 7.5, 10, 50, 100, 1000]
-        elif factor2 == 'moreDlessS':
+        elif factor2 == 'lessDmoreS':
             q_values = [0, 0.1, 1, 10, 100, 1000]
         print_var('q_values', q_values)
 
@@ -89,7 +89,6 @@ for factor1 in [0.2, 0.5, 0.8]:
 
         # Get sampler
         sampler = DWaveSampler()
-        print_var('quota_conversion_rate', sampler.properties['quota_conversion_rate'])
         embedding_type = 'normal'
 
         # Get embedding

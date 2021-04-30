@@ -43,10 +43,10 @@ For this scenario, we used the "diversified" dataset and 1000 shots per executio
 | 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 1.967             |
 | 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 2.022             |
 
-![N8](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N8.png "N8")
-![N16](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N16.png "N16")
-![N32](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N32.png "N32")
-![N64](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N64.png "N64")
+![N8](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N8.png "N8")
+![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N16.png "N16")
+![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N32.png "N32")
+![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -153,9 +153,9 @@ And one more time:
 
 The results are summarized in the following charts. 
 
-![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N16.png "N16")
-![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N32.png "N32")
-![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N64.png "N64")
+![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B1\N16.png "N16")
+![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B1\N32.png "N32")
+![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B1\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -316,9 +316,9 @@ However, we need to take into account that in real case scenarios, we won't be a
 | 0,9             | 1,000 | 1,374 | inf   |
 
 
-![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N16.png "N16")
-![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N32.png "N32")
-![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N64.png "N64")
+![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B3\N16.png "N16")
+![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B3\N32.png "N32")
+![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B3\N64.png "N64")
 
 
 ### Key Takeaways:
@@ -339,15 +339,15 @@ For the next scenarios, we are going to use the `Allocated` methodology, as well
 
 Starting with `N=32`:
 
-![N32B0.2](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.2.png "N32B0.2")
-![N32B0.5](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.5.png "N32B0.5")
-![N32B0.8](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.8.png "N32B0.8")
+![N32B0.2](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N32B0.2.png "N32B0.2")
+![N32B0.5](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N32B0.5.png "N32B0.5")
+![N32B0.8](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N32B0.8.png "N32B0.8")
 
 And for `N=64`:
 
-![N64B0.2](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64B0.2.png "N64B0.2")
-![N64B0.5](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64B0.5.png "N64B0.5")
-![N64B0.8](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64B0.8.png "N64B0.8")
+![N64B0.2](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N64B0.2.png "N64B0.2")
+![N64B0.5](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N64B0.5.png "N64B0.5")
+![N64B0.8](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N64B0.8.png "N64B0.8")
 
 ### Key Takeaways:
 
@@ -357,7 +357,7 @@ Looking at `N=64`, `lessDmoreS` is better when `B=0.2`. When `B=0.5`, `mediumDme
 
 ## Scenario B2 - Embedding
 
-So far, we used the `default` embedding. D-Wave offers another embedding option, called `clique` embedding, which is going to be compared.
+So far, we used the `default` embedding. D-Wave offers another two embedding options, `clique` and `layout` embeddings. The three options are going to be compared.
 
 | Embedding      | N16   | N32   | N64   |
 | -------------- | ----- | ----- | ----- |
@@ -371,10 +371,15 @@ So far, we used the `default` embedding. D-Wave offers another embedding option,
 | `clique` try3  | 1,155 | 1,381 | 1,428 |
 | `clique` try4  | 1,126 | 1,316 | 1,577 |
 | `clique` try5  | 1,092 | 1,254 | 1,518 |
+| `layout` try1  | 1.070 | 1.250 | 1.454 |
+| `layout` try2  | 1.072 | 1.326 | 1.389 |
+| `layout` try3  | 1.062 | 1.301 | 1.464 |
+| `layout` try4  | 1.092 | 1.248 | 1.472 |
+| `layout` try5  | 1.126 | 1.275 | 1.459 |
 
-![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N16.png "N16")
-![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N32.png "N32")
-![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N64.png "N64")
+![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\N16.png "N16")
+![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\N32.png "N32")
+![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\N64.png "N64")
 
 ### Key Takeaways:
 

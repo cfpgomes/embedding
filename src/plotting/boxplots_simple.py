@@ -30,7 +30,7 @@ q = 1
 mu = None
 sigma = None
 
-data_filename = 'data/out_diversified_N16_P1mo_i1d.json'
+data_filename = 'data/out_diversified_N64_P1mo_i1d.json'
 with open(data_filename) as jsonfile:
     data = json.load(jsonfile)
     N = data['N']               # Universe size
@@ -56,7 +56,7 @@ P = -q * min_sigma + max_mu
 B = int(N*0.5)
 print(f'B:{B}')
 
-classical_solutions_foldername = 'results/scenarioA1_N16_classical'
+classical_solutions_foldername = 'results/scenarioA1_N64_classical'
 classical_solutions = []
 
 for filename in os.listdir(classical_solutions_foldername):
@@ -69,26 +69,32 @@ for filename in os.listdir(classical_solutions_foldername):
 list_set_epsilons = []
 
 list_set_foldernames = [[
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try1',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try2',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try3',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try4',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try5'],
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try1',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try2',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try3',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try4',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try5'],
     [
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try1',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try2',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try3',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try4',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try5'],
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try1',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try2',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try3',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try4',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try5'],
     [
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try1',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try2',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try3',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try4',
-    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try5']
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try1',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try2',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try3',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try4',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try5'],
+    [
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try1',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try2',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try3',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try4',
+    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try5']
 ]
 
-labels = ['Default', 'Clique', 'Layout']
+labels = ['default', 'long', 'pause', 'quench']
 
 for set_foldernames in list_set_foldernames:
 
@@ -159,7 +165,7 @@ ax1.boxplot(list_set_epsilons, labels=labels)
 (ax1_bottom, ax1_top) = ax1.get_ylim()
 
 ax1.grid(True)
-ax1.set_title('Default vs Clique vs Layout N16')
+ax1.set_title('Default vs Long vs Pause vs Quench N64')
 ax1.set_ylim(1, ax1_top)
 ax1.set_ylabel('Epsilon Indicator')
 ax1.set_xlabel('Mode')

@@ -22,7 +22,7 @@
 | **B3**    | **Shots**           | **April 13 - April 19** |
 | **A2B3**  | **B and Shots**     | **April 20 - April 26** |
 | **B2**    | **Embedding**       | **April 20 - April 26** |
-| B4        | Annealing           | April 20 - April 26      |
+| **B4**    | **Annealing**       | **April 27 - May 3**    |
 | A3        | Datasets            | April 27 - May 3         |
 
 ## Sidenotes to research about
@@ -357,15 +357,15 @@ Looking at `N=64`, `lessDmoreS` is better when `B=0.2`. When `B=0.5`, `mediumDme
 
 ## Scenario B2 - Embedding
 
-So far, we used the `default` embedding. D-Wave offers another two embedding options, `clique` and `layout` embeddings. The three options are going to be compared.
+So far, we used the `general` embedding. D-Wave offers another two embedding options, `clique` and `layout` embeddings. The three options are going to be compared.
 
 | Embedding      | N16   | N32   | N64   |
 | -------------- | ----- | ----- | ----- |
-| `default` try1 | 1,057 | 1,165 | 1,593 |
-| `default` try2 | 1,039 | 1,275 | 1,548 |
-| `default` try3 | 1,072 | 1,275 | 1,568 |
-| `default` try4 | 1,017 | 1,290 | 1,487 |
-| `default` try5 | 1,098 | 1,252 | 1,335 |
+| `general` try1 | 1,057 | 1,165 | 1,593 |
+| `general` try2 | 1,039 | 1,275 | 1,548 |
+| `general` try3 | 1,072 | 1,275 | 1,568 |
+| `general` try4 | 1,017 | 1,290 | 1,487 |
+| `general` try5 | 1,098 | 1,252 | 1,335 |
 | `clique` try1  | 1,092 | 1,316 | 1,546 |
 | `clique` try2  | 1,092 | 1,320 | 1,510 |
 | `clique` try3  | 1,155 | 1,381 | 1,428 |
@@ -383,7 +383,47 @@ So far, we used the `default` embedding. D-Wave offers another two embedding opt
 
 ### Key Takeaways:
 
-It seems that the higher the value of `N`, the better is the `clique` embedding compared to the `default`. Concretely, for `N=16` and `N=32`, the `default` embedding should be used, while for `N=64`, the `clique` embedding should be used. Therefore, for `N>64`, we should choose `clique` embedding.
+It seems that the higher the value of `N`, the better is the `layout` embedding compared to the `general`. Concretely, for `N=16` the `general` embedding shows the best performance, closely followed by `layout` embedding. For `N=32`, the gap between those `general` and `layout` embeddings gets narrower. Finally, for `N=64`, `general` embedding falls short of the other two options, with `layout` embedding being clearly better. This suggests that, for `N>=64`, we should choose `layout` embedding.
+
+In conversations with Jose Pinilla, a Ph.D. student that authored an implementation of a layout-aware embedding, `layout` embedding is much more suited for *sparse* graphs, which is not the case of the POP. In fact, POP usually generates fully connected graphs. However, Jose Pinilla said "if there are clusters of high connectivity, you'll immediately be rewarded with faster results, or a higher chance of at least finding an embedding". I noticed that, in fact, `layout` embedding was much faster than the other two options.
+
+It is interesting that those faster results were also accompanied by better performance. Again, in conversations with Jose Pinilla, he provided me with some code to plot a histogram that let us confirm that the graph is in fact fully connected.
+
+![Connectivity](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\Connectivity.png "Connectivity")
+
+The graph is fully connected, which means that there are no clusters of high connectivity and no speed boost should be expected. **So, why did it have better performance? This is an interesting question that I pose for further research**.
+
+For the remaining scenarios, we will use the `layout` embedding.
+
+## Scenario B4 - Annealing
+
+It is time to study the impact of Annealing, if it has any!
+
+So far, we used the `default` annealing strategy. We will study another three common strategies that may provide significant improvements to the annealer performance.
+
+- `default` Standard 20μs annealing schedule
+- `long` Standard 100μs annealing schedule
+- `pause` 20μs anneal with 100μs pause at s=0.5
+- `quench` 20μs anneal with 2μs quench at s=0.5
+
+`default`, `pause`, and `quench` are illustrated in the following image:
+
+![annealing_schedules](C:\Users\cfpgo\Documents\GitHub\embedding\log\B4\annealing_schedules.png "annealing_schedules")
+
+The experiments were run five times:
+
+![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B4\N16.png "N16")
+![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B4\N32.png "N32")
+![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B4\N64.png "N64")
+
+### Key Takeaways:
+
+As expected, `long` and `pause` are consistently better than `default`, since they have at least as much anneal time as `default`. This is, however, at the cost of more machine time budget. In fact, `long` achieved a perfect score at `N=16` in one of the runs.
+
+`quench` is interesting, since it falls short when `N=16` and `N=32`, but outperforms when `N=64`.
+
+We noticed that for `N=32`, `pause` clearly outperformed the other schedules.
+
 
 ## Scenario A3 - Dataset **UNFINISHED AND NEEDS CSV FIX!**
 

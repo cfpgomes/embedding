@@ -56,7 +56,7 @@ P = -q * min_sigma + max_mu
 B = int(N*0.5)
 print(f'B:{B}')
 
-classical_solutions_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions_foldername = 'results/N64_B0.5_diversified_classical'
 classical_solutions = []
 
 for filename in os.listdir(classical_solutions_foldername):
@@ -69,32 +69,32 @@ for filename in os.listdir(classical_solutions_foldername):
 list_set_epsilons = []
 
 list_set_foldernames = [[
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try1',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try2',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try3',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try4',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_default_schedule_annealer_try5'],
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_diversified_annealer_try1',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_diversified_annealer_try2',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_diversified_annealer_try3',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_diversified_annealer_try4',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_diversified_annealer_try5'],
     [
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try1',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try2',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try3',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try4',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try5'],
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try1',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try2',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try3',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try4',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try5'],
     [
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try1',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try2',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try3',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try4',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try5'],
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_diversified_annealer_try1',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_diversified_annealer_try2',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_diversified_annealer_try3',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_diversified_annealer_try4',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_diversified_annealer_try5'],
     [
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try1',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try2',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try3',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try4',
-    'results/scenarioB4_N64_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try5']
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_correlated_annealer_try1',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_correlated_annealer_try2',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_correlated_annealer_try3',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_correlated_annealer_try4',
+    'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_industry_correlated_annealer_try5']
 ]
 
-labels = ['default', 'long', 'pause', 'quench']
+labels = ['diversified', 'correlated', 'industry_diversified', 'industry_correlated']
 
 for set_foldernames in list_set_foldernames:
 

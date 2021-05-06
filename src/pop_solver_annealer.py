@@ -22,16 +22,16 @@ def print_var(variable_name, variable):
 # 3. Solve it.
 
 for factor1 in [16, 32, 64]:
-    for factor2 in ['try4', 'try5']:
-        for factor3 in ['quench']:
+    for factor2 in ['try1','try2','try3','try4', 'try5']:
+        for factor3 in ['diversified', 'correlated', 'industry_diversified', 'industry_correlated']:
             # Results are stored on a specific folder
-            folder_name = f'scenarioB4_N{factor1}_Pformulated_Cformulated1.000_Allocated_layout_{factor3}_schedule_annealer_{factor2}'
+            folder_name = f'scenarioA3_N{factor1}_Pformulated_Cformulated1.000_Allocated_layout_{factor3}_annealer_{factor2}'
             # Check if folder exists and creates if not
             if not os.path.exists('results/' + folder_name):
                 os.makedirs('results/' + folder_name)
 
             # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-            f = open(f'data/out_diversified_N{factor1}_p1mo_i1d.json')
+            f = open(f'data/out_{factor3}_N{factor1}_p1mo_i1d.json')
             data = json.load(f)
 
             N = data['N']               # Universe size
@@ -48,14 +48,14 @@ for factor1 in [16, 32, 64]:
             q_values = None
 
             # diversified
-            if N == 8:
-                q_values = [0, 11, 20, 54]
-            elif N == 16:
-                q_values = [0, 2, 6, 100, 500]
-            elif N == 32:
-                q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
-            elif N == 64:
-                q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
+            # if N == 8:
+            #     q_values = [0, 11, 20, 54]
+            # elif N == 16:
+            #     q_values = [0, 2, 6, 100, 500]
+            # elif N == 32:
+            #     q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
+            # elif N == 64:
+            #     q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
 
             # strongly_correlated
             # if N == 32:
@@ -66,7 +66,7 @@ for factor1 in [16, 32, 64]:
             # if factor2 == 'moreDlessS':
             #     q_values = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1000]
             # elif factor2 == 'mediumDmediumS':
-            #     q_values = [0, 0.2, 0.4, 0.6, 0.8, 1, 2, 3, 4, 5, 7.5, 10, 50, 100, 1000]
+            q_values = [0, 0.2, 0.4, 0.6, 0.8, 1, 2, 3, 4, 5, 7.5, 10, 50, 100, 1000]
             # elif factor2 == 'lessDmoreS':
             #     q_values = [0, 0.1, 1, 10, 100, 1000]
             print_var('q_values', q_values)
@@ -147,19 +147,19 @@ for factor1 in [16, 32, 64]:
                 # deg_list = [len(Qg.adj[v])/len(Qg) for v in Qg] # Where deg=1.0 means that node is fully connected
                 # plt.hist(deg_list, bins=100)
                 # plt.show()
-                anneal_schedule = None
-                if factor3 == 'default':
-                    anneal_schedule = [[0.0, 0.0], [20.0, 1.0]]
-                elif factor3 == 'long':
-                    anneal_schedule = [[0.0, 0.0], [100.0, 1.0]]
-                elif factor3 == 'pause':
-                    anneal_schedule = [[0.0, 0.0], [10.0, 0.5], [110.0, 0.5], [120, 1.0]]
-                elif factor3 == 'quench':
-                    anneal_schedule = [[0.0, 0.0], [10.0, 0.5], [12.0, 1.0]]
+                # anneal_schedule = None
+                # if factor3 == 'default':
+                #     anneal_schedule = [[0.0, 0.0], [20.0, 1.0]]
+                # elif factor3 == 'long':
+                #     anneal_schedule = [[0.0, 0.0], [100.0, 1.0]]
+                # elif factor3 == 'pause':
+                #     anneal_schedule = [[0.0, 0.0], [10.0, 0.5], [110.0, 0.5], [120, 1.0]]
+                # elif factor3 == 'quench':
+                #     anneal_schedule = [[0.0, 0.0], [10.0, 0.5], [12.0, 1.0]]
 
                 # Step 3: Solve QUBO
                 sampleset = composite.sample_qubo(
-                    Q, num_reads=shots, chain_strength=chain_strength, anneal_schedule=anneal_schedule)
+                    Q, num_reads=shots, chain_strength=chain_strength)
 
                 chain_strength = sampleset.info['embedding_context']['chain_strength']
                 #dwave.inspector.show(sampleset)

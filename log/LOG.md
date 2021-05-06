@@ -43,10 +43,10 @@ For this scenario, we used the "diversified" dataset and 1000 shots per executio
 | 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 1.967             |
 | 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 2.022             |
 
-![N8](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N8.png "N8")
-![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N16.png "N16")
-![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N32.png "N32")
-![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\A1\N64.png "N64")
+![N8](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N8.png "N8")
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N32.png "N32")
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -153,9 +153,9 @@ And one more time:
 
 The results are summarized in the following charts. 
 
-![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B1\N16.png "N16")
-![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B1\N32.png "N32")
-![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B1\N64.png "N64")
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N32.png "N32")
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B1\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -316,9 +316,9 @@ However, we need to take into account that in real case scenarios, we won't be a
 | 0,9             | 1,000 | 1,374 | inf   |
 
 
-![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B3\N16.png "N16")
-![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B3\N32.png "N32")
-![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B3\N64.png "N64")
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N32.png "N32")
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N64.png "N64")
 
 
 ### Key Takeaways:
@@ -339,15 +339,15 @@ For the next scenarios, we are going to use the `Allocated` methodology, as well
 
 Starting with `N=32`:
 
-![N32B0.2](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N32B0.2.png "N32B0.2")
-![N32B0.5](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N32B0.5.png "N32B0.5")
-![N32B0.8](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N32B0.8.png "N32B0.8")
+![N32B0.2](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.2.png "N32B0.2")
+![N32B0.5](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.5.png "N32B0.5")
+![N32B0.8](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.8.png "N32B0.8")
 
 And for `N=64`:
 
-![N64B0.2](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N64B0.2.png "N64B0.2")
-![N64B0.5](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N64B0.5.png "N64B0.5")
-![N64B0.8](C:\Users\cfpgo\Documents\GitHub\embedding\log\A2B3\N64B0.8.png "N64B0.8")
+![N64B0.2](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64B0.2.png "N64B0.2")
+![N64B0.5](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64B0.5.png "N64B0.5")
+![N64B0.8](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64B0.8.png "N64B0.8")
 
 ### Key Takeaways:
 
@@ -377,9 +377,9 @@ So far, we used the `general` embedding. D-Wave offers another two embedding opt
 | `layout` try4  | 1.092 | 1.248 | 1.472 |
 | `layout` try5  | 1.126 | 1.275 | 1.459 |
 
-![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\N16.png "N16")
-![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\N32.png "N32")
-![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\N64.png "N64")
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N32.png "N32")
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -389,7 +389,7 @@ In conversations with Jose Pinilla, a Ph.D. student that authored an implementat
 
 It is interesting that those faster results were also accompanied by better performance. Again, in conversations with Jose Pinilla, he provided me with some code to plot a histogram that let us confirm that the graph is in fact fully connected.
 
-![Connectivity](C:\Users\cfpgo\Documents\GitHub\embedding\log\B2\Connectivity.png "Connectivity")
+![Connectivity](C:\Users\claudio\Documents\GitHub\embedding\log\B2\Connectivity.png "Connectivity")
 
 The graph is fully connected, which means that there are no clusters of high connectivity and no speed boost should be expected. **So, why did it have better performance? This is an interesting question that I pose for further research**.
 
@@ -408,13 +408,13 @@ So far, we used the `default` annealing strategy. We will study another three co
 
 `default`, `pause`, and `quench` are illustrated in the following image:
 
-![annealing_schedules](C:\Users\cfpgo\Documents\GitHub\embedding\log\B4\annealing_schedules.png "annealing_schedules")
+![annealing_schedules](C:\Users\claudio\Documents\GitHub\embedding\log\B4\annealing_schedules.png "annealing_schedules")
 
 The experiments were run five times:
 
-![N16](C:\Users\cfpgo\Documents\GitHub\embedding\log\B4\N16.png "N16")
-![N32](C:\Users\cfpgo\Documents\GitHub\embedding\log\B4\N32.png "N32")
-![N64](C:\Users\cfpgo\Documents\GitHub\embedding\log\B4\N64.png "N64")
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B4\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B4\N32.png "N32")
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B4\N64.png "N64")
 
 ### Key Takeaways:
 
@@ -425,28 +425,13 @@ As expected, `long` and `pause` are consistently better than `default`, since th
 We noticed that for `N=32`, `pause` clearly outperformed the other schedules.
 
 
-## Scenario A3 - Dataset **UNFINISHED AND NEEDS CSV FIX!**
+## Scenario A3 - Datasets
 
-For this scenario, we will study the influence from the dataset. Previous scenarios used a `diversified` dataset, with assets as uncorrelated as possible. Therefore, we are going to introduce another dataset, called `strongly_correlated`, from the same source, however, with strongly correlated assets. That is, with assets from the same sub-industry.
+For this scenario, we will study the influence from the dataset. Previous scenarios used a `industry_diversified` dataset, with assets from different industries. Therefore, we are going to introduce another dataset, called `industry_correlated`, from the same source, however, with assets from the same industry. Moreover, we will also introduce two datasets that are statistically correlated and diversified, `diversified` and `correlated`.
 
-The results are executed for sizes `N=32` and `N=64`, with parameters `chain_strength = 1.000 * maxAbs` and `B=0.5`. Since this scenario is small, the results have been repeated two more times, for a total of three tries.
+The results are executed for sizes `N=16`, `N=32`, and `N=64`, with parameters `chain_strength = 1.000 * maxAbs`, `B=0.5`, `mediumDmediumS` q values, `layout` embedding, and `default` schedule.
 
-|  N and Dataset            | q values                                                     |
-| ------------------------- | ------------------------------------------------------------ |
-| `N32_diversified`         | 0, 0.4, 0.9, 2, 3, 9, 100                                    |
-| `N32_strongly_correlated` | 0, 1, 6, 10, 70, 90                                          |
-| `N64_diversified`         | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 |
-| `N64_strongly_correlated` | 0, 0.1, 0.2, 0.3, 0.6, 1, 2, 3, 4, 6, 10, 20, 80             |
-
-| Dataset                    | N32 (AvgChainBreak) | N64 (AvgChainBreak) |
-| -------------------------- | ------------------- | ------------------- |
-| `diversified` try1         | 1.433 (0.00075)     | 1.516 (0.00409)     |
-| `diversified` try2         | 1.505 (0.00092)     | 1.435 (0.00413)     |
-| `diversified` try3         | 1.500 (0.00074)     | 1.501 (0.00384)     |
-| `strongly_correlated` try1 | 1.300 (0.00093)     | 1.701 (0.00370)     |
-| `strongly_correlated` try2 | 1.352 (0.00103)     | 1.641 (0.00363)     |
-| `strongly_correlated` try3 | 1.482 (0.00076)     | 1.668 (0.00360)     |
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\A3\N64.png "N64")
 
 ### Key Takeaways:
 
-The dataset choice does make a significant difference in the performance of the annealer. However, it does not seem to be caused by whether it is diversified or not.

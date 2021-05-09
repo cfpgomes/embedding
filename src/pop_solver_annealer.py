@@ -21,9 +21,9 @@ def print_var(variable_name, variable):
 # 2. Formulate QUBO
 # 3. Solve it.
 
-for factor1 in [16, 32, 64]:
+for factor1 in [64]:
     for factor2 in ['try1','try2','try3','try4', 'try5']:
-        for factor3 in ['diversified', 'correlated', 'industry_diversified', 'industry_correlated']:
+        for factor3 in ['diversified', 'correlated']:
             # Results are stored on a specific folder
             folder_name = f'scenarioA3_N{factor1}_Pformulated_Cformulated1.000_Allocated_layout_{factor3}_annealer_{factor2}'
             # Check if folder exists and creates if not

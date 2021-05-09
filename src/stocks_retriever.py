@@ -4,7 +4,7 @@ import numpy as np
 import json
 from datetime import datetime
 
-for N in [64]:
+for N in [8, 16, 32]:
     for dataset_type in ['diversified', 'correlated']:
 
         # The first N indexes in the wikipedia table are used as tickers.
@@ -13,10 +13,9 @@ for N in [64]:
             'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
 
         table = table[0]
-        print(table[lambda x: x['GICS Sector'] == 'Communication Services'])
+        #print(table[lambda x: x['GICS Sector'] == 'Communication Services'])
 
         tickers = None
-
 
         banned_tickers = ['FOXA', 'FB']
         convert_dot_to_dash_tickers = ['BF.B', 'BRK.B']
@@ -48,7 +47,7 @@ for N in [64]:
                                 break
                     if len(tickers) == N:
                         break
-        elif dataset_type == 'diversified' or dataset_type == 'correlated':
+        elif dataset_type == 'correlated':
             # Get all tickers
             all_tickers = list(table['Symbol'])
 
@@ -60,24 +59,31 @@ for N in [64]:
             for i in range(len(all_tickers)):
                 if all_tickers[i] in convert_dot_to_dash_tickers:
                     all_tickers[i] = all_tickers[i].replace('.', '-')
-                    print(all_tickers[i])
+                    # print(all_tickers[i])
 
             # The tickers' 1 year historical data is downloaded.
             period = '1mo'
             interval = '1d'
             data = yf.download(all_tickers, period=period,
-                            interval=interval)['Adj Close']
-
+                               interval=interval)['Adj Close']
+            data = data.dropna()
             print('debug1:')
+            null_tickers = []
             for t in all_tickers:
                 if data[t].isnull().values.any():
                     print(data.pop(t))
+                    null_tickers.append(t)
                 elif data[t].empty:
                     print(data.pop(t))
+                    null_tickers.append(t)
+
+            # Remove banned tickers
+            for t in null_tickers:
+                all_tickers.remove(t)
 
             # The data is then processed to drop NaN values, then to calculate percent
             # change between months, and then to drop NaN values again.
-            data = data.dropna().pct_change().dropna()
+            data = data.pct_change().dropna()
 
             # Mu is monthly expected return
             mu = data.mean(0)
@@ -85,28 +91,137 @@ for N in [64]:
             # Sigma is covariance between assets
             sigma = data.cov(0)
 
-            # Get ordered list of highest correlated pairs.
-            ordered_list = []
+            # corr_matrix is correlation between assets
+            corr_matrix = data.corr()
+
+            highest = all_tickers[:N]
+            highest_score = float('-inf')
+
+            debugvar = 0
+            for starting_ticker in all_tickers:
+                debugvar += 1
+                print('TRY ' + str(debugvar))
+                remaining_tickers = list(all_tickers)
+                tickers = set()
+                tickers.add(starting_ticker)
+                remaining_tickers.remove(starting_ticker)
+
+                while(len(tickers) != N):
+                    ticker_to_add = None
+                    ticker_to_add_score = float('-inf')
+                    
+                    for r in remaining_tickers:
+                        r_score = 0
+                        for t in tickers:
+                            r_score += corr_matrix[r][t]
+                        if r_score > ticker_to_add_score:
+                            ticker_to_add = r
+                            ticker_to_add_score = r_score
+                    tickers.add(ticker_to_add)
+                    remaining_tickers.remove(ticker_to_add)
+
+                tickers = list(tickers)
+                tickers_score = 0
+
+                for i in range(N):
+                    for j in range(i+1, N):
+                        #print(corr_matrix[tickers[i]][tickers[j]])
+                        tickers_score += corr_matrix[tickers[i]][tickers[j]]
+
+                if tickers_score > highest_score:
+                    highest = tickers
+                    highest_score = tickers_score
+                print('highest' + str(highest))
+                print('highest score:' + str(highest_score))
+            tickers = highest
+        elif dataset_type == 'diversified':
+            # Get all tickers
+            all_tickers = list(table['Symbol'])
+
+            # Remove banned tickers
+            for t in banned_tickers:
+                all_tickers.remove(t)
+
+            # Convert dots to dashes in certain tickers
             for i in range(len(all_tickers)):
-                for j in range(i+1, len(all_tickers)):
-                    ordered_list.append({'val': abs(
-                        sigma[all_tickers[i]][all_tickers[j]]), 'ticker_i': all_tickers[i], 'ticker_j': all_tickers[j]})
+                if all_tickers[i] in convert_dot_to_dash_tickers:
+                    all_tickers[i] = all_tickers[i].replace('.', '-')
+                    # print(all_tickers[i])
 
-            # Reverse should be True for diversified, False, for correlated
-            ordered_list.sort(key=lambda x: x['val'], reverse=dataset_type=='correlated')
+            # The tickers' 1 year historical data is downloaded.
+            period = '1mo'
+            interval = '1d'
+            data = yf.download(all_tickers, period=period,
+                               interval=interval)['Adj Close']
+            data = data.dropna()
+            print('debug1:')
+            null_tickers = []
+            for t in all_tickers:
+                if data[t].isnull().values.any():
+                    print(data.pop(t))
+                    null_tickers.append(t)
+                elif data[t].empty:
+                    print(data.pop(t))
+                    null_tickers.append(t)
 
-            tickers = set()
-            while(len(tickers) != N):
-                if len(tickers) > N:
-                    tickers = list(tickers)
-                    tickers.pop()
-                    tickers = set(tickers)
-                else:
-                    pair = ordered_list.pop()
-                    tickers.add(pair['ticker_i'])
-                    tickers.add(pair['ticker_j'])
+            # Remove banned tickers
+            for t in null_tickers:
+                all_tickers.remove(t)
 
-        tickers = list(tickers)
+            # The data is then processed to drop NaN values, then to calculate percent
+            # change between months, and then to drop NaN values again.
+            data = data.pct_change().dropna()
+
+            # Mu is monthly expected return
+            mu = data.mean(0)
+
+            # Sigma is covariance between assets
+            sigma = data.cov(0)
+
+            # corr_matrix is correlation between assets
+            corr_matrix = data.corr()
+
+            highest = all_tickers[:N]
+            highest_score = float('-inf')
+
+            debugvar = 0
+            for starting_ticker in all_tickers:
+                debugvar += 1
+                print('TRY ' + str(debugvar))
+                remaining_tickers = list(all_tickers)
+                tickers = set()
+                tickers.add(starting_ticker)
+                remaining_tickers.remove(starting_ticker)
+
+                while(len(tickers) != N):
+                    ticker_to_add = None
+                    ticker_to_add_score = float('-inf')
+                    
+                    for r in remaining_tickers:
+                        r_score = 0
+                        for t in tickers:
+                            r_score -= abs(corr_matrix[r][t])
+                        if r_score > ticker_to_add_score:
+                            ticker_to_add = r
+                            ticker_to_add_score = r_score
+                    tickers.add(ticker_to_add)
+                    remaining_tickers.remove(ticker_to_add)
+
+                tickers = list(tickers)
+                tickers_score = 0
+
+                for i in range(N):
+                    for j in range(i+1, N):
+                        #print(abs(corr_matrix[tickers[i]][tickers[j]]))
+                        tickers_score -= abs(corr_matrix[tickers[i]][tickers[j]])
+
+                if tickers_score > highest_score:
+                    highest = tickers
+                    highest_score = tickers_score
+                print('highest' + str(highest))
+                print('highest score:' + str(highest_score))
+            tickers = highest
+
         print(tickers)
         print(len(tickers))
 
@@ -121,7 +236,8 @@ for N in [64]:
         # The tickers' 1 year historical data is downloaded.
         period = '1mo'
         interval = '1d'
-        data = yf.download(tickers, period=period, interval=interval)['Adj Close']
+        data = yf.download(tickers, period=period,
+                           interval=interval)['Adj Close']
         print('Data:')
         print(data)
 
@@ -147,7 +263,6 @@ for N in [64]:
         sigma = data.cov(0)
         print('Sigma:')
         print(sigma)
-
 
         # Get timestamp
         date_obj = datetime.now()

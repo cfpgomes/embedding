@@ -431,6 +431,8 @@ For this scenario, we will study the influence from the dataset. Previous scenar
 
 The results are executed for sizes `N=16`, `N=32`, and `N=64`, with parameters `chain_strength = 1.000 * maxAbs`, `B=0.5`, `mediumDmediumS` q values, `layout` embedding, and `default` schedule.
 
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\A3\N16.png "N16")
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\A3\N32.png "N32")
 ![N64](C:\Users\claudio\Documents\GitHub\embedding\log\A3\N64.png "N64")
 
 ### Key Takeaways:

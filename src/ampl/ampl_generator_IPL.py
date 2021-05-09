@@ -5,7 +5,7 @@ import shutil
 import os
 
 # Results are stored on a specific folder
-folder_name = 'N64_B0.5_correlated_classical'
+folder_name = 'N16_B0.5_industry_correlated_classical'
 # Check if folder exists and creates if not
 if not os.path.exists('results/' + folder_name):
     os.makedirs('results/' + folder_name)
@@ -14,7 +14,7 @@ if not os.path.exists('src/ampl/' + folder_name):
     os.makedirs('src/ampl/' + folder_name)
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/out_correlated_N64_p1mo_i1d.json')
+f = open('data/out_industry_correlated_N16_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size

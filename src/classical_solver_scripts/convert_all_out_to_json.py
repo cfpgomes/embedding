@@ -3,12 +3,12 @@ import json
 import os
 
 # Step 1: Get parameters N, q, B, P, tickers, sigma, and mu from data
-f = open('data/out_correlated_N64_p1mo_i1d.json')
+f = open('data/out_industry_correlated_N32_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
 
-folder_name = 'results/N64_B0.5_correlated_classical'
+folder_name = 'results/N32_B0.5_industry_correlated_classical'
 
 for filename in os.listdir(folder_name):
     if '.lp.out' in filename:

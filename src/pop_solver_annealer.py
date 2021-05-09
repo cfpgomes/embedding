@@ -21,7 +21,7 @@ def print_var(variable_name, variable):
 # 2. Formulate QUBO
 # 3. Solve it.
 
-for factor1 in [64]:
+for factor1 in [32]:
     for factor2 in ['try1','try2','try3','try4', 'try5']:
         for factor3 in ['diversified', 'correlated']:
             # Results are stored on a specific folder

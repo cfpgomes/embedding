@@ -21,11 +21,11 @@ def print_var(variable_name, variable):
 # 2. Formulate QUBO
 # 3. Solve it.
 
-for factor1 in [32]:
-    for factor2 in ['try1','try2','try3','try4', 'try5']:
-        for factor3 in ['diversified', 'correlated']:
+for factor1 in [8, 16, 32, 64]:
+    for factor2 in ['try2','try3','try4', 'try5']:
+        for factor3 in ['industry_diversified']:
             # Results are stored on a specific folder
-            folder_name = f'scenarioA3_N{factor1}_Pformulated_Cformulated1.000_Allocated_layout_{factor3}_annealer_{factor2}'
+            folder_name = f'scenarioA1_N{factor1}_Pformulated_annealer_{factor2}'
             # Check if folder exists and creates if not
             if not os.path.exists('results/' + folder_name):
                 os.makedirs('results/' + folder_name)
@@ -47,17 +47,17 @@ for factor1 in [32]:
 
             q_values = None
 
-            # diversified
-            # if N == 8:
-            #     q_values = [0, 11, 20, 54]
-            # elif N == 16:
-            #     q_values = [0, 2, 6, 100, 500]
-            # elif N == 32:
-            #     q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
-            # elif N == 64:
-            #     q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
+            # industry_diversified
+            if N == 8:
+                q_values = [0, 11, 20, 54]
+            elif N == 16:
+                q_values = [0, 2, 6, 100, 500]
+            elif N == 32:
+                q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
+            elif N == 64:
+                q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
 
-            # strongly_correlated
+            # industry_correlated
             # if N == 32:
             #     q_values = [0, 1, 6, 10, 70, 90]
             # elif N == 64:
@@ -66,15 +66,15 @@ for factor1 in [32]:
             # if factor2 == 'moreDlessS':
             #     q_values = [0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1000]
             # elif factor2 == 'mediumDmediumS':
-            q_values = [0, 0.2, 0.4, 0.6, 0.8, 1, 2, 3, 4, 5, 7.5, 10, 50, 100, 1000]
+            # q_values = [0, 0.2, 0.4, 0.6, 0.8, 1, 2, 3, 4, 5, 7.5, 10, 50, 100, 1000]
             # elif factor2 == 'lessDmoreS':
             #     q_values = [0, 0.1, 1, 10, 100, 1000]
             print_var('q_values', q_values)
 
             shots_allocation = 15000
 
-            shots = int(shots_allocation/len(q_values))
-
+            # shots = int(shots_allocation/len(q_values))
+            shots = 1000
             print_var('shots per q_value', shots)
 
             min_sigma = 0
@@ -90,7 +90,7 @@ for factor1 in [32]:
 
             # Get sampler
             sampler = DWaveSampler()
-            embedding_type = 'layout'
+            embedding_type = 'normal'
 
             # Get embedding
             f = open(f'data/embedding_{embedding_type}N{N}.json')
@@ -130,8 +130,8 @@ for factor1 in [32]:
                     Q[(i, i)] += float(-2 * B * P)
 
                 # Chain_strength is a guessed value. Good rule of thumb is to have the same order of magnitude as max abs value of Q.
-                Q_key_max = max(Q.keys(), key=(lambda k: abs(Q[k])))
-                chain_strength = abs(Q[Q_key_max]) * 1.000
+                #Q_key_max = max(Q.keys(), key=(lambda k: abs(Q[k])))
+                #chain_strength = abs(Q[Q_key_max]) * 1.000
 
                 print_var('Q', Q)
 
@@ -159,7 +159,7 @@ for factor1 in [32]:
 
                 # Step 3: Solve QUBO
                 sampleset = composite.sample_qubo(
-                    Q, num_reads=shots, chain_strength=chain_strength)
+                    Q, num_reads=shots)
 
                 chain_strength = sampleset.info['embedding_context']['chain_strength']
                 #dwave.inspector.show(sampleset)

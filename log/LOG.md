@@ -34,19 +34,61 @@ We started by experimenting several values of `N`, in order to find the maximum 
 
 The `N` values are: 8, 16, 32, and 64. P was calculated as `P = -q * min_sigma + max_mu`
 
-For this scenario, we used the "diversified" dataset and 1000 shots per execution. The `q_values` are listed in the following table:
+For this scenario, we used the "diversified" dataset, 1000 shots per execution, and 5 tries. The `q_values` are listed in the following table:
 
-| N  | q values                                                     | Epsilon Indicator |
-| -- | ------------------------------------------------------------ | ----------------- |
-| 8  | 0, 11, 20, 54                                                | 1.0               |
-| 16 | 0, 2, 6, 100, 500                                            | 1.070             |
-| 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 1.967             |
-| 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 2.022             |
+| N  | q values                                                     |
+| -- | ------------------------------------------------------------ |
+| 8  | 0, 11, 20, 54                                                |
+| 16 | 0, 2, 6, 100, 500                                            |
+| 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    |
+| 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 |
+
+The following images show the first try for each N.
 
 ![N8](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N8.png "N8")
 ![N16](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N16.png "N16")
 ![N32](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N32.png "N32")
 ![N64](C:\Users\claudio\Documents\GitHub\embedding\log\A1\N64.png "N64")
+
+Comparing all the different tries, we have:
+
+![A1Boxplot](C:\Users\claudio\Documents\GitHub\embedding\log\A1\Boxplot.png "A1 Boxplot")
+
+### Hypothesis Testing:
+
+Kruskal-Wallis one-way ANOVA, since we cannot assume the normal distribution of the residuals.
+
+The null hypothesis is that all samples have equal means.
+
+Otherwise, at least two means are different.
+
+We will use a confidence level of 0.05.
+
+For 4 groups with 5 samples each, the critical value for H is 7.377.
+
+Result: `KruskalResult(statistic=17.609472880061105, pvalue=0.0005294252543614154)`
+
+The null hypothesis is rejected.
+
+Post hoc analysis (Conover-Iman Test) needs to be done:
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    17.609472880061105
+p-value:        0.0005294252543614154
+Null hypothesis rejected! Now performing pairwise comparison with Dunn's test
+               N8           N16           N32           N64
+N8   1.000000e+00  1.891157e-03  3.330204e-07  2.619788e-09
+N16  1.891157e-03  1.000000e+00  8.960526e-04  9.861650e-07
+N32  3.330204e-07  8.960526e-04  1.000000e+00  8.708493e-03
+N64  2.619788e-09  9.861650e-07  8.708493e-03  1.000000e+00
+N8 and N16 ARE significantly different!
+N8 and N32 ARE significantly different!
+N8 and N64 ARE significantly different!
+N16 and N32 ARE significantly different!
+N16 and N64 ARE significantly different!
+N32 and N64 ARE significantly different!
+```
 
 ### Key Takeaways:
 
@@ -340,20 +382,64 @@ For the next scenarios, we are going to use the `Allocated` methodology, as well
 Starting with `N=32`:
 
 ![N32B0.2](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.2.png "N32B0.2")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    3.1200000000000045
+p-value:        0.21013607120076422
+The null hypothesis was not rejected!
+```
+
 ![N32B0.5](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.5.png "N32B0.5")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    4.579999999999998
+p-value:        0.1012664618538835
+The null hypothesis was not rejected!
+```
+
 ![N32B0.8](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.8.png "N32B0.8")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    2.960000000000008
+p-value:        0.22763768838381188
+The null hypothesis was not rejected!
+```
 
 And for `N=64`:
 
 ![N64B0.2](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64B0.2.png "N64B0.2")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    0.720000000000006
+p-value:        0.697676326071029
+The null hypothesis was not rejected!
+```
+
 ![N64B0.5](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64B0.5.png "N64B0.5")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    2.6600000000000037
+p-value:        0.2644772612998236
+The null hypothesis was not rejected!
+```
+
 ![N64B0.8](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64B0.8.png "N64B0.8")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    2.0
+p-value:        0.36787944117144245
+The null hypothesis was not rejected!
+```
 
 ### Key Takeaways:
 
-Looking at `N=32`, `moreDlessS` is better when `B=0.2`. When `B=0.5`, `mediumDmediumS` is better. Finally, when `B=0.8`, `moreDlessS` is again the best, but closely followed by `mediumDmediumS`.
-
-Looking at `N=64`, `lessDmoreS` is better when `B=0.2`. When `B=0.5`, `mediumDmediumS` is better, followed by `lessDmoreS`. Finally, when `B=0.8`, there is nothing displayed, but `moreDlessS` was the only one to provide a valid answer, with an epsilon indicator of `1.988`.
+No significant differences.
 
 ## Scenario B2 - Embedding
 
@@ -378,12 +464,35 @@ So far, we used the `general` embedding. D-Wave offers another two embedding opt
 | `layout` try5  | 1.126 | 1.275 | 1.459 |
 
 ![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N16.png "N16")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    5.431386861313866
+p-value:        0.06615906037653473
+The null hypothesis was not rejected!
+```
+
 ![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N32.png "N32")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    4.340000000000003
+p-value:        0.11417761691083628
+The null hypothesis was not rejected!
+```
+
 ![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N64.png "N64")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    3.8600000000000065
+p-value:        0.14514819848362326
+The null hypothesis was not rejected!
+```
 
 ### Key Takeaways:
 
-It seems that the higher the value of `N`, the better is the `layout` embedding compared to the `general`. Concretely, for `N=16` the `general` embedding shows the best performance, closely followed by `layout` embedding. For `N=32`, the gap between those `general` and `layout` embeddings gets narrower. Finally, for `N=64`, `general` embedding falls short of the other two options, with `layout` embedding being clearly better. This suggests that, for `N>=64`, we should choose `layout` embedding.
+No significant difference.
 
 In conversations with Jose Pinilla, a Ph.D. student that authored an implementation of a layout-aware embedding, `layout` embedding is much more suited for *sparse* graphs, which is not the case of the POP. In fact, POP usually generates fully connected graphs. However, Jose Pinilla said "if there are clusters of high connectivity, you'll immediately be rewarded with faster results, or a higher chance of at least finding an embedding". I noticed that, in fact, `layout` embedding was much faster than the other two options.
 
@@ -413,8 +522,42 @@ So far, we used the `default` annealing strategy. We will study another three co
 The experiments were run five times:
 
 ![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B4\N16.png "N16")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    2.9657834973504804
+p-value:        0.3969308295543481
+The null hypothesis was not rejected!
+```
+
 ![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B4\N32.png "N32")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    11.36571428571429
+p-value:        0.009904105007103491
+Null hypothesis rejected! Now performing pairwise comparison with Dunn's test
+          default      long     pause    quench
+default  1.000000  1.000000  0.093021  0.318058
+long     1.000000  1.000000  0.035443  0.742135
+pause    0.093021  0.035443  1.000000  0.001183
+quench   0.318058  0.742135  0.001183  1.000000
+default and long are NOT!
+default and pause are NOT!
+default and quench are NOT!
+long and pause ARE significantly different!
+long and quench are NOT!
+pause and quench ARE significantly different!
+```
+
 ![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B4\N64.png "N64")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    4.760000000000005
+p-value:        0.19023861235673986
+The null hypothesis was not rejected!
+```
 
 ### Key Takeaways:
 
@@ -432,8 +575,53 @@ For this scenario, we will study the influence from the dataset. Previous scenar
 The results are executed for sizes `N=16`, `N=32`, and `N=64`, with parameters `chain_strength = 1.000 * maxAbs`, `B=0.5`, `mediumDmediumS` q values, `layout` embedding, and `default` schedule.
 
 ![N16](C:\Users\claudio\Documents\GitHub\embedding\log\A3\N16.png "N16")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    4.251627554882673
+p-value:        0.23554355060966134
+The null hypothesis was not rejected!
+```
+
 ![N32](C:\Users\claudio\Documents\GitHub\embedding\log\A3\N32.png "N32")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    13.217142857142846
+p-value:        0.00418979564660706
+Null hypothesis rejected! Now performing pairwise comparison with Dunn's test
+                      diversified  correlated  industry_diversified  industry_correlated
+diversified              1.000000    0.058367              0.173311             0.292077
+correlated               0.058367    1.000000              0.000402             0.000685
+industry_diversified     0.173311    0.000402              1.000000             1.000000
+industry_correlated      0.292077    0.000685              1.000000             1.000000
+diversified and correlated are NOT!
+diversified and industry_diversified are NOT!
+diversified and industry_correlated are NOT!
+correlated and industry_diversified ARE significantly different!
+correlated and industry_correlated ARE significantly different!
+industry_diversified and industry_correlated are NOT!
+```
+
 ![N64](C:\Users\claudio\Documents\GitHub\embedding\log\A3\N64.png "N64")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    17.582857142857137
+p-value:        0.0005361519491862146
+Null hypothesis rejected! Now performing pairwise comparison with Dunn's test
+                       diversified    correlated  industry_diversified  industry_correlated
+diversified           1.000000e+00  5.507773e-07          1.537609e-03         4.704298e-03
+correlated            5.507773e-07  1.000000e+00          2.226214e-03         2.772116e-09
+industry_diversified  1.537609e-03  2.226214e-03          1.000000e+00         9.449954e-07
+industry_correlated   4.704298e-03  2.772116e-09          9.449954e-07         1.000000e+00
+diversified and correlated ARE significantly different!
+diversified and industry_diversified ARE significantly different!
+diversified and industry_correlated ARE significantly different!
+correlated and industry_diversified ARE significantly different!
+correlated and industry_correlated ARE significantly different!
+industry_diversified and industry_correlated ARE significantly different!
+```
 
 ### Key Takeaways:
 

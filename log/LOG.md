@@ -23,7 +23,7 @@
 | **A2B3**  | **B and Shots**     | **April 20 - April 26** |
 | **B2**    | **Embedding**       | **April 20 - April 26** |
 | **B4**    | **Annealing**       | **April 27 - May 3**    |
-| A3        | Datasets            | April 27 - May 3         |
+| **A3**    | **Datasets**        | **May 4 - May 10**      |
 
 ## Sidenotes to research about
 - Find what is the maximum `N` value that is supported by dwave

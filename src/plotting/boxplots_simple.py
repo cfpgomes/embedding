@@ -68,33 +68,43 @@ for filename in os.listdir(classical_solutions_foldername):
 
 list_set_epsilons = []
 
-list_set_foldernames = [[
-    'results/scenarioA3_N16_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try1',
-    'results/scenarioA3_N16_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try2',
-    'results/scenarioA3_N16_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try3',
-    'results/scenarioA3_N16_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try4',
-    'results/scenarioA3_N16_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try5'],
+list_set_foldernames = [
     [
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try1',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try2',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try3',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try4',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_long_schedule_annealer_try5'],
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try1',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try2',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try3',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try4',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try5',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try6',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try7',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try8',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try9',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_default_annealer_try10'],
     [
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try1',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try2',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try3',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try4',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_pause_schedule_annealer_try5'],
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try1',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try2',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try3',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try4',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try5',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try6',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try7',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try8',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try9',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_clique_annealer_try10'],
     [
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try1',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try2',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try3',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try4',
-    'results/scenarioB4_N16_Pformulated_Cformulated1.000_Allocated_layout_quench_schedule_annealer_try5']
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try1',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try2',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try3',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try4',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try5',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try6',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try7',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try8',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try9',
+    'results/scenarioB2_N16_Pformulated_Cformulated1.000_Allocated_layout_annealer_try10']
 ]
 
-labels = ['default', 'long', 'pause', 'quench']
+labels = ['default', 'clique', 'layout']
 
 for set_foldernames in list_set_foldernames:
 

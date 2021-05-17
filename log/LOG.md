@@ -559,3 +559,53 @@ industry_diversified and industry_correlated ARE significantly different!
 
 ### Key Takeaways:
 
+## Scenario B5 - Chimera vs. Pegasus
+
+So far, we used a Pegasus-based machine. This scenario compares this machine with a Chimera-based machine, which is older.
+
+![N8](C:\Users\claudio\Documents\GitHub\embedding\log\B5\N8.png "N8")
+
+```
+All numbers are identical in kruskal
+```
+
+![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B5\N16.png "N16")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    4.206833712984056
+p-value:        0.04026142238612839
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+          Pegasus   Chimera
+Pegasus  1.000000  0.036274
+Chimera  0.036274  1.000000
+Pegasus and Chimera ARE significantly different!
+```
+
+![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B5\N32.png "N32")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    4.480000000000004
+p-value:        0.03429372103649282
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+          Pegasus   Chimera
+Pegasus  1.000000  0.029972
+Chimera  0.029972  1.000000
+Pegasus and Chimera ARE significantly different!
+```
+
+![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B5\N64.png "N64")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    4.165714285714287
+p-value:        0.04125001659393966
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+          Pegasus   Chimera
+Pegasus  1.000000  0.037325
+Chimera  0.037325  1.000000
+Pegasus and Chimera ARE significantly different!
+```
+
+### Key Takeaways:

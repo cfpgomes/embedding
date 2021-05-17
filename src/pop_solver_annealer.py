@@ -21,13 +21,13 @@ def print_var(variable_name, variable):
 # 2. Formulate QUBO
 # 3. Solve it.
 
-for factor1 in [16]:
-    for factor2 in ['try6', 'try7', 'try8', 'try9', 'try10']:
-        for factor3 in  ['correlated', 'diversified', 'industry_correlated', 'industry_diversified']:
+for factor1 in [64]:
+    for factor2 in ['try1', 'try2', 'try3', 'try4', 'try5', 'try6', 'try7', 'try8', 'try9', 'try10']:
+        for factor3 in  ['industry_diversified']:
             for factor4 in ['']:
                 for factor5 in [0.5]:
                     # Results are stored on a specific folder
-                    folder_name = f'scenarioA3_N{factor1}_Pformulated_Cformulated1.000_Allocated_layout_{factor3}_annealer_{factor2}'
+                    folder_name = f'scenarioB5_N{factor1}_Pformulated_Cformulated1.000_Allocated_Pegasus_{factor3}_annealer_{factor2}'
                     # Check if folder exists and creates if not
                     if not os.path.exists('results/' + folder_name):
                         os.makedirs('results/' + folder_name)
@@ -73,7 +73,7 @@ for factor1 in [16]:
                     #     q_values = [0, 0.1, 1, 10, 100, 1000]
                     
                     # scenarioA3
-                    q_values = [0, 0.2, 0.4, 0.6, 0.8, 1, 2, 3, 4, 5, 7.5, 10, 50, 100, 1000]
+                    # q_values = [0, 0.2, 0.4, 0.6, 0.8, 1, 2, 3, 4, 5, 7.5, 10, 50, 100, 1000]
                     print_var('q_values', q_values)
 
                     shots_allocation = 15000
@@ -95,8 +95,8 @@ for factor1 in [16]:
 
                     # Get sampler
                     sampler = DWaveSampler()
-                    # embedding_type = 'normal'
-                    embedding_type = 'layout'
+                    embedding_type = 'normal'
+                    # embedding_type = 'layout'
                     # embedding_type = factor4
 
                     # Get embedding

@@ -74,14 +74,14 @@ Post hoc analysis (Conover-Iman Test) needs to be done:
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    17.609472880061105
-p-value:        0.0005294252543614154
-Null hypothesis rejected! Now performing pairwise comparison with Dunn's test
+H statistic:    36.19634076615208
+p-value:        6.805708821785085e-08
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
                N8           N16           N32           N64
-N8   1.000000e+00  1.891157e-03  3.330204e-07  2.619788e-09
-N16  1.891157e-03  1.000000e+00  8.960526e-04  9.861650e-07
-N32  3.330204e-07  8.960526e-04  1.000000e+00  8.708493e-03
-N64  2.619788e-09  9.861650e-07  8.708493e-03  1.000000e+00
+N8   1.000000e+00  2.601673e-07  1.219874e-15  1.767614e-20
+N16  2.601673e-07  1.000000e+00  6.077688e-08  1.027386e-14
+N32  1.219874e-15  6.077688e-08  1.000000e+00  5.001768e-06
+N64  1.767614e-20  1.027386e-14  5.001768e-06  1.000000e+00
 N8 and N16 ARE significantly different!
 N8 and N32 ARE significantly different!
 N8 and N64 ARE significantly different!
@@ -223,154 +223,6 @@ Therefore, for all `N` values, a safe range seems to be between `0.250 * maxAbs`
 
 Based on those findings, the case `N=8` will not be tested in the remaining scenarios, since the annealer already achieved optimality.
 
-## Scenario A2 - B **OLD**
-
-For this scenario, we will be looking at how different budgets affect the performance of the annealer. Therefore, different fractions of `B` are going to be tested: 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, and 0.9.
-
-I will be using `chain_strength = 1.000 * maxAbs`, for the reasons explained in the previous scenario.
-**Reminder: the fraction used in previous scenarios was `B=0.5`!**
-
-Obviously, for each value of B, we first need to solve it classically. Then, from the results, we get the sequences of `q_values` to be used in the annealer.
-
-| N  | q values                                                     | Budget fraction |
-| -- | ------------------------------------------------------------ | --------------- |
-| 16 | 0, 20, 500                                                   | 0.1 (1)         |
-| 32 | 0, 7, 20, 40                                                 | 0.1 (3)         |
-| 64 | 0, 0.6, 2, 4, 6, 8, 20, 40, 80, 500                          | 0.1 (6)         |
-| 16 | 0, 8, 10, 40                                                 | 0.2 (3)         |
-| 32 | 0, 5, 8, 20, 30, 80                                          | 0.2 (6)         |
-| 64 | 0, 0.3, 0.8, 2, 4, 5, 7, 9, 20, 30, 500                      | 0.2 (12)        |
-| 16 | 0, 2, 6, 20, 60                                              | 0.3 (4)         |
-| 32 | 0, 3, 4, 10, 20, 50                                          | 0.3 (9)         |
-| 64 | 0, 0.2, 2, 3, 4, 5, 7, 9, 20, 30, 100                        | 0.3 (19)        |
-| 16 | 0, 2, 5, 10, 30                                              | 0.4 (6)         |
-| 32 | 0, 0.2, 0.9, 2, 4, 20, 30, 70, 500                           | 0.4 (12)        |
-| 64 | 0, 0.3, 0.6, 1, 2, 3, 4, 6, 8, 20, 30, 90                    | 0.4 (25)        |
-| 16 | 0, 2, 6, 100, 500                                            | 0.5 (8)         |
-| 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 0.5 (16)        |
-| 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 0.5 (32)        |
-| 16 | 0, 0.1, 0.8, 3, 20, 30                                       | 0.6 (9)         |
-| 32 | 0, 0.1, 0.5, 1, 2, 3, 7, 8, 20, 30                           | 0.6 (19)        |
-| 64 | 0, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 2, 3, 7, 9, 20              | 0.6 (38)        |
-| 16 | 0, 0.7, 20                                                   | 0.7 (11)        |
-| 32 | 0, 0.4, 2                                                    | 0.7 (22)        |
-| 64 | 0, 0.1, 0.2, 0.3, 0.7, 1, 2, 3, 4, 6, 20                     | 0.7 (44)        |
-| 16 | 0, 4                                                         | 0.8 (12)        |
-| 32 | 0, 0.8, 7, 9                                                 | 0.8 (25)        |
-| 64 | 0, 0.1, 0.2, 0.4, 0.5, 0.6, 1, 2, 3, 6, 20                   | 0.8 (51)        |
-| 16 | 0, 50                                                        | 0.9 (14)        |
-| 32 | 0, 0.8, 3                                                    | 0.9 (28)        |
-| 64 | 0, 0.6, 1, 2, 5, 500                                         | 0.9 (57)        |
-
-**Question: Is it bad to have different number of samples between cases?**
-
-With those results, we obtained the following epsilon indicators:
-
-| Budget fraction | N16 (AvgChainBreak) | N32 (AvgChainBreak) | N64 (AvgChainBreak) |
-| --------------- | ------------------- | ------------------- | ------------------- |
-| 0,1             | 1,000 (0,00406)     | 1,142 (0,00979)     | 1,846 (0,01572)     |
-| 0,2             | 1,000 (0,00048)     | 1,334 (0,00151)     | 2,929 (0,00493)     |
-| 0,3             | 1,026 (0,00044)     | 1,373 (0,00152)     | 1,750 (0,00473)     |
-| 0,4             | 1,113 (0,00024)     | 1,281 (0,00134)     | 1,640 (0,00452)     |
-| 0,5             | 1,075 (0,00031)     | 1,311 (0,00127)     | 1,513 (0,00484)     |
-| 0,6             | 1,146 (0,00033)     | 1,293 (0,00141)     | 1,441 (0,00470)     |
-| 0,7             | 1,162 (0,00038)     | 1,421 (0,00108)     | 1,907 (0,00464)     |
-| 0,8             | 1,005 (0,00031)     | 1,408 (0,00144)     | inf   (0,00462)     |
-| 0,9             | 1,103 (0,00034)     | inf   (0,00129)     | inf   (0,00447)     |
-
-**Gráficos com os resultados deste cenário estão no cenário seguinte**
-
-### Key Takeaways:
-
-The first thing I notice is that there is a high chain break fraction when the budget is `B=0.1`. Afterwards, it attains a consistently low fraction, with small variation.
-
-For `N=32` and `N=64`, as expected from theory, the epsilon indicator is lower when the budget is or is close to `B=0.5`, since this value has the highest number of admissible solutions.
-
-Behavior for all `N` values is hard to grasp. Nonetheless, budget fraction is a parameter that is particular to each practitioner.
-
-## Scenario B3 - Shots **OLD**
-
-The previous scenario, A2, made us wonder about the number of samples. That is, there is a possibility that the cases where B is farthest from `B=0.5` have worse performance because of having less values of `q` and thus less samples taken.
-Therefore, we pose a question: Is it better to increase the number of shots per value of `q` or to add more values of `q` to be executed?
-
-Since the results so far seem to have a good coverage of the efficient frontier, but still far from it, we believe that the issue is related to the number of samples per value of `q`. Hence, we are going to repeat the previous scenario with a new methodology to define the number of samples per value of `q`. This methodology is called `Allocated`.
-
-Initially, each value of `q` had 1000 shots, i.e., 1000 samples taken. This time, each case will have a total allocated number of shots for every value of `q`. For example, if we have a case with three values of `q` and another case with five values of `q`, then, with a total allocation of 5000 shots per case, then the first case will have 1666 shots per value, while the second case will have 1000 shots per value.
-
-Based on this methodology, we will start with a total allocation of 15000 shots, such that each of the 15 values of `q` from case `B=0.5` have 1000 shots.
-
-| N  | q values                                                     | Budget fraction | Shots per value of q |
-| -- | ------------------------------------------------------------ | --------------- | -------------------- |
-| 16 | 0, 20, 500                                                   | 0.1 (1)         | 5000                 |
-| 32 | 0, 7, 20, 40                                                 | 0.1 (3)         | 3750                 |
-| 64 | 0, 0.6, 2, 4, 6, 8, 20, 40, 80, 500                          | 0.1 (6)         | 1500                 |
-| 16 | 0, 8, 10, 40                                                 | 0.2 (3)         | 3750                 |
-| 32 | 0, 5, 8, 20, 30, 80                                          | 0.2 (6)         | 2500                 |
-| 64 | 0, 0.3, 0.8, 2, 4, 5, 7, 9, 20, 30, 500                      | 0.2 (12)        | 1363                 |
-| 16 | 0, 2, 6, 20, 60                                              | 0.3 (4)         | 3000                 |
-| 32 | 0, 3, 4, 10, 20, 50                                          | 0.3 (9)         | 2500                 |
-| 64 | 0, 0.2, 2, 3, 4, 5, 7, 9, 20, 30, 100                        | 0.3 (19)        | 1363                 |
-| 16 | 0, 2, 5, 10, 30                                              | 0.4 (6)         | 3000                 |
-| 32 | 0, 0.2, 0.9, 2, 4, 20, 30, 70, 500                           | 0.4 (12)        | 1666                 |
-| 64 | 0, 0.3, 0.6, 1, 2, 3, 4, 6, 8, 20, 30, 90                    | 0.4 (25)        | 1250                 |
-| 16 | 0, 2, 6, 100, 500                                            | 0.5 (8)         | 3000                 |
-| 32 | 0, 0.4, 0.9, 2, 3, 9, 100                                    | 0.5 (16)        | 2142                 |
-| 64 | 0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500 | 0.5 (32)        | 1000                 |
-| 16 | 0, 0.1, 0.8, 3, 20, 30                                       | 0.6 (9)         | 2500                 |
-| 32 | 0, 0.1, 0.5, 1, 2, 3, 7, 8, 20, 30                           | 0.6 (19)        | 1500                 |
-| 64 | 0, 0.1, 0.2, 0.3, 0.4, 0.6, 0.7, 2, 3, 7, 9, 20              | 0.6 (38)        | 1250                 |
-| 16 | 0, 0.7, 20                                                   | 0.7 (11)        | 5000                 |
-| 32 | 0, 0.4, 2                                                    | 0.7 (22)        | 5000                 |
-| 64 | 0, 0.1, 0.2, 0.3, 0.7, 1, 2, 3, 4, 6, 20                     | 0.7 (44)        | 1363                 |
-| 16 | 0, 4                                                         | 0.8 (12)        | 7500                 |
-| 32 | 0, 0.8, 7, 9                                                 | 0.8 (25)        | 3750                 |
-| 64 | 0, 0.1, 0.2, 0.4, 0.5, 0.6, 1, 2, 3, 6, 20                   | 0.8 (51)        | 1363                 |
-| 16 | 0, 50                                                        | 0.9 (14)        | 7500                 |
-| 32 | 0, 0.8, 3                                                    | 0.9 (28)        | 5000                 |
-| 64 | 0, 0.6, 1, 2, 5, 500                                         | 0.9 (57)        | 2500                 |
-
-We obtained the following epsilon indicators:
-
-| Budget fraction | N16   | N32   | N64   |
-| --------------- | ----- | ----- | ----- |
-| 0,1             | 1,000 | 1,069 | 1,667 |
-| 0,2             | 1,000 | 1,295 | 2,434 |
-| 0,3             | 1,000 | 1,293 | 1,651 |
-| 0,4             | 1,030 | 1,277 | 1,632 |
-| 0,5             | 1,008 | 1,271 | 1,507 |
-| 0,6             | 1,072 | 1,298 | 1,521 |
-| 0,7             | 1,072 | 1,333 | 1,926 |
-| 0,8             | 1,000 | 1,413 | inf   |
-| 0,9             | 1,000 | inf   | inf   |
-
-However, we need to take into account that in real case scenarios, we won't be able to have these carefully chosen values of q. In fact, they were discovered because it was feasible to classically solve these scenarios! For this reason, we introduce another methodology, called `FullCoverage`. This methodology will execute the same values of q for every scenario. The list of values of q is based on guesswork and gained experience with the given scenarios: `0, 0.1, 0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100, 1000`. As with `Allocated` methodology, this list is allocated to a total of 15000 samples (500 per value of q).
-
-| Budget fraction | N16   | N32   | N64   |
-| --------------- | ----- | ----- | ----- |
-| 0,1             | 1,000 | 1,182 | 5,000 |
-| 0,2             | 1,000 | 1,371 | 4,625 |
-| 0,3             | 1,000 | 1,341 | 1,739 |
-| 0,4             | 1,117 | 1,290 | 1,625 |
-| 0,5             | 1,072 | 1,330 | 1,530 |
-| 0,6             | 1,125 | 1,186 | 1,389 |
-| 0,7             | 1,162 | 1,358 | 1,626 |
-| 0,8             | 1,005 | 4,442 | inf   |
-| 0,9             | 1,000 | 1,374 | inf   |
-
-
-![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N16.png "N16")
-![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N32.png "N32")
-![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B3\N64.png "N64")
-
-
-### Key Takeaways:
-
-Compared to the previous methodology, called `Simple`, the `Allocated` methodology brings improvements in almost every case. This is expected, since all the cases had their number of samples increased, minus the case `N=64 B=0.5`, which keeps the same number of samples (and also has the same performance in both methodologies).
-
-When looking at the more "realistic" `FullCover` methodology, the results are not the best, but don't fall shortly compared to `Allocated`.
-
-For the next scenarios, we are going to use the `Allocated` methodology, as well as `B=0.5`.
-
 ## Scenario A2 and B3 - B and Shots
 
 2 factors: B and Shots
@@ -385,8 +237,8 @@ Starting with `N=32`:
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    3.1200000000000045
-p-value:        0.21013607120076422
+H statistic:    1.02451612903225
+p-value:        0.5991411508220548
 The null hypothesis was not rejected!
 ```
 
@@ -394,17 +246,24 @@ The null hypothesis was not rejected!
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    4.579999999999998
-p-value:        0.1012664618538835
-The null hypothesis was not rejected!
+H statistic:    6.0800000000000125
+p-value:        0.047834889494198084
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+                lessDmoreS  mediumDmediumS  moreDlessS
+lessDmoreS        1.000000        0.045701    1.000000
+mediumDmediumS    0.045701        1.000000    0.215099
+moreDlessS        1.000000        0.215099    1.000000
+lessDmoreS and mediumDmediumS ARE significantly different!
+lessDmoreS and moreDlessS are NOT!
+mediumDmediumS and moreDlessS are NOT!
 ```
 
 ![N32B0.8](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32B0.8.png "N32B0.8")
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    2.960000000000008
-p-value:        0.22763768838381188
+H statistic:    2.6348387096774104
+p-value:        0.2678255736803744
 The null hypothesis was not rejected!
 ```
 
@@ -414,8 +273,8 @@ And for `N=64`:
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    0.720000000000006
-p-value:        0.697676326071029
+H statistic:    1.2619354838709569
+p-value:        0.5320766388987637
 The null hypothesis was not rejected!
 ```
 
@@ -423,8 +282,8 @@ The null hypothesis was not rejected!
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    2.6600000000000037
-p-value:        0.2644772612998236
+H statistic:    3.8735483870967755
+p-value:        0.14416825938986216
 The null hypothesis was not rejected!
 ```
 
@@ -432,52 +291,133 @@ The null hypothesis was not rejected!
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    2.0
-p-value:        0.36787944117144245
+H statistic:    1.9999999999999427
+p-value:        0.367879441171453
 The null hypothesis was not rejected!
+```
+
+Now, let's look at the budget, starting with `N32`:
+
+![N32lessDmoreS](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32lessDmoreS.png "N32lessDmoreS")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    13.223225806451609
+p-value:        0.0013446615904149253
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+          0.2       0.5       0.8
+0.2  1.000000  0.726036  0.006507
+0.5  0.726036  1.000000  0.000278
+0.8  0.006507  0.000278  1.000000
+0.2 and 0.5 are NOT!
+0.2 and 0.8 ARE significantly different!
+0.5 and 0.8 ARE significantly different!
+```
+
+![N32mediumDmediumS](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32mediumDmediumS.png "N32mediumDmediumS")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    18.691612903225817
+p-value:        8.733087853773252e-05
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+          0.2           0.5           0.8
+0.2  1.000000  2.648012e-04  9.609807e-02
+0.5  0.000265  1.000000e+00  6.732613e-07
+0.8  0.096098  6.732613e-07  1.000000e+00
+0.2 and 0.5 ARE significantly different!
+0.2 and 0.8 are NOT!
+0.5 and 0.8 ARE significantly different!
+```
+
+![N32moreDlessS](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N32moreDlessS.png "N32moreDlessS")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    2.8980645161290397
+p-value:        0.2347974014742501
+The null hypothesis was not rejected!
+```
+
+And for `N=64`:
+
+![N64lessDmoreS](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64lessDmoreS.png "N64lessDmoreS")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    26.789838337182452
+p-value:        1.5228618937077617e-06
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+              0.2           0.5           0.8
+0.2  1.000000e+00  3.502739e-09  3.502739e-09
+0.5  3.502739e-09  1.000000e+00  3.825579e-16
+0.8  3.502739e-09  3.825579e-16  1.000000e+00
+0.2 and 0.5 ARE significantly different!
+0.2 and 0.8 ARE significantly different!
+0.5 and 0.8 ARE significantly different!
+```
+
+![N64mediumDmediumS](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64mediumDmediumS.png "N64mediumDmediumS")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    26.52461893764435
+p-value:        1.7388102050638365e-06
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+              0.2           0.5           0.8
+0.2  1.000000e+00  1.647582e-08  9.039993e-09
+0.5  1.647582e-08  1.000000e+00  1.776432e-15
+0.8  9.039993e-09  1.776432e-15  1.000000e+00
+0.2 and 0.5 ARE significantly different!
+0.2 and 0.8 ARE significantly different!
+0.5 and 0.8 ARE significantly different!
+```
+
+![N64moreDlessS](C:\Users\claudio\Documents\GitHub\embedding\log\A2B3\N64moreDlessS.png "N64moreDlessS")
+
+```
+Results of Kruskal-Wallis One-way ANOVA:
+H statistic:    24.56283428571427
+p-value:        4.637119681113234e-06
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+              0.2           0.5           0.8
+0.2  1.000000e+00  6.834875e-07  3.720831e-05
+0.5  6.834875e-07  1.000000e+00  5.155262e-12
+0.8  3.720831e-05  5.155262e-12  1.000000e+00
+0.2 and 0.5 ARE significantly different!
+0.2 and 0.8 ARE significantly different!
+0.5 and 0.8 ARE significantly different!
 ```
 
 ### Key Takeaways:
 
-No significant differences.
 
 ## Scenario B2 - Embedding
 
 So far, we used the `general` embedding. D-Wave offers another two embedding options, `clique` and `layout` embeddings. The three options are going to be compared.
 
-| Embedding      | N16   | N32   | N64   |
-| -------------- | ----- | ----- | ----- |
-| `general` try1 | 1,057 | 1,165 | 1,593 |
-| `general` try2 | 1,039 | 1,275 | 1,548 |
-| `general` try3 | 1,072 | 1,275 | 1,568 |
-| `general` try4 | 1,017 | 1,290 | 1,487 |
-| `general` try5 | 1,098 | 1,252 | 1,335 |
-| `clique` try1  | 1,092 | 1,316 | 1,546 |
-| `clique` try2  | 1,092 | 1,320 | 1,510 |
-| `clique` try3  | 1,155 | 1,381 | 1,428 |
-| `clique` try4  | 1,126 | 1,316 | 1,577 |
-| `clique` try5  | 1,092 | 1,254 | 1,518 |
-| `layout` try1  | 1.070 | 1.250 | 1.454 |
-| `layout` try2  | 1.072 | 1.326 | 1.389 |
-| `layout` try3  | 1.062 | 1.301 | 1.464 |
-| `layout` try4  | 1.092 | 1.248 | 1.472 |
-| `layout` try5  | 1.126 | 1.275 | 1.459 |
-
 ![N16](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N16.png "N16")
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    5.431386861313866
-p-value:        0.06615906037653473
-The null hypothesis was not rejected!
+H statistic:    6.207853285328522
+p-value:        0.04487265711539793
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+          default    clique    layout
+default  1.000000  0.050978  1.000000
+clique   0.050978  1.000000  0.139886
+layout   1.000000  0.139886  1.000000
+default and clique are NOT!
+default and layout are NOT!
+clique and layout are NOT!
 ```
 
 ![N32](C:\Users\claudio\Documents\GitHub\embedding\log\B2\N32.png "N32")
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    4.340000000000003
-p-value:        0.11417761691083628
+H statistic:    5.46838709677418
+p-value:        0.06494636208860985
 The null hypothesis was not rejected!
 ```
 
@@ -485,14 +425,13 @@ The null hypothesis was not rejected!
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    3.8600000000000065
-p-value:        0.14514819848362326
+H statistic:    3.2309677419354728
+p-value:        0.19879445629913187
 The null hypothesis was not rejected!
 ```
 
 ### Key Takeaways:
 
-No significant difference.
 
 In conversations with Jose Pinilla, a Ph.D. student that authored an implementation of a layout-aware embedding, `layout` embedding is much more suited for *sparse* graphs, which is not the case of the POP. In fact, POP usually generates fully connected graphs. However, Jose Pinilla said "if there are clusters of high connectivity, you'll immediately be rewarded with faster results, or a higher chance of at least finding an embedding". I noticed that, in fact, `layout` embedding was much faster than the other two options.
 
@@ -525,8 +464,8 @@ The experiments were run five times:
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    2.9657834973504804
-p-value:        0.3969308295543481
+H statistic:    0.9966749002470076
+p-value:        0.8020565329549938
 The null hypothesis was not rejected!
 ```
 
@@ -534,38 +473,22 @@ The null hypothesis was not rejected!
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    11.36571428571429
-p-value:        0.009904105007103491
-Null hypothesis rejected! Now performing pairwise comparison with Dunn's test
-          default      long     pause    quench
-default  1.000000  1.000000  0.093021  0.318058
-long     1.000000  1.000000  0.035443  0.742135
-pause    0.093021  0.035443  1.000000  0.001183
-quench   0.318058  0.742135  0.001183  1.000000
-default and long are NOT!
-default and pause are NOT!
-default and quench are NOT!
-long and pause ARE significantly different!
-long and quench are NOT!
-pause and quench ARE significantly different!
+H statistic:    1.4648780487805055
+p-value:        0.690399853798688
+The null hypothesis was not rejected!
 ```
 
 ![N64](C:\Users\claudio\Documents\GitHub\embedding\log\B4\N64.png "N64")
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    4.760000000000005
-p-value:        0.19023861235673986
+H statistic:    6.924878048780471
+p-value:        0.0743311017252379
 The null hypothesis was not rejected!
 ```
 
 ### Key Takeaways:
 
-As expected, `long` and `pause` are consistently better than `default`, since they have at least as much anneal time as `default`. This is, however, at the cost of more machine time budget. In fact, `long` achieved a perfect score at `N=16` in one of the runs.
-
-`quench` is interesting, since it falls short when `N=16` and `N=32`, but outperforms when `N=64`.
-
-We noticed that for `N=32`, `pause` clearly outperformed the other schedules.
 
 
 ## Scenario A3 - Datasets
@@ -578,26 +501,37 @@ The results are executed for sizes `N=16`, `N=32`, and `N=64`, with parameters `
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    4.251627554882673
-p-value:        0.23554355060966134
-The null hypothesis was not rejected!
+H statistic:    15.414601018675732
+p-value:        0.0014945310210257902
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+                      diversified  correlated  industry_diversified  industry_correlated
+diversified              1.000000    1.000000              0.099833             0.004966
+correlated               1.000000    1.000000              0.030382             0.001261
+industry_diversified     0.099833    0.030382              1.000000             1.000000
+industry_correlated      0.004966    0.001261              1.000000             1.000000
+diversified and correlated are NOT!
+diversified and industry_diversified are NOT!
+diversified and industry_correlated ARE significantly different!
+correlated and industry_diversified ARE significantly different!
+correlated and industry_correlated ARE significantly different!
+industry_diversified and industry_correlated are NOT!
 ```
 
 ![N32](C:\Users\claudio\Documents\GitHub\embedding\log\A3\N32.png "N32")
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    13.217142857142846
-p-value:        0.00418979564660706
-Null hypothesis rejected! Now performing pairwise comparison with Dunn's test
-                      diversified  correlated  industry_diversified  industry_correlated
-diversified              1.000000    0.058367              0.173311             0.292077
-correlated               0.058367    1.000000              0.000402             0.000685
-industry_diversified     0.173311    0.000402              1.000000             1.000000
-industry_correlated      0.292077    0.000685              1.000000             1.000000
-diversified and correlated are NOT!
-diversified and industry_diversified are NOT!
-diversified and industry_correlated are NOT!
+H statistic:    28.54097560975609
+p-value:        2.7961951388847623e-06
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
+                      diversified    correlated  industry_diversified  industry_correlated
+diversified              1.000000  4.024953e-04          2.324991e-02         2.356543e-04
+correlated               0.000402  1.000000e+00          3.326977e-08         3.378219e-10
+industry_diversified     0.023250  3.326977e-08          1.000000e+00         7.142090e-01
+industry_correlated      0.000236  3.378219e-10          7.142090e-01         1.000000e+00
+diversified and correlated ARE significantly different!
+diversified and industry_diversified ARE significantly different!
+diversified and industry_correlated ARE significantly different!
 correlated and industry_diversified ARE significantly different!
 correlated and industry_correlated ARE significantly different!
 industry_diversified and industry_correlated are NOT!
@@ -607,14 +541,14 @@ industry_diversified and industry_correlated are NOT!
 
 ```
 Results of Kruskal-Wallis One-way ANOVA:
-H statistic:    17.582857142857137
-p-value:        0.0005361519491862146
-Null hypothesis rejected! Now performing pairwise comparison with Dunn's test
+H statistic:    34.17951219512196
+p-value:        1.8156272199120692e-07
+Null hypothesis rejected! Now performing pairwise comparison with Conover-Iman's test
                        diversified    correlated  industry_diversified  industry_correlated
-diversified           1.000000e+00  5.507773e-07          1.537609e-03         4.704298e-03
-correlated            5.507773e-07  1.000000e+00          2.226214e-03         2.772116e-09
-industry_diversified  1.537609e-03  2.226214e-03          1.000000e+00         9.449954e-07
-industry_correlated   4.704298e-03  2.772116e-09          9.449954e-07         1.000000e+00
+diversified           1.000000e+00  4.477898e-11          1.959452e-03         1.714440e-05
+correlated            4.477898e-11  1.000000e+00          4.731989e-06         1.052151e-16
+industry_diversified  1.959452e-03  4.731989e-06          1.000000e+00         1.389476e-10
+industry_correlated   1.714440e-05  1.052151e-16          1.389476e-10         1.000000e+00
 diversified and correlated ARE significantly different!
 diversified and industry_diversified ARE significantly different!
 diversified and industry_correlated ARE significantly different!

@@ -135,7 +135,7 @@ print(len(set1_samples))
 print(len(set2_samples))
 
 # 2 columns, 9 per 6 inches figure
-fig, (ax1, ax2) = plt.subplots(ncols=2, figsize=(9, 6))
+fig, ax1 = plt.subplots(figsize=(9, 6))
 
 # Exclude non complying with budget
 set1_dominating_samples = list(
@@ -165,19 +165,19 @@ set1_valid_samples = list(filter(lambda x: x['equals_budget'], set1_samples))
 set2_valid_samples = list(filter(lambda x: x['equals_budget'], set2_samples))
 
 ax1.scatter(list(map(lambda x: x['volatility'], set1_valid_samples)), list(
-    map(lambda x: x['expected_return'], set1_valid_samples)), color='silver', label='annealer', s=4)
-ax2.scatter(list(map(lambda x: x['volatility'], set2_valid_samples)), list(
-    map(lambda x: x['expected_return'], set2_valid_samples)), color='silver', label='annealer', s=4)
+    map(lambda x: x['expected_return'], set1_valid_samples)), color='silver', label='cloud', s=4)
+# ax2.scatter(list(map(lambda x: x['volatility'], set2_valid_samples)), list(
+#     map(lambda x: x['expected_return'], set2_valid_samples)), color='silver', label='annealer', s=4)
 
-ax1.scatter(list(map(lambda x: x['volatility'], set1_dominating_samples)), list(
-    map(lambda x: x['expected_return'], set1_dominating_samples)), color='red', label='annealer best')
-ax1.scatter(list(map(lambda x: x['volatility'], classical_solutions1)), list(
-    map(lambda x: x['expected_return'], classical_solutions1)), color='blue', label='classical', s=4)
+# ax1.scatter(list(map(lambda x: x['volatility'], set1_dominating_samples)), list(
+#     map(lambda x: x['expected_return'], set1_dominating_samples)), color='red', label='annealer best')
+# ax1.scatter(list(map(lambda x: x['volatility'], classical_solutions1)), list(
+#     map(lambda x: x['expected_return'], classical_solutions1)), color='blue', label='classical', s=4)
 
-ax2.scatter(list(map(lambda x: x['volatility'], set2_dominating_samples)), list(
-    map(lambda x: x['expected_return'], set2_dominating_samples)), color='red', label='annealer best')
-ax2.scatter(list(map(lambda x: x['volatility'], classical_solutions2)), list(
-    map(lambda x: x['expected_return'], classical_solutions2)), color='blue', label='classical', s=4)
+# ax2.scatter(list(map(lambda x: x['volatility'], set2_dominating_samples)), list(
+#     map(lambda x: x['expected_return'], set2_dominating_samples)), color='red', label='annealer best')
+# ax2.scatter(list(map(lambda x: x['volatility'], classical_solutions2)), list(
+#     map(lambda x: x['expected_return'], classical_solutions2)), color='blue', label='classical', s=4)
 
 
 ax1_epsilon = 0
@@ -202,32 +202,32 @@ for b in classical_solutions2:
 
 # Tidy up the figure
 (ax1_left, ax1_right) = ax1.get_xlim()
-(ax2_left, ax2_right) = ax2.get_xlim()
+# (ax2_left, ax2_right) = ax2.get_xlim()
 (ax1_bottom, ax1_top) = ax1.get_ylim()
-(ax2_bottom, ax2_top) = ax2.get_ylim()
+# (ax2_bottom, ax2_top) = ax2.get_ylim()
 
-right = max(ax1_right, ax2_right)
-left = min(ax1_left, ax2_left)
-top = max(ax1_top, ax2_top)
-bottom = min(ax1_bottom, ax2_bottom)
+# right = max(ax1_right, ax2_right)
+# left = min(ax1_left, ax2_left)
+# top = max(ax1_top, ax2_top)
+# bottom = min(ax1_bottom, ax2_bottom)
 
-left = min(0, left)
-bottom = min(0, bottom)
+# left = min(0, left)
+# bottom = min(0, bottom)
 
 ax1.grid(True)
-ax1.set_xlim(left, right)
-ax1.set_ylim(bottom, top)
+ax1.set_xlim(0, ax1_right)
+ax1.set_ylim(-0.02, ax1_top)
 ax1.legend()
-ax1.set_title(f'{set1_foldername}\nε = {ax1_epsilon}', size='xx-small')
+# ax1.set_title(f'{set1_foldername}\nε = {ax1_epsilon}', size='xx-small')
 ax1.set_ylabel('Expected Return')
 ax1.set_xlabel('Volatility')
-ax2.grid(True)
-ax2.set_xlim(left, right)
-ax2.set_ylim(bottom, top)
-ax2.legend()
-ax2.set_title(f'{set2_foldername}\nε = {ax2_epsilon}', size='xx-small')
-ax2.set_ylabel('Expected Return')
-ax2.set_xlabel('Volatility')
+# ax2.grid(True)
+# ax2.set_xlim(left, right)
+# ax2.set_ylim(bottom, top)
+# ax2.legend()
+# ax2.set_title(f'{set2_foldername}\nε = {ax2_epsilon}', size='xx-small')
+# ax2.set_ylabel('Expected Return')
+# ax2.set_xlabel('Volatility')
 
 print(f'{ax1_epsilon:0.3f}\n{ax2_epsilon:0.3f}')
 
@@ -242,13 +242,13 @@ folder_name = 'epsilon_indicator'
 if not os.path.exists('images/' + folder_name):
     os.makedirs('images/' + folder_name)
 
-fig.text(0.6, 0.005, 'How to interpret: Blue markers are part of the efficient frontier. The epsilon indicator is the minimum factor by which the red set has to be multiplied in the objective so as to weakly dominate the blue set.\nHence, the closer to 1 is the epsilon indicator, the better the red set.',
-         ha='center', size='xx-small')
+# fig.text(0.5, 0.005, 'How to interpret: Blue markers are part of the efficient frontier. The epsilon indicator is the minimum factor by which the red set has to be multiplied in the objective so as to weakly dominate the blue set.\nHence, the closer to 1 is the epsilon indicator, the better the red set.',
+#          ha='center', size='xx-small')
 
 output_name = f'{scenario_name}{date}'
-fig.suptitle('Epsilon Indicator - ' + output_name)
+# fig.suptitle('Epsilon Indicator - ' + output_name)
 
 # Save as 2 1 6 0p image
 plt.savefig(
-    f'images/{folder_name}/{output_name}.png', dpi=360)
+    f'images/{folder_name}/{output_name}.pdf', dpi=360)
 plt.show()

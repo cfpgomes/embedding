@@ -165,14 +165,14 @@ set1_valid_samples = list(filter(lambda x: x['equals_budget'], set1_samples))
 set2_valid_samples = list(filter(lambda x: x['equals_budget'], set2_samples))
 
 ax1.scatter(list(map(lambda x: x['volatility'], set1_valid_samples)), list(
-    map(lambda x: x['expected_return'], set1_valid_samples)), color='silver', label='cloud', s=4)
+    map(lambda x: x['expected_return'], set1_valid_samples)), color='silver', label='valid sample', s=4)
 # ax2.scatter(list(map(lambda x: x['volatility'], set2_valid_samples)), list(
 #     map(lambda x: x['expected_return'], set2_valid_samples)), color='silver', label='annealer', s=4)
 
-# ax1.scatter(list(map(lambda x: x['volatility'], set1_dominating_samples)), list(
-#     map(lambda x: x['expected_return'], set1_dominating_samples)), color='red', label='annealer best')
-# ax1.scatter(list(map(lambda x: x['volatility'], classical_solutions1)), list(
-#     map(lambda x: x['expected_return'], classical_solutions1)), color='blue', label='classical', s=4)
+ax1.scatter(list(map(lambda x: x['volatility'], set1_dominating_samples)), list(
+    map(lambda x: x['expected_return'], set1_dominating_samples)), color='red', label='efficient frontier')
+ax1.scatter(list(map(lambda x: x['volatility'], classical_solutions1)), list(
+    map(lambda x: x['expected_return'], classical_solutions1)), color='blue', label='optimal efficient frontier', s=4)
 
 # ax2.scatter(list(map(lambda x: x['volatility'], set2_dominating_samples)), list(
 #     map(lambda x: x['expected_return'], set2_dominating_samples)), color='red', label='annealer best')

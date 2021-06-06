@@ -7,13 +7,10 @@ from datetime import datetime
 for N in [8, 16, 32]:
     for dataset_type in ['diversified', 'correlated']:
 
-        # The first N indexes in the wikipedia table are used as tickers.
-        # TODO: Change method of choosing stocks.
         table = pd.read_html(
             'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')
 
         table = table[0]
-        #print(table[lambda x: x['GICS Sector'] == 'Communication Services'])
 
         tickers = None
 
@@ -97,10 +94,7 @@ for N in [8, 16, 32]:
             highest = all_tickers[:N]
             highest_score = float('-inf')
 
-            debugvar = 0
             for starting_ticker in all_tickers:
-                debugvar += 1
-                print('TRY ' + str(debugvar))
                 remaining_tickers = list(all_tickers)
                 tickers = set()
                 tickers.add(starting_ticker)
@@ -125,7 +119,6 @@ for N in [8, 16, 32]:
 
                 for i in range(N):
                     for j in range(i+1, N):
-                        #print(corr_matrix[tickers[i]][tickers[j]])
                         tickers_score += corr_matrix[tickers[i]][tickers[j]]
 
                 if tickers_score > highest_score:
@@ -184,10 +177,7 @@ for N in [8, 16, 32]:
             highest = all_tickers[:N]
             highest_score = float('-inf')
 
-            debugvar = 0
             for starting_ticker in all_tickers:
-                debugvar += 1
-                print('TRY ' + str(debugvar))
                 remaining_tickers = list(all_tickers)
                 tickers = set()
                 tickers.add(starting_ticker)
@@ -212,7 +202,6 @@ for N in [8, 16, 32]:
 
                 for i in range(N):
                     for j in range(i+1, N):
-                        #print(abs(corr_matrix[tickers[i]][tickers[j]]))
                         tickers_score -= abs(corr_matrix[tickers[i]][tickers[j]])
 
                 if tickers_score > highest_score:
@@ -233,7 +222,7 @@ for N in [8, 16, 32]:
         print(str(N) + ' tickers used:')
         print(tickers)
 
-        # The tickers' 1 year historical data is downloaded.
+        # The tickers' 1 month historical data is downloaded.
         period = '1mo'
         interval = '1d'
         data = yf.download(tickers, period=period,
@@ -246,7 +235,7 @@ for N in [8, 16, 32]:
             print(data[t])
 
         # The data is then processed to drop NaN values, then to calculate percent
-        # change between months, and then to drop NaN values again.
+        # change between days, and then to drop NaN values again.
         data = data.dropna().pct_change().dropna()
         print('Data processed:')
         print(data)
@@ -254,7 +243,7 @@ for N in [8, 16, 32]:
         print('Tickers:')
         print(list(data.columns))
 
-        # Mu is monthly expected return
+        # Mu is daily expected return
         mu = data.mean(0)
         print('Mu:')
         print(mu)

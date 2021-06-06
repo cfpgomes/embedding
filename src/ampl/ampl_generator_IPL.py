@@ -18,7 +18,7 @@ f = open('data/out_industry_correlated_N16_p1mo_i1d.json')
 data = json.load(f)
 
 N = data['N']               # Universe size
-B = int(N * 0.5)            # Budget
+B = int(N * 0.5)                # Budget
 tickers = data['tickers']   # Tickers
 print(tickers)
 mu = pd.Series(data['mu'])

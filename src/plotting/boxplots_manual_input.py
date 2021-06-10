@@ -1,23 +1,21 @@
-import numpy as np
 import matplotlib.pyplot as plt
-import pandas as pd
-import math
+from matplotlib import rcParams
+rcParams['font.family'] = 'serif'
+rcParams['font.serif'] = ['CMU Serif']
 from datetime import datetime
 import os
-import json
-import csv
 
 scenario_name = 'scenarioA3'
 
 # A1
-# labels = ['N8', 'N16', 'N32', 'N64']
-# title = 'A1'
-# list_set_epsilons = [
-#     [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
-#     [1.069745339063699, 1.092361554481774, 1.0401612648181484, 1.024987806680736, 1.092361554481774, 1.0673737373191567, 1.0697773251747045, 1.0721887251507554, 1.0984542789970648, 1.032063813494498],
-#     [1.9672283318399104, 2.000208156727025, 1.5057984665883457, 1.7313780537119778, 1.7583356077077361, 1.583550495324147, 1.7515512359533156, 1.8688823793978162, 1.863895563897313, 1.6631307077366522],
-#     [2.0219766490363518, 2.0083955641477678, 2.050651504630772, 1.9425289723714714, 2.0143853558614717, 1.9996298119483003, 2.0348651357355068, 1.907129840169096, 1.9210138346236325, 2.034906949518788]
-# ]
+labels = ['8', '16', '32', '64']
+title = 'A1'
+list_set_epsilons = [
+    [1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0, 1.0],
+    [1.069745339063699, 1.092361554481774, 1.0401612648181484, 1.024987806680736, 1.092361554481774, 1.0673737373191567, 1.0697773251747045, 1.0721887251507554, 1.0984542789970648, 1.032063813494498],
+    [1.9672283318399104, 2.000208156727025, 1.5057984665883457, 1.7313780537119778, 1.7583356077077361, 1.583550495324147, 1.7515512359533156, 1.8688823793978162, 1.863895563897313, 1.6631307077366522],
+    [2.0219766490363518, 2.0083955641477678, 2.050651504630772, 1.9425289723714714, 2.0143853558614717, 1.9996298119483003, 2.0348651357355068, 1.907129840169096, 1.9210138346236325, 2.034906949518788]
+]
 
 # A2B3N32B0.2
 # labels = ['lessDmoreS', 'mediumDmediumS', 'moreDlessS']
@@ -246,17 +244,17 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # 2 columns, 9 per 6 inches figure
-fig, ax1 = plt.subplots(figsize=(9, 6))
+fig, ax1 = plt.subplots(figsize=(4, 4))
 ax1.boxplot(list_set_epsilons, notch=True, labels=labels)
 
 # Tidy up the figure
 (ax1_bottom, ax1_top) = ax1.get_ylim()
 
 ax1.grid(True)
-ax1.set_title(title)
+# ax1.set_title(title)
 ax1.set_ylim(1, ax1_top)
 ax1.set_ylabel('Epsilon Indicator')
-ax1.set_xlabel('Dataset')
+ax1.set_xlabel('Universe Size')
 
 
 # Get timestamp
@@ -270,13 +268,13 @@ folder_name = 'boxplots_manual_input'
 if not os.path.exists('images/' + folder_name):
     os.makedirs('images/' + folder_name)
 
-fig.text(0.5, 0.005, 'How to interpret: The epsilon indicator is the minimum factor by which the annealer set has to be multiplied in the objective so as to weakly dominate the classical set.\nHence, the closer to 1 is the epsilon indicator, the better the annealer set.',
-         ha='center', size='xx-small')
+# fig.text(0.5, 0.005, 'How to interpret: The epsilon indicator is the minimum factor by which the annealer set has to be multiplied in the objective so as to weakly dominate the classical set.\nHence, the closer to 1 is the epsilon indicator, the better the annealer set.',
+#          ha='center', size='xx-small')
 
 output_name = f'{scenario_name}{date}'
-fig.suptitle('Boxplots - ' + output_name)
+# fig.suptitle('Boxplots - ' + output_name)
 
 # Save as 2 1 6 0p image
 plt.savefig(
-    f'images/{folder_name}/{output_name}.png', dpi=360)
+    f'images/{folder_name}/{output_name}.pdf', dpi=360)
 plt.show()

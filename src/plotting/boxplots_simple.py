@@ -30,7 +30,7 @@ q = 1
 mu = None
 sigma = None
 
-data_filename = 'data/out_industry_diversified_N8_P1mo_i1d.json'
+data_filename = 'data/out_industry_diversified_N64_P1mo_i1d.json'
 with open(data_filename) as jsonfile:
     data = json.load(jsonfile)
     N = data['N']               # Universe size
@@ -56,7 +56,7 @@ P = -q * min_sigma + max_mu
 B = int(N*0.5)
 print(f'B:{B}')
 
-classical_solutions_foldername = 'results/scenarioA1_N8_classical'
+classical_solutions_foldername = 'results/scenarioA1_N64_classical'
 classical_solutions = []
 
 for filename in os.listdir(classical_solutions_foldername):
@@ -70,27 +70,27 @@ list_set_epsilons = []
 
 list_set_foldernames = [
     [
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try1',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try2',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try3',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try4',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try5',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try6',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try7',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try8',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try9',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Pegasus_industry_diversified_annealer_try10'],
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_FIXED',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_try2_FIXED',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_try3_FIXED',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_try4',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_try5',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_try6',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_try7',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_try8',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_try9',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_annealer_try10'],
     [
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try1',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try2',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try3',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try4',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try5',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try6',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try7',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try8',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try9',
-    'results/scenarioB5_N8_Pformulated_Cformulated1.000_Allocated_Chimera_industry_diversified_annealer_try10']
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try1',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try2',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try3',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try4',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try5',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try6',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try7',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try8',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try9',
+    'results/scenarioB1_N64_Pformulated_Cformulated1.000_Allocated_annealer_try10']
 ]
 
 labels = ['Pegasus', 'Chimera']

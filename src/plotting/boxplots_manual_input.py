@@ -170,7 +170,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # B2N16
-# labels = ['default', 'clique', 'layout']
+# labels = ['general', 'clique', 'layout']
 # title = 'B2N16'
 # list_set_epsilons = [
 #     [1.0568713785067598, 1.0393077920791243, 1.0717989664330105, 1.0174972218859963, 1.0984542789970648, 1.0995747506079512, 1.076422956935955, 1.0697773251747045, 1.0721887251507554, 1.0617306209896549],
@@ -179,7 +179,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # B2N32
-# labels = ['default', 'clique', 'layout']
+# labels = ['general', 'clique', 'layout']
 # title = 'B2N32'
 # list_set_epsilons = [
 #     [1.1648830986803027, 1.274607461666451, 1.2746124354082478, 1.2901197218104328, 1.251599560259116, 1.2966670118398864, 1.2903095087971328, 1.3777056814792898, 1.222093089331546, 1.2902120762068712],
@@ -188,7 +188,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # B2N64
-# labels = ['default', 'clique', 'layout']
+# labels = ['general', 'clique', 'layout']
 # title = 'B2N64'
 # list_set_epsilons = [
 #     [1.59319592598288, 1.5475698605999058, 1.5676345089256754, 1.4870048002959697, 1.3348663638196163, 1.5204390528232812, 1.537824821724261, 1.4244844927545859, 1.5400031976660937, 1.4124097728107203],
@@ -197,7 +197,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # B4N16
-# labels = ['default', 'long', 'pause', 'quench']
+# labels = ['standard', 'long', 'pause', 'quench']
 # title = 'B4N16'
 # list_set_epsilons = [
 #     [1.092361554481774, 1.0174972218859963, 1.092361554481774, 1.0717989664330105, 1.0984542789970648, 1.1024229279374809, 1.069745339063699, 1.1263482082890073, 1.0, 1.069745339063699],
@@ -207,7 +207,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # B4N32
-# labels = ['default', 'long', 'pause', 'quench']
+# labels = ['standard', 'long', 'pause', 'quench']
 # title = 'B4N32'
 # list_set_epsilons = [
 #     [1.3517850518147483, 1.2351620051331451, 1.2419806167336755, 1.253449932867132, 1.2972976373744176, 1.2010223096471366, 1.3379527477527187, 1.1526497228445969, 1.3131195168854548, 1.2883396222450554],
@@ -217,7 +217,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # B4N64
-# labels = ['default', 'long', 'pause', 'quench']
+# labels = ['standard', 'long', 'pause', 'quench']
 # title = 'B4N64'
 # list_set_epsilons = [
 #     [1.5172127715152381, 1.4650921665719863, 1.578786888567411, 1.5375728717289225, 1.4263595347128148, 1.4419254705861224, 1.403621202857771, 1.4945997714148278, 1.3795272469199982, 1.4925379966852075],
@@ -227,7 +227,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # A3N16
-# labels = ['diversified', 'correlated', 'industry_diversified', 'industry_correlated']
+# labels = ['diversified', 'correlated', 'industry\ndiversified', 'industry\ncorrelated']
 # title = 'A3N16'
 # list_set_epsilons = [
 #     [1.0252990521071133, 1.0, 1.0252990521071133, 1.0398904698739035, 1.0252990521071133, 1.0, 1.044078926786686, 1.0, 1.0252990521071133, 1.0],
@@ -237,7 +237,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # A3N32
-# labels = ['diversified', 'correlated', 'industry_diversified', 'industry_correlated']
+# labels = ['diversified', 'correlated', 'industry\ndiversified', 'industry\ncorrelated']
 # title = 'A3N32'
 # list_set_epsilons = [
 #     [1.2742794349447089, 1.2884689100696118, 1.2773672514016263, 1.2753373162832464, 1.2330931799174467, 1.2796396380232535, 1.2166893951238382, 1.212711791220173, 1.1795924280178165, 1.2663753671790334],
@@ -247,7 +247,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # A3N64
-# labels = ['diversified', 'correlated', 'industry_diversified', 'industry_correlated']
+# labels = ['diversified', 'correlated', 'industry\ndiversified', 'industry\ncorrelated']
 # title = 'A3N64'
 # list_set_epsilons = [
 #     [1.5896707140453368, 1.692115874229774, 1.5797159691954805, 1.544775608544733, 1.6306603596458091, 1.4931610333677243, 1.482970767797879, 1.5659992029242256, 1.4697099089637102, 1.6240157684697236],
@@ -299,7 +299,7 @@ ax1.grid(True)
 # ax1.set_title(title)
 ax1.set_ylim(1, ax1_top)
 ax1.set_ylabel('Epsilon Indicator')
-ax1.set_xlabel('Budget Size')
+ax1.set_xlabel('Annealing system')
 
 
 # Get timestamp

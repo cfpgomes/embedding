@@ -71,13 +71,13 @@ import scikit_posthocs as sp
 #     ]
 
 # S5N64 - Note: 0.8 removed because of not having any result
-# labels = ['0.2', '0.5']
-# title = 'S5N64'
-# xlabel = 'Budget size as a ratio of N'
-# list_set_epsilons = [
-#     [1.5575930523578907, 2.0030329838314995, 3.167693477876335, 2.9871419348114188, 2.719845248196423, 3.0346991000143655, 2.778619963862992, 2.219290022394909, 2.0002451717105925, 2.6288289803010523],
-#     [1.4858362812934984, 1.4889654752248094, 1.5047813303539113, 1.4098188899588122, 1.4602483148388257, 1.4813269473214312, 1.5172997720691477, 1.5515222397966386, 1.5221406849616883, 1.591811313130816]
-#     ]
+labels = ['0.2', '0.5']
+title = 'S5N64'
+xlabel = 'Budget size as a ratio of N'
+list_set_epsilons = [
+    [1.5575930523578907, 2.0030329838314995, 3.167693477876335, 2.9871419348114188, 2.719845248196423, 3.0346991000143655, 2.778619963862992, 2.219290022394909, 2.0002451717105925, 2.6288289803010523],
+    [1.4858362812934984, 1.4889654752248094, 1.5047813303539113, 1.4098188899588122, 1.4602483148388257, 1.4813269473214312, 1.5172997720691477, 1.5515222397966386, 1.5221406849616883, 1.591811313130816]
+    ]
 
 # S6N16
 # labels = ['general', 'clique', 'layout']
@@ -181,6 +181,11 @@ import scikit_posthocs as sp
 # Check assumptions for each group.
 assumptions_met = True
 
+# Print median value of each group.
+for set in list_set_epsilons:
+    print('median:')
+    print(np.median(set))
+
 # Shapiro-Wilk test
 for set in list_set_epsilons:
     test = stats.shapiro(set)
@@ -206,7 +211,7 @@ for i in range(len(list_set_epsilons)):
         dict['y'].append(list_set_epsilons[i][j])
 
 df = pd.DataFrame.from_dict(dict)
-print(df)
+# print(df)
 
 if assumptions_met:
     # If assumptions are met, we perform parametric one-way ANOVA

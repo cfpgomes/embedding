@@ -1,6 +1,6 @@
 #!/bin/bash
 
-FOLDER_NAME="N32_B0.5_industry_correlated_classical"
+FOLDER_NAME="WV_N64_B0.5_diversified"
 
 mkdir -p "src/lp/"$FOLDER_NAME""
 

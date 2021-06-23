@@ -220,7 +220,7 @@ scenario_name = 'scenarioA3'
 #     ]
 
 # 2 columns, 9 per 6 inches figure
-fig, ax1 = plt.subplots(figsize=(5, 5))
+fig, ax1 = plt.subplots(figsize=(5, 4))
 ax1.boxplot(list_set_epsilons, notch=True, labels=labels)
 
 # Tidy up the figure

@@ -4,8 +4,8 @@ import numpy as np
 import json
 from datetime import datetime
 
-for N in [8, 16, 32]:
-    for dataset_type in ['diversified', 'correlated']:
+for N in [4]:
+    for dataset_type in ['diversified']:
 
         table = pd.read_html(
             'https://en.wikipedia.org/wiki/List_of_S%26P_500_companies')

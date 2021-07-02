@@ -36,7 +36,7 @@ mu2 = None
 sigma1 = None
 sigma2 = None
 
-data1_filename = 'data/out_industry_diversified_N64_p1mo_i1d.json'
+data1_filename = 'data/out_diversified_N64_p1mo_i1d.json'
 data2_filename = 'data/out_correlated_N64_p1mo_i1d.json'
 
 with open(data1_filename) as jsonfile:
@@ -86,7 +86,7 @@ P2 = -q * min_sigma2 + max_mu2
 
 B1 = int(N1*0.5)
 print(f'B1:{B1}')
-classical_solutions1_foldername = 'results/scenarioA1_N64_classical'
+classical_solutions1_foldername = 'results/N64_B0.5_diversified_classical'
 classical_solutions1 = []
 
 B2 = int(N2*0.5)
@@ -108,7 +108,7 @@ for filename in os.listdir(classical_solutions2_foldername):
             classical_solutions2.append({'sol': data['solution'], 'objective': get_objective_value(data['solution'], N2, B2, mu2, sigma2, P2), 'expected_return': get_expected_return(
                 data['solution'], N2, B2, mu2), 'volatility': get_volatility(data['solution'], N2, B2, sigma2), 'equals_budget': equals_budget(data['solution'], N2, B2)})
 
-WS_filename = 'results/WV_N64_B0.5_industry_diversified/IPL_linearized_WV_N64q1.00B32.json'
+WS_filename = 'results/WV_N64_B0.5_diversified/IPL_linearized_WV_N64q1.00B32.json'
 with open(WS_filename) as jsonfile:
     data = json.load(jsonfile)
     WS_solution = {'sol': data['solution'], 'objective': get_objective_value(data['solution'], N1, B1, mu1, sigma1, P1), 'expected_return': get_expected_return(
@@ -122,7 +122,7 @@ max_sigma1 = WS_solution['volatility']
 print('max_sigma1:')
 print(max_sigma1)
 
-set1_foldername = 'results/scenarioA1_N64_Pformulated_annealer_try1'
+set1_foldername = 'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_diversified_annealer_try5'
 # set2_foldername = 'results/scenarioA3_N64_Pformulated_Cformulated1.000_Allocated_layout_correlated_annealer_try5'
 
 set1_samples = []
@@ -188,7 +188,7 @@ ax1.scatter(list(map(lambda x: x['volatility'], set1_valid_samples)), list(
 #     map(lambda x: x['expected_return'], set2_valid_samples)), color='silver', label='annealer', s=4)
 
 ax1.scatter(list(map(lambda x: x['volatility'], set1_dominating_samples)), list(
-    map(lambda x: x['expected_return'], set1_dominating_samples)), color='red', label='efficient frontier')
+    map(lambda x: x['expected_return'], set1_dominating_samples)), color='red', label='approximation frontier')
 ax1.scatter(list(map(lambda x: x['volatility'], classical_solutions1)), list(
     map(lambda x: x['expected_return'], classical_solutions1)), color='blue', label='representation', s=4)
 

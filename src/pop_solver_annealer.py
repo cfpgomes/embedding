@@ -21,13 +21,13 @@ def print_var(variable_name, variable):
 # 2. Formulate QUBO
 # 3. Solve it.
 
-for factor1 in [16]:
-    for factor2 in ['try1','try2','try3','try4', 'try5', 'try6', 'try7', 'try8', 'try9', 'try10']:
+for factor1 in [64]:
+    for factor2 in ['try1']:
         for factor3 in  ['industry_diversified']:
             for factor4 in ['']:
                 for factor5 in [0.5]:
                     # Results are stored on a specific folder
-                    folder_name = f'scenarioB1_N{factor1}_Pformulated_Cformulated1.000_Allocated_annealer_{factor2}'
+                    folder_name = f'scenarioTESTEA2B3_N{factor1}_Pformulated_Cformulated1.000_Allocated_B0.5_mediumDmediumS_annealer_{factor2}'
                     # Check if folder exists and creates if not
                     if not os.path.exists('results/' + folder_name):
                         os.makedirs('results/' + folder_name)
@@ -50,14 +50,14 @@ for factor1 in [16]:
                     q_values = None
 
                     # industry_diversified
-                    if N == 8:
-                        q_values = [0, 11, 20, 54]
-                    elif N == 16:
-                        q_values = [0, 2, 6, 100, 500]
-                    elif N == 32:
-                        q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
-                    elif N == 64:
-                        q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
+                    # if N == 8:
+                    #     q_values = [0, 11, 20, 54]
+                    # elif N == 16:
+                    #     q_values = [0, 2, 6, 100, 500]
+                    # elif N == 32:
+                    #     q_values = [0, 0.4, 0.9, 2, 3, 9, 100]
+                    # elif N == 64:
+                    #     q_values = [0, 0.2, 0.4, 0.6, 1.1, 1.3, 1.5, 2, 5, 6, 7, 8, 10, 100, 500]
 
                     # industry_correlated
                     # if N == 32:
@@ -73,7 +73,7 @@ for factor1 in [16]:
                     #     q_values = [0, 0.1, 1, 10, 100, 1000]
                     
                     # scenarioA3
-                    # q_values = [0, 0.2, 0.4, 0.6, 0.8, 1, 2, 3, 4, 5, 7.5, 10, 50, 100, 1000]
+                    q_values = [0, 0.2, 0.4, 0.6, 0.8, 1, 2, 3, 4, 5, 7.5, 10, 50, 100, 1000]
                     print_var('q_values', q_values)
 
                     shots_allocation = 15000
@@ -118,8 +118,9 @@ for factor1 in [16]:
 
                         # Covariance term
                         for i in range(N):
-                            for j in range(i, N):
-                                Q[(i, j)] = float(q * sigma[tickers[i]][tickers[j]])
+                            Q[(i, i)] = float(q * sigma[tickers[i]][tickers[i]])
+                            for j in range(i+1, N):
+                                Q[(i, j)] = float(2 * q * sigma[tickers[i]][tickers[j]])
 
                         # Return term
                         for i in range(N):

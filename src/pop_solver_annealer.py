@@ -22,17 +22,17 @@ def print_var(variable_name, variable):
 # 3. Solve it.
 
 for factor1 in ['try1','try2','try3','try4','try5','try6','try7','try8','try9','try10']:
-    for factor2 in [32, 64]:
+    for factor2 in [16, 32, 64]:
         for factor3 in [1.000]:
             for factor4 in [15000]:
-                for factor5 in ['mediumDmediumS']:
-                    for factor6 in [0.8]:
+                for factor5 in ['minimal']:
+                    for factor6 in [0.5]:
                         for factor7 in ['normal']:
                             for factor8 in ['standard']:
                                 for factor9 in ['industry_diversified']:
                                     for factor10 in ['pegasus']:
                                         # Results are stored on a specific folder
-                                        folder_name = f'S5c_{factor2}_{factor3}_{factor4}_{factor5}_{factor6}_{factor7}_{factor8}_{factor9}_{factor10}_{factor1}'
+                                        folder_name = f'S3b_{factor2}_{factor3}_{factor4}_{factor5}_{factor6}_{factor7}_{factor8}_{factor9}_{factor10}_{factor1}'
                                         # Check if folder exists and creates if not
                                         if not os.path.exists('results/' + folder_name):
                                             os.makedirs('results/' + folder_name)

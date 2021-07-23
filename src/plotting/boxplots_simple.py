@@ -30,7 +30,7 @@ q = 1
 mu = None
 sigma = None
 
-data_filename = 'data/out_industry_diversified_N64_P1mo_i1d.json'
+data_filename = 'data/out_industry_diversified_N16_P1mo_i1d.json'
 with open(data_filename) as jsonfile:
     data = json.load(jsonfile)
     N = data['N']               # Universe size
@@ -53,11 +53,11 @@ for i in range(N):
 
 P = -q * min_sigma + max_mu
 
-B = int(N*0.8)
+B = int(N*0.5)
 print(f'B:{B}')
 
-classical_solutions_foldername = 'results/scenarioA2_N64_B0.8_classical'
-# classical_solutions_foldername = 'results/scenarioA1_N64_classical'
+# classical_solutions_foldername = 'results/N16_B0.5_industry_diversified_classical'
+classical_solutions_foldername = 'results/scenarioA1_N16_classical'
 classical_solutions = []
 
 for filename in os.listdir(classical_solutions_foldername):
@@ -68,7 +68,7 @@ for filename in os.listdir(classical_solutions_foldername):
                 data['solution'], N, B, mu), 'volatility': get_volatility(data['solution'], N, B, sigma), 'equals_budget': equals_budget(data['solution'], N, B)})
 
 
-WS_filename = 'results/WV_N64_B0.8_industry_diversified/IPL_linearized_WV_N64q1.00B51.json'
+WS_filename = 'results/WV_N16_B0.5_industry_diversified/IPL_linearized_WV_N16q1.00B8.json'
 with open(WS_filename) as jsonfile:
     data = json.load(jsonfile)
     WS_solution = {'sol': data['solution'], 'objective': get_objective_value(data['solution'], N, B, mu, sigma, P), 'expected_return': get_expected_return(
@@ -87,19 +87,60 @@ list_set_epsilons = []
 
 list_set_foldernames = [
     [
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try1',
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try2',
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try3',
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try4',
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try5',
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try6',
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try7',
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try8',
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try9',
-    'results/S5c_64_1.0_15000_mediumDmediumS_0.8_normal_standard_industry_diversified_pegasus_try10']
+    'results/S2b_16_0.125_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2c_16_0.25_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2d_16_0.375_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2e_16_0.5_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2f_16_0.625_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2g_16_0.75_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2h_16_0.875_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2i_16_1.0_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2j_16_1.125_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2k_16_1.25_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2l_16_1.375_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2m_16_1.5_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1'],
+    [
+    'results/S2b_16_0.125_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2c_16_0.25_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2d_16_0.375_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2e_16_0.5_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2f_16_0.625_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2g_16_0.75_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2h_16_0.875_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2i_16_1.0_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2j_16_1.125_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2k_16_1.25_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2l_16_1.375_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S2m_16_1.5_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2'],
+    [
+    'results/S2b_16_0.125_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2c_16_0.25_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2d_16_0.375_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2e_16_0.5_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2f_16_0.625_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2g_16_0.75_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2h_16_0.875_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2i_16_1.0_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2j_16_1.125_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2k_16_1.25_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2l_16_1.375_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S2m_16_1.5_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3'],
+    [
+    'results/S2a_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S2a_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try1',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try2',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try3',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try4',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try5',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try6',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try7',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try8',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try9',
+    'results/S1b_16_default_1000per_minimal_0.5_normal_standard_industry_diversified_pegasus_try10']
 ]
 
-labels = ['0.8']
+labels = ['try1', 'try2', 'try3', 'default']
 
 for set_foldernames in list_set_foldernames:
 
@@ -172,7 +213,7 @@ ax1.boxplot(list_set_epsilons, notch=True, labels=labels)
 (ax1_bottom, ax1_top) = ax1.get_ylim()
 
 ax1.grid(True)
-ax1.set_title('N64')
+ax1.set_title('N16')
 ax1.set_ylim(1, ax1_top)
 ax1.set_ylabel('Epsilon Indicator')
 ax1.set_xlabel('Mode')

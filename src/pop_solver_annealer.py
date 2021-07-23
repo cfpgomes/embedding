@@ -23,7 +23,7 @@ def print_var(variable_name, variable):
 
 for factor1 in ['try1','try2','try3']:
     for factor2 in [16, 32, 64]:
-        for factor3 in [1.250]:
+        for factor3 in [1.500]:
             for factor4 in ['1000per']:
                 for factor5 in ['minimal']:
                     for factor6 in [0.5]:
@@ -32,7 +32,7 @@ for factor1 in ['try1','try2','try3']:
                                 for factor9 in ['industry_diversified']:
                                     for factor10 in ['pegasus']:
                                         # Results are stored on a specific folder
-                                        folder_name = f'S2k_{factor2}_{factor3}_{factor4}_{factor5}_{factor6}_{factor7}_{factor8}_{factor9}_{factor10}_{factor1}'
+                                        folder_name = f'S2m_{factor2}_{factor3}_{factor4}_{factor5}_{factor6}_{factor7}_{factor8}_{factor9}_{factor10}_{factor1}'
                                         # Check if folder exists and creates if not
                                         if not os.path.exists('results/' + folder_name):
                                             os.makedirs('results/' + folder_name)
